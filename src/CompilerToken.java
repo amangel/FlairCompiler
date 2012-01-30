@@ -34,6 +34,12 @@ public class CompilerToken {
     public static final int GREATER_THAN_OR_EQ	= 34;
     public static final int LESS_THAN_OR_EQ		= 35;
     
+    public static final int COLON				= 40;
+    
+    public static final int LEFT_CURLY			= 41;
+    public static final int RIGHT_CURLY			= 42;
+    public static final int COMMA				= 43;
+    public static final int SEMICOLON			= 44;
     
     private String identifier;
     private String value;
@@ -123,6 +129,16 @@ public class CompilerToken {
 			return "EQUAL";
 		case NOT_EQUAL:
 			return "NOT EQUAL";
+		case COLON:
+			return "COLON";
+		case LEFT_CURLY:
+			return "LEFT_CURLY";
+		case RIGHT_CURLY:
+			return "RIGHT_CURLY";
+		case COMMA:
+			return "COMMA";
+		case SEMICOLON:
+			return "SEMICOLON";
 		}
 		return "UNKNOWN TYPE";
 	}
