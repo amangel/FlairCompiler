@@ -18,12 +18,12 @@ public class CompilerStateScanner {
 	private String state;
 
 	public CompilerStateScanner(String input){
-		inputProgramBuffer =new StringReader( input.replaceAll("\n\t", " ") );
-		System.out.println( input.trim().replaceAll(" +\t\n", " "));
+		inputProgramBuffer =new StringReader( input.trim().replaceAll("\\s+", " ") );
+		System.out.println( input.trim().replaceAll("\\s+", " ") );
 		createStateMap();
 		generateTokens();
 		for(String s : tokens){
-			System.out.println("token: "+s);
+			System.out.println("token: '"+s+"'");
 		}
 	}
 
@@ -35,8 +35,9 @@ public class CompilerStateScanner {
 		try {
 			while( (n = inputProgramBuffer.read() ) != -1 ) {
 				String next = Character.toString( (char) n );
+				//System.out.println("starting transition: '"+state+next+"'");
 				state = handleStateTransition(next, state);
-				System.out.println(state + next);
+				//System.out.println(state + next);
 			}
 			handleStateTransition("", "EOF");
 			tokens.add("EOF");
@@ -48,14 +49,19 @@ public class CompilerStateScanner {
 
 	private String handleStateTransition(String next, String state) {
 		if(states.containsKey(state+next)){
-			System.out.println("in if: currentToken: "+currentToken);
+			//System.out.println("in if: currentToken: "+currentToken);
 			currentToken += next;
 			return states.get(state+next);
 		} else {
-			System.out.println("in else: "+currentToken+", "+next);
+			//System.out.println("in else: "+currentToken+", "+next);
 			tokens.add(currentToken.trim());
-			currentToken = next;
-			return "start";
+			if(states.containsKey("start"+next)){
+				currentToken = next;
+				return states.get("start"+next);
+			} else {
+				currentToken = "";
+				return "start";
+			}
 		}
 	}
 
