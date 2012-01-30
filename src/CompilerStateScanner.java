@@ -11,11 +11,8 @@ public class CompilerStateScanner {
 	private static ArrayList<String> COMPILER_RESERVED_STRINGS;
 	private ArrayList<CompilerToken> tokens;
 	private StringReader inputProgramBuffer;
-
 	private Map<String, String> states;
-	
 	private String currentToken;
-	//private String state;
 
 	public CompilerStateScanner(String input){
 		inputProgramBuffer =new StringReader( input.trim().replaceAll("\\s+", " ") );
@@ -35,26 +32,28 @@ public class CompilerStateScanner {
 		try {
 			while( (n = inputProgramBuffer.read() ) != -1 ) {
 				String next = Character.toString( (char) n );
-				//System.out.println("starting transition: '"+state+next+"'");
 				state = handleStateTransition(next, state);
-				//System.out.println(state + next);
 			}
-			handleStateTransition("", "EOF");
+			handleStateTransition("", state);
+			currentToken = "EOF";
+			handleStateTransition("EOF", "EOF");
 
-		} catch (Exception e) {
+		} catch (LexicalException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	private String handleStateTransition(String next, String state) {
+	private String handleStateTransition(String next, String state) throws LexicalException{
 		if(states.containsKey(state+next)){
-			//System.out.println("in if: currentToken: "+currentToken);
 			currentToken += next;
 			return states.get(state+next);
 		} else {
-			//System.out.println("in else: "+currentToken+", "+next);
-			tokens.add( makeToken(currentToken.trim(), state) );
+			if(currentToken.trim().length()>0){
+				tokens.add( makeToken(currentToken.trim(), state) );
+			}
 			if(states.containsKey("start"+next)){
 				currentToken = next;
 				return states.get("start"+next);
@@ -65,18 +64,14 @@ public class CompilerStateScanner {
 		}
 	}
 
-//	private String makeToken(String token, String state) {
-//		return token;
-//	}
-
-	private CompilerToken makeToken(String token, String state) {
+	private CompilerToken makeToken(String token, String state) throws LexicalException{
 		if(state.equalsIgnoreCase("identifier")){
 			return processIdentifier(token);
 		} else if (state.equalsIgnoreCase("integer") ){
 			return processInteger(token);
-		} else if (state.equalsIgnoreCase("floatexponent") ){
+		} else if (state.equalsIgnoreCase("realexponent") ){
 			return processFloat(token);
-		} else if (state.equalsIgnoreCase("float") ){
+		} else if (state.equalsIgnoreCase("real") ){
 			return processFloat(token);
 		} else if (state.equalsIgnoreCase("plus") ){
 			return new CompilerToken("+", token, CompilerToken.PLUS);
@@ -126,23 +121,80 @@ public class CompilerStateScanner {
 	}
 	
 	private CompilerToken processFloat(String token) {
-		// TODO Auto-generated method stub
-		return new CompilerToken("float", token, CompilerToken.FLOAT_VALUE);
+		String[] parts = token.split(".");
+		String front;
+		String back;
+		try {
+			front = validateInteger(parts[0]);
+			if(parts.length > 1){
+				if(parts[1].substring(0, 1).equalsIgnoreCase("e")){
+					back = validateInteger(parts[1].substring(1));
+					return new CompilerToken("real", token, CompilerToken.REAL_VALUE);
+				} 
+			}
+		} catch (LexicalException e) {
+			e.printStackTrace();
+		}
+		return new CompilerToken("real", token, CompilerToken.REAL_VALUE);
 	}
 
-	private CompilerToken processInteger(String token) {
-		//TODO
+	private CompilerToken processInteger(String token) throws LexicalException{
+		token = validateInteger(token);
 		return new CompilerToken("integer", token, CompilerToken.INTEGER_VALUE);
 	}
 
-	private CompilerToken processIdentifier(String token) {
-		//"program", "var", "function", "integer", "real", "begin", "end", "if", "then", "else", "while", "do", "print"}
-//		if(COMPILER_RESERVED_STRINGS.contains(token)){
-//			if(token.equalsIgnoreCase("program")){
-//				
-//			}
-//		}
-		return new CompilerToken("identifier", token, CompilerToken.IDENTIFIER);
+	private String validateInteger(String token) throws LexicalException {
+		int toReturn;
+		double max = Math.pow(2, 32);
+		try{
+			toReturn = Integer.parseInt(token);
+			if(toReturn < max && toReturn >= -max){
+				token = Integer.toString(toReturn);
+			} else {
+				throw new LexicalException("LexicalException: Integers must be between -"+max+" and "+(max-1)+". Received "+token);
+			}
+		} catch (NumberFormatException e){
+			e.printStackTrace();
+		}
+		return token;
+	}
+
+	private CompilerToken processIdentifier(String token) throws LexicalException {
+		if(COMPILER_RESERVED_STRINGS.contains(token)){
+			if(token.equalsIgnoreCase("program")){
+				return new CompilerToken("program", token, CompilerToken.PROGRAM);
+			} else if (token.equalsIgnoreCase("var")) {
+				return new CompilerToken("var", token, CompilerToken.VAR);
+			} else if (token.equalsIgnoreCase("function")) {
+				return new CompilerToken("function", token, CompilerToken.FUNCTION);
+			} else if (token.equalsIgnoreCase("integer")) {
+				return new CompilerToken("integer declaration", token, CompilerToken.INTEGER_DECLARATION);
+			} else if (token.equalsIgnoreCase("real")) {
+				return new CompilerToken("real_declaration", token, CompilerToken.REAL_DECLARATION);
+			} else if (token.equalsIgnoreCase("begin")) {
+				return new CompilerToken("begin", token, CompilerToken.BEGIN);
+			} else if (token.equalsIgnoreCase("end")) {
+				return new CompilerToken("end", token, CompilerToken.END);
+			} else if (token.equalsIgnoreCase("if")) {
+				return new CompilerToken("if", token, CompilerToken.IF);
+			} else if (token.equalsIgnoreCase("then")) {
+				return new CompilerToken("then", token, CompilerToken.THEN);
+			} else if (token.equalsIgnoreCase("else")) {
+				return new CompilerToken("else", token, CompilerToken.ELSE);
+			} else if (token.equalsIgnoreCase("while")) {
+				return new CompilerToken("while", token, CompilerToken.WHILE);
+			} else if (token.equalsIgnoreCase("do")) {
+				return new CompilerToken("do", token, CompilerToken.DO);
+			} else if (token.equalsIgnoreCase("print")) {
+				return new CompilerToken("print", token, CompilerToken.PRINTOP);
+			}
+		}
+		if(token.length() <= 256) {
+			return new CompilerToken("identifier", token, CompilerToken.IDENTIFIER);
+		} else {
+			throw new LexicalException("Identifier names must be under 256 characters long. "+token.length() + " is too many.");
+		}
+		
 	}
 
 	private void createStateMap() {
@@ -151,16 +203,18 @@ public class CompilerStateScanner {
 			states.put("start"+s, "identifier");
 			states.put("identifier"+s, "identifier");
 		}
-		for(char s : "0123456789".toCharArray() ) {
+		for(char s : "123456789".toCharArray() ) {
 			states.put("start"+s, "integer");
 			states.put("integer"+s, "integer");
-			states.put("floatexponent"+s, "floatexponent");
+			states.put("realexponent"+s, "realexponent");
 		}
+		states.put("integer"+"0", "integer");
+		states.put("realexponent"+"0", "realexponent");
 		for(char s : ".".toCharArray() ) {
-			states.put("integer"+s, "float");
+			states.put("integer"+s, "real");
 		}
 		for(char s : "e".toCharArray() ) {
-			states.put("float"+s, "floatexponent");
+			states.put("real"+s, "realexponent");
 		}
 		states.put("start+", "plus");
 		states.put("start-", "minus");
@@ -169,34 +223,23 @@ public class CompilerStateScanner {
 
 		states.put("start!", "bang");
 		states.put("bang=", "notEqual");
-
 		states.put("start=", "equal");
-
 		states.put("start:", "colon");
-
 		states.put("colon=", "assignment");
 
 		states.put("start<", "lessthan");
 		states.put("lessthan=", "lessthanoreq");
-
 		states.put("start>", "greaterthan");
 		states.put("greaterthan=", "greaterthanoreq");
 
 		states.put("start{", "leftcurly");
 		states.put("start}", "rightcurly");
-
 		states.put("start(", "leftparen");
 		states.put("start)", "rightparen");
 
 		states.put("start,", "comma");
 		states.put("start;", "semicolon");
 
-		//start
-		//identifier
-		//integer
-		//float, allows 'e' after the .
-		//comparators
-		//math
 		COMPILER_RESERVED_STRINGS = new ArrayList<String>();
 		COMPILER_RESERVED_STRINGS.addAll( Arrays.asList(new String[] {"program", "var",
 				"function", "integer", "real", "begin", "end", "if", "then", "else", "while", "do", "print"}) );

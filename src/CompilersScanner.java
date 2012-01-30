@@ -157,7 +157,7 @@ public class CompilersScanner {
 			} else {
 				if(isFloat){
 					//if isFloat - float
-					return new CompilerToken("", value, CompilerToken.FLOAT_VALUE);
+					return new CompilerToken("", value, CompilerToken.REAL_VALUE);
 				} else {
 					//if not has letters, and not isFloat - integer
 					try{
@@ -178,7 +178,7 @@ public class CompilersScanner {
 					if(value.equalsIgnoreCase("integer")){
 						return new CompilerToken("integer", "", CompilerToken.INTEGER_DECLARATION);
 					} else if (value.equalsIgnoreCase("float")){
-						return new CompilerToken("float", "", CompilerToken.FLOAT_DECLARATION);
+						return new CompilerToken("float", "", CompilerToken.REAL_DECLARATION);
 //					} else if (COMPILER_ALGEBRAIC.contains(value)){
 //						return new CompilerToken("", value, CompilerToken.ALGEBRAIC_OP);
 					} else if (value.equalsIgnoreCase("print")){

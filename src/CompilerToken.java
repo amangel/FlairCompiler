@@ -1,12 +1,12 @@
 
 public class CompilerToken {
 
-    public static final int FLOAT_DECLARATION   = 0;
+    public static final int REAL_DECLARATION    = 0;
     public static final int INTEGER_DECLARATION = 1;
     public static final int PRINTOP             = 2;
     public static final int ASSIGNMENTOP        = 3;	
     public static final int IDENTIFIER          = 4;
-    public static final int FLOAT_VALUE         = 5;
+    public static final int REAL_VALUE          = 5;
     public static final int INTEGER_VALUE       = 6;
     public static final int EOF_SYMBOL          = 7;
     public static final int OPEN_PAREN			= 8;
@@ -69,8 +69,8 @@ public class CompilerToken {
 	
 	private String getTypeName(){
 		switch(type) {
-		case FLOAT_DECLARATION:
-			return "FLOAT_DECLARATION";
+		case REAL_DECLARATION:
+			return "REAL_DECLARATION";
 		case INTEGER_DECLARATION:
 			return "INTEGER_DECLARATION";
 		case PRINTOP:
@@ -87,8 +87,8 @@ public class CompilerToken {
 			return "DIVISION";
 		case IDENTIFIER:
 			return "IDENTIFIER";
-		case FLOAT_VALUE:
-			return "FLOAT_VALUE";
+		case REAL_VALUE:
+			return "REAL_VALUE";
 		case INTEGER_VALUE:
 			return "INTEGER_VALUE";
 		case EOF_SYMBOL:
