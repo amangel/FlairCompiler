@@ -70,9 +70,9 @@ public class CompilerStateScanner {
 		} else if (state.equalsIgnoreCase("integer") ){
 			return processInteger(token);
 		} else if (state.equalsIgnoreCase("realexponent") ){
-			return processFloat(token);
+			return processFloat(token, state);
 		} else if (state.equalsIgnoreCase("real") ){
-			return processFloat(token);
+			return processFloat(token, state);
 		} else if (state.equalsIgnoreCase("plus") ){
 			return new CompilerToken("+", token, CompilerToken.PLUS);
 		} else if (state.equalsIgnoreCase("minus") ){
@@ -111,27 +111,37 @@ public class CompilerStateScanner {
 			return new CompilerToken(",", token, CompilerToken.COMMA);
 		} else if (state.equalsIgnoreCase("semicolon") ){
 			return new CompilerToken(";", token, CompilerToken.SEMICOLON);
+		} else if (state.equalsIgnoreCase("endofprogram")){
+			return new CompilerToken(".", token, CompilerToken.END_OF_PROGRAM);
 		} else if (state.equalsIgnoreCase("EOF") ){
 			return new CompilerToken("EOF", token, CompilerToken.EOF_SYMBOL);
+		} else if (state.equalsIgnoreCase("realexponentzero")){
+			return processFloat(token, state);
 		} else {
 			System.out.println("Unknown token type: "+token + " with state: "+state);
 		}
-		
+
 		return new CompilerToken("", "", 1);
 	}
-	
-	private CompilerToken processFloat(String token) {
-		String[] parts = token.split(".");
+
+	private CompilerToken processFloat(String token, String state) {
+		//state: real, realexponent, realexponentzero
+		System.out.println(token+", "+state);
+		String[] parts = token.split("\\.");
 		String front;
 		String back;
+		String exponent;
 		try {
 			front = validateInteger(parts[0]);
-			if(parts.length > 1){
-				if(parts[1].substring(0, 1).equalsIgnoreCase("e")){
-					back = validateInteger(parts[1].substring(1));
-					return new CompilerToken("real", token, CompilerToken.REAL_VALUE);
-				} 
+			if(token.indexOf(".") > 0){
+				back = validateInteger(parts[1]);
 			}
+			if(state.equals("realexponent")){
+				String[] exponentParts = token.split("e");
+				exponent = validateInteger(exponentParts[1]);
+				return new CompilerToken("real", token, CompilerToken.REAL_VALUE_WITH_EXPONENT);
+			}
+
 		} catch (LexicalException e) {
 			e.printStackTrace();
 		}
@@ -144,17 +154,17 @@ public class CompilerStateScanner {
 	}
 
 	private String validateInteger(String token) throws LexicalException {
-		int toReturn;
+		double toReturn;
 		double max = Math.pow(2, 32);
 		try{
-			toReturn = Integer.parseInt(token);
+			toReturn = Double.parseDouble(token);
 			if(toReturn < max && toReturn >= -max){
-				token = Integer.toString(toReturn);
+				token = Double.toString(toReturn);
 			} else {
 				throw new LexicalException("LexicalException: Integers must be between -"+max+" and "+(max-1)+". Received "+token);
 			}
 		} catch (NumberFormatException e){
-			e.printStackTrace();
+			throw new LexicalException("LexicalException: Integers must be between -"+max+" and "+(max-1)+". Received "+token);
 		}
 		return token;
 	}
@@ -187,6 +197,8 @@ public class CompilerStateScanner {
 				return new CompilerToken("do", token, CompilerToken.DO);
 			} else if (token.equalsIgnoreCase("print")) {
 				return new CompilerToken("print", token, CompilerToken.PRINTOP);
+			} else if (token.equalsIgnoreCase("return")) {
+				return new CompilerToken("return", token, CompilerToken.RETURN);
 			}
 		}
 		if(token.length() <= 256) {
@@ -194,7 +206,7 @@ public class CompilerStateScanner {
 		} else {
 			throw new LexicalException("Identifier names must be under 256 characters long. "+token.length() + " is too many.");
 		}
-		
+
 	}
 
 	private void createStateMap() {
@@ -206,15 +218,24 @@ public class CompilerStateScanner {
 		for(char s : "123456789".toCharArray() ) {
 			states.put("start"+s, "integer");
 			states.put("integer"+s, "integer");
-			states.put("realexponent"+s, "realexponent");
+			states.put("realexponentstart"+s, "realexponent");
+			states.put("realexponent"+s,"realexponent");
+			states.put("real"+s, "real");
+			states.put("realdecimal"+s, "real");
 		}
+		states.put("realdecimal"+0, "real");
+		states.put("start-", "integer");
+		states.put("real"+0, "real");
 		states.put("integer"+"0", "integer");
 		states.put("realexponent"+"0", "realexponent");
+		states.put("realexponentstart"+0, "realexponentzero");//TODO
+
 		for(char s : ".".toCharArray() ) {
-			states.put("integer"+s, "real");
+			states.put("integer"+s, "realdecimal");
 		}
 		for(char s : "e".toCharArray() ) {
-			states.put("real"+s, "realexponent");
+			states.put("real"+s, "realexponentstart");//TODO
+			states.put("integer"+s, "realexponentstart");
 		}
 		states.put("start+", "plus");
 		states.put("start-", "minus");
@@ -239,11 +260,12 @@ public class CompilerStateScanner {
 
 		states.put("start,", "comma");
 		states.put("start;", "semicolon");
+		states.put("start.", "endofprogram");
 
 		COMPILER_RESERVED_STRINGS = new ArrayList<String>();
 		COMPILER_RESERVED_STRINGS.addAll( Arrays.asList(new String[] {"program", "var",
 				"function", "integer", "real", "begin", "end", "if", "then", "else", "while", "do", "print"}) );
-		
+
 		tokens = new ArrayList<CompilerToken>();
 	}
 }

@@ -41,6 +41,11 @@ public class CompilerToken {
     public static final int COMMA				= 43;
     public static final int SEMICOLON			= 44;
     
+    public static final int END_OF_PROGRAM		= 45;
+    
+    public static final int REAL_VALUE_WITH_EXPONENT = 46;
+    public static final int RETURN				= 47;
+    
     private String identifier;
     private String value;
     private int type;
@@ -139,6 +144,12 @@ public class CompilerToken {
 			return "COMMA";
 		case SEMICOLON:
 			return "SEMICOLON";
+		case END_OF_PROGRAM:
+			return "END_OF_PROGRAM";
+		case REAL_VALUE_WITH_EXPONENT:
+			return "REAL_VALUE_WITH_EXPONENT";//TODO add return as reserved word
+		case RETURN:
+			return "RETURN";
 		}
 		return "UNKNOWN TYPE";
 	}
