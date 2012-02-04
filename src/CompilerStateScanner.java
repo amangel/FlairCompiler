@@ -124,7 +124,7 @@ public class CompilerStateScanner {
 		return new CompilerToken("", "", 1);
 	}
 
-	private CompilerToken processFloat(String token, String state) {
+	private CompilerToken processFloat(String token, String state) throws LexicalException {
 		//state: real, realexponent, realexponentzero
 		System.out.println(token+", "+state);
 		String[] parts = token.split("\\.");
@@ -222,16 +222,25 @@ public class CompilerStateScanner {
 			states.put("realexponent"+s,"realexponent");
 			states.put("real"+s, "real");
 			states.put("realdecimal"+s, "real");
+			states.put("identifier"+s, "identifier");
+			states.put("negativeinteger"+s, "integer");
+			states.put("realexponentnegative"+s, "realexponent");
 		}
+		states.put("realexponentnegative"+0, "realexponent");
+		states.put("negativeinteger"+0, "integer");
+		states.put("identifier"+0, "identifier");
 		states.put("realdecimal"+0, "real");
-		states.put("start-", "integer");
+		states.put("start-", "negativeinteger");
+		states.put("start0", "zerointeger");
 		states.put("real"+0, "real");
 		states.put("integer"+"0", "integer");
 		states.put("realexponent"+"0", "realexponent");
 		states.put("realexponentstart"+0, "realexponentzero");//TODO
+		states.put("realexponentstart"+"-", "realexponentnegative");
 
 		for(char s : ".".toCharArray() ) {
 			states.put("integer"+s, "realdecimal");
+			states.put("zerointeger"+s, "realdecimal");
 		}
 		for(char s : "e".toCharArray() ) {
 			states.put("real"+s, "realexponentstart");//TODO

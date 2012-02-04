@@ -149,7 +149,7 @@ public class CompilerToken {
 		case END_OF_PROGRAM:
 			return "END_OF_PROGRAM";
 		case REAL_VALUE_WITH_EXPONENT:
-			return "REAL_VALUE_WITH_EXPONENT";//TODO add return as reserved word
+			return "REAL_VALUE_WITH_EXPONENT";
 		case RETURN:
 			return "RETURN";
 		}
