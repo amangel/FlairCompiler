@@ -1,0 +1,9 @@
+program addHundred;
+  var x : integer;
+begin
+  x := 0;
+  print(x)
+  while x < 100 do x := x + 1;
+  print(x)
+end
+  
