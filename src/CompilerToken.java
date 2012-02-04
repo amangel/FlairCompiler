@@ -69,7 +69,9 @@ public class CompilerToken {
 	}
 	
 	public String toString(){
-		return "Token:{ id: "+identifier+", value: "+value+", type: "+getTypeName()+" }";
+		return "Token:{ id: "+identifier+
+			   "\n     value: "+value+
+			   "\n      type: "+getTypeName()+" }\n";
 	}
 	
 	private String getTypeName(){
