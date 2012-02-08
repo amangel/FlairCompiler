@@ -16,7 +16,7 @@ public class driver {
 			BufferedReader in = new BufferedReader(new FileReader(args[0]));
 			String str;
 			while ((str = in.readLine()) != null) {
-				sb.append(str);
+				sb.append(str+"\n");
 			}
 			in.close();
 			programToUse =  sb.toString();

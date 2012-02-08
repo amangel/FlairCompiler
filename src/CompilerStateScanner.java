@@ -1,36 +1,37 @@
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class CompilerStateScanner {
 
-	private static ArrayList<String> COMPILER_RESERVED_STRINGS;
+	private ArrayList<String> reservedStrings;
+	private Map<String, String> states;	
 	private ArrayList<CompilerToken> tokens;
-	private StringReader inputProgramBuffer;
-	private Map<String, String> states;
+
 	private String currentToken;
 
+	
 	public CompilerStateScanner(String input){
-		inputProgramBuffer =new StringReader( input.trim().replaceAll("\\s+", " ") );
+		StringReader inputProgramBuffer = new StringReader( input.trim().replaceAll("\\s+", " ") );
 		System.out.println( input.trim().replaceAll("\\s+", " ") );
 		createStateMap();
-		generateTokens();
+		generateTokens(inputProgramBuffer);
 		for(CompilerToken s : tokens){
 			System.out.println(s);
 		}
 	}
 
-	private void generateTokens() {
+	private void generateTokens(StringReader input) {
 		currentToken = "";
 		String state = "start";
 
 		int n;
 		try {
-			while( (n = inputProgramBuffer.read() ) != -1 ) {
+			while( (n = input.read() ) != -1 ) {
 				String next = Character.toString( (char) n );
 				state = handleStateTransition(next, state);
 			}
@@ -82,7 +83,7 @@ public class CompilerStateScanner {
 		} else if (state.equalsIgnoreCase("division") ){
 			return new CompilerToken("/", token, CompilerToken.DIVISION);
 		} else if (state.equalsIgnoreCase("bang") ){
-			System.out.println("bang?");
+			throw new LexicalException("Invalid modifier ! found.");
 		} else if (state.equalsIgnoreCase("notequal") ){
 			return new CompilerToken("!=", token, CompilerToken.NOT_EQUAL);
 		} else if (state.equalsIgnoreCase("equal") ){
@@ -117,6 +118,8 @@ public class CompilerStateScanner {
 			return new CompilerToken("EOF", token, CompilerToken.EOF_SYMBOL);
 		} else if (state.equalsIgnoreCase("realexponentzero")){
 			return processFloat(token, state);
+		} else if (state.equalsIgnoreCase("zerointeger")){
+			return processInteger(token);
 		} else {
 			System.out.println("Unknown token type: "+token + " with state: "+state);
 		}
@@ -126,22 +129,20 @@ public class CompilerStateScanner {
 
 	private CompilerToken processFloat(String token, String state) throws LexicalException {
 		//state: real, realexponent, realexponentzero
-		System.out.println(token+", "+state);
 		String[] parts = token.split("\\.");
 		String front;
 		String back;
 		String exponent;
 		try {
-			front = validateInteger(parts[0]);
+			front = validateInteger(parts[0].split("e")[0]);
 			if(token.indexOf(".") > 0){
-				back = validateInteger(parts[1]);
+				back = validateInteger(parts[1].split("e")[0]);
 			}
-			if(state.equals("realexponent")){
+			if(state.equals("realexponent") || state.equals("realexponentzero")){
 				String[] exponentParts = token.split("e");
 				exponent = validateInteger(exponentParts[1]);
 				return new CompilerToken("real", token, CompilerToken.REAL_VALUE_WITH_EXPONENT);
 			}
-
 		} catch (LexicalException e) {
 			e.printStackTrace();
 		}
@@ -154,23 +155,26 @@ public class CompilerStateScanner {
 	}
 
 	private String validateInteger(String token) throws LexicalException {
-		double toReturn;
-		double max = Math.pow(2, 32);
+		BigInteger toReturn = new BigInteger(token);
+		BigInteger max = new BigInteger("4294967296");
+		BigInteger min = new BigInteger("-4294967297");
+
+		//-1 less, 0 equal, 1 greater
 		try{
-			toReturn = Double.parseDouble(token);
-			if(toReturn < max && toReturn >= -max){
-				token = Double.toString(toReturn);
-			} else {
-				throw new LexicalException("LexicalException: Integers must be between -"+max+" and "+(max-1)+". Received "+token);
+			if( !(toReturn.compareTo(max) == -1 && toReturn.compareTo(min) == 1) ){
+				throw new LexicalException("LexicalException: Integers must be strictly less than "+
+										   max+" and greater than "+min+". Received "+token);
 			}
 		} catch (NumberFormatException e){
-			throw new LexicalException("LexicalException: Integers must be between -"+max+" and "+(max-1)+". Received "+token);
+			throw new LexicalException("LexicalException: Integers must be strictly less than "+
+									   max+" and greater than "+min+". Received "+token);
 		}
+		BigInteger h;
 		return token;
 	}
 
 	private CompilerToken processIdentifier(String token) throws LexicalException {
-		if(COMPILER_RESERVED_STRINGS.contains(token)){
+		if(reservedStrings.contains(token)){
 			if(token.equalsIgnoreCase("program")){
 				return new CompilerToken("program", token, CompilerToken.PROGRAM);
 			} else if (token.equalsIgnoreCase("var")) {
@@ -216,6 +220,7 @@ public class CompilerStateScanner {
 			states.put("identifier"+s, "identifier");
 		}
 		for(char s : "123456789".toCharArray() ) {
+			states.put("minus"+s, "integer");
 			states.put("start"+s, "integer");
 			states.put("integer"+s, "integer");
 			states.put("realexponentstart"+s, "realexponent");
@@ -223,24 +228,25 @@ public class CompilerStateScanner {
 			states.put("real"+s, "real");
 			states.put("realdecimal"+s, "real");
 			states.put("identifier"+s, "identifier");
-			states.put("negativeinteger"+s, "integer");
 			states.put("realexponentnegative"+s, "realexponent");
+			states.put("negativezerodecimal"+s, "real");
 		}
+		states.put("negativezerodecimal"+0, "negativezerodecimal");
 		states.put("realexponentnegative"+0, "realexponent");
-		states.put("negativeinteger"+0, "integer");
+		states.put("minus"+0, "negativezero");
 		states.put("identifier"+0, "identifier");
 		states.put("realdecimal"+0, "real");
-		states.put("start-", "negativeinteger");
 		states.put("start0", "zerointeger");
 		states.put("real"+0, "real");
 		states.put("integer"+"0", "integer");
 		states.put("realexponent"+"0", "realexponent");
-		states.put("realexponentstart"+0, "realexponentzero");//TODO
+		states.put("realexponentstart"+0, "realexponentzero");//TODO:> return integer 1
 		states.put("realexponentstart"+"-", "realexponentnegative");
 
 		for(char s : ".".toCharArray() ) {
 			states.put("integer"+s, "realdecimal");
 			states.put("zerointeger"+s, "realdecimal");
+			states.put("negativezero"+s, "negativezerodecimal");
 		}
 		for(char s : "e".toCharArray() ) {
 			states.put("real"+s, "realexponentstart");//TODO
@@ -269,10 +275,10 @@ public class CompilerStateScanner {
 
 		states.put("start,", "comma");
 		states.put("start;", "semicolon");
-		states.put("start.", "endofprogram");
+		//		states.put("start.", "endofprogram");
 
-		COMPILER_RESERVED_STRINGS = new ArrayList<String>();
-		COMPILER_RESERVED_STRINGS.addAll( Arrays.asList(new String[] {"program", "var",
+		reservedStrings = new ArrayList<String>();
+		reservedStrings.addAll( Arrays.asList(new String[] {"program", "var", "return", 
 				"function", "integer", "real", "begin", "end", "if", "then", "else", "while", "do", "print"}) );
 
 		tokens = new ArrayList<CompilerToken>();
