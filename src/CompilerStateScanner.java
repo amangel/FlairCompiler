@@ -17,11 +17,11 @@ public class CompilerStateScanner {
 	
 	public CompilerStateScanner(String input){
 		StringReader inputProgramBuffer = new StringReader( input.trim().replaceAll("\\s+", " ") );
-		System.out.println( input.trim().replaceAll("\\s+", " ") );
 		createStateMap();
 		generateTokens(inputProgramBuffer);
-		for(CompilerToken s : tokens){
-			System.out.println(s);
+		CompilerTokenStream stream = new CompilerTokenStream(tokens);
+		while (stream.hasNext()) {
+			System.out.println(stream.getNext());
 		}
 	}
 
@@ -41,6 +41,7 @@ public class CompilerStateScanner {
 
 		} catch (LexicalException e) {
 			e.printStackTrace();
+			System.exit(-1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
