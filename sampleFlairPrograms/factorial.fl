@@ -1,4 +1,4 @@
-program factorial
+program factorial();
 
   var x : integer;
   var y : integer;
@@ -9,7 +9,7 @@ begin
   while x > 1 do
     begin
       y := y * x;
-      x := x - 1;
+      x := x - 1
     end
   print(y)
-end
+end.
