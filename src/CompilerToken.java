@@ -71,7 +71,7 @@ public class CompilerToken {
 	public String toString(){
 		return "Token:{ id: "+identifier+
 			   "  value: "+value+
-			   "  type: "+getTypeName()+" }\n";
+			   "  type: "+getTypeName()+" }";
 	}
 	
 	private String getTypeName(){
@@ -127,15 +127,15 @@ public class CompilerToken {
 		case GREATER_THAN:
 			return "GREATER_THAN";
 		case GREATER_THAN_OR_EQ:
-			return "GREATER THAN OR EQ";
+			return "GREATER_THAN_OR_EQ";
 		case LESS_THAN:
 			return "LESS THAN";
 		case LESS_THAN_OR_EQ:
-			return "LESS_THAN OR EQ";
+			return "LESS_THAN_OR_EQ";
 		case EQUAL:
 			return "EQUAL";
 		case NOT_EQUAL:
-			return "NOT EQUAL";
+			return "NOT_EQUAL";
 		case COLON:
 			return "COLON";
 		case LEFT_CURLY:
