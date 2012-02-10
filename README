@@ -24,9 +24,9 @@ SCANNER
 	The primary class for the scanner is CompilerStateScanner  It scans its input 
 	on a by-character basis. It begins in a start state, and then determines if
 	the following character is a valid state transition while also determining
-	the type of token being created. Once an invalid state transition is detected,
-	it breaks off what it has so far and attempts to make a valid token out of it
-	(i.e. check if it is a valid integer, identifier, etc.).
+	the type of token being created. Once an invalid state transition is
+	detected, it breaks off what it has so far and attempts to make a valid
+	token out of it	(i.e. check if it is a valid integer, identifier, etc.).
 
 	LexicalException is thrown for an illegal token detected in the input
 	Flair Program.
