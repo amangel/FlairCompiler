@@ -26,24 +26,24 @@ public class CompilerToken {
     public static final int MULTIPLICATION           = 22;
     public static final int DIVISION                 = 23;
     
-    public static final int GREATER_THAN             = 30;
-    public static final int LESS_THAN                = 31;
-    public static final int NOT_EQUAL                = 32;
-    public static final int EQUAL                    = 33;
-    public static final int GREATER_THAN_OR_EQ       = 34;
-    public static final int LESS_THAN_OR_EQ          = 35;
+    public static final int GREATER_THAN             = 24;
+    public static final int LESS_THAN                = 25;
+    public static final int NOT_EQUAL                = 26;
+    public static final int EQUAL                    = 27;
+    public static final int GREATER_THAN_OR_EQ       = 28;
+    public static final int LESS_THAN_OR_EQ          = 29;
     
-    public static final int COLON                    = 40;
+    public static final int COLON                    = 30;
     
-    public static final int LEFT_CURLY               = 41;
-    public static final int RIGHT_CURLY              = 42;
-    public static final int COMMA                    = 43;
-    public static final int SEMICOLON                = 44;
+    public static final int LEFT_CURLY               = 31;
+    public static final int RIGHT_CURLY              = 32;
+    public static final int COMMA                    = 33;
+    public static final int SEMICOLON                = 34;
     
-    public static final int END_OF_PROGRAM           = 45;
+    public static final int END_OF_PROGRAM           = 35;
     
-    public static final int REAL_VALUE_WITH_EXPONENT = 46;
-    public static final int RETURN                   = 47;
+    public static final int REAL_VALUE_WITH_EXPONENT = 36;
+    public static final int RETURN                   = 37;
     
     private String          identifier;
     private String          value;
