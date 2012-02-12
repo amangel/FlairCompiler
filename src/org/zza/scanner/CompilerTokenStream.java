@@ -1,3 +1,5 @@
+package org.zza.scanner;
+
 import java.util.ArrayList;
 
 public class CompilerTokenStream {

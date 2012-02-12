@@ -1,3 +1,5 @@
+package org.zza.scanner;
+
 public class CompilerToken {
     
     public static final int REAL_DECLARATION         = 0;

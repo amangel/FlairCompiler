@@ -1,3 +1,5 @@
+package org.zza.scanner;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
