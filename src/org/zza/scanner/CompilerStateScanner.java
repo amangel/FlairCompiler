@@ -17,6 +17,7 @@ public class CompilerStateScanner {
     private String                   currentToken;
     
     public CompilerStateScanner(String input) {
+        System.out.println(input);
         StringReader inputProgramBuffer = new StringReader(input.trim().replaceAll("\\s+", " "));
         createScannerMaps();
         generateTokens(inputProgramBuffer);
@@ -34,7 +35,11 @@ public class CompilerStateScanner {
         try {
             while ((n = input.read()) != -1) {
                 String next = Character.toString((char) n);
+                try {
                 state = handleStateTransition(next, state);
+                }catch(LexicalException e) {
+                    e.printStackTrace();
+                }
             }
             handleStateTransition("", state);
             currentToken = "EOF";
@@ -42,7 +47,7 @@ public class CompilerStateScanner {
             
         } catch (LexicalException e) {
             e.printStackTrace();
-            System.exit(-1);
+            //System.exit(-1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,6 +156,12 @@ public class CompilerStateScanner {
             
         } else if (state.equalsIgnoreCase("zerointeger")) {
             return processInteger(token);
+            
+        } else if (state.equalsIgnoreCase("closedcomment")) {
+            return new CompilerToken("COMMENT", token, CompilerToken.COMMENT);
+            
+        } else if (state.equalsIgnoreCase("period")) {
+            return new CompilerToken(".", token, CompilerToken.PERIOD);
             
         } else {
             System.out.println("Unknown token type: " + token + " with state: "
@@ -278,9 +289,11 @@ public class CompilerStateScanner {
                 .toCharArray()) {
             states.put("start" + s, "identifier");
             states.put("identifier" + s, "identifier");
+            states.put("comment"+s, "comment");
         }
         
         for (char s : "123456789".toCharArray()) {
+            states.put("comment"+s, "comment");
             states.put("minus" + s, "integer");
             states.put("start" + s, "integer");
             states.put("integer" + s, "integer");
@@ -292,7 +305,8 @@ public class CompilerStateScanner {
             states.put("realexponentnegative" + s, "realexponent");
             states.put("negativezerodecimal" + s, "real");
         }
-        
+        states.put("comment}", "closedcomment");
+        states.put("comment"+0, "comment");
         states.put("negativezerodecimal" + 0, "negativezerodecimal");
         states.put("realexponentnegative" + 0, "realexponent");
         states.put("minus" + 0, "negativezero");
@@ -306,9 +320,11 @@ public class CompilerStateScanner {
         states.put("realexponentstart" + "-", "realexponentnegative");
         
         for (char s : ".".toCharArray()) {
+            states.put("comment"+s, "comment");
             states.put("integer" + s, "realdecimal");
             states.put("zerointeger" + s, "realdecimal");
             states.put("negativezero" + s, "negativezerodecimal");
+            states.put("start"+s, "period");
         }
         
         for (char s : "e".toCharArray()) {
@@ -316,10 +332,14 @@ public class CompilerStateScanner {
             states.put("integer" + s, "realexponentstart");
         }
         
+        for (char s : " ~`!@#$%^&*()_+-=,.?/<>;':\"\\][|".toCharArray()) {
+            states.put("comment"+s, "comment");
+        }
+        
         states.put("start+", "plus");
         states.put("start-", "minus");
         states.put("start*", "multiplication");
-        states.put("start//", "division");
+        states.put("start/", "division");
         
         states.put("start!", "bang");
         states.put("bang=", "notEqual");
@@ -332,13 +352,13 @@ public class CompilerStateScanner {
         states.put("start>", "greaterthan");
         states.put("greaterthan=", "greaterthanoreq");
         
-        states.put("start{", "leftcurly");
-        states.put("start}", "rightcurly");
+        states.put("start{", "comment");
         states.put("start(", "leftparen");
         states.put("start)", "rightparen");
         
         states.put("start,", "comma");
         states.put("start;", "semicolon");
+        
         
         reservedStrings = new ArrayList<String>();
         reservedStrings.addAll(Arrays.asList(new String[] { "program", "var",

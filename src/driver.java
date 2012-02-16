@@ -26,7 +26,7 @@ public class driver {
         } catch (ArrayIndexOutOfBoundsException e){
             e.printStackTrace();
             System.out.println("Scanner requires a file name as input to create a token list.");
-            System.out.println("Example usage: [java driver ../sampleFlairPrograms/factorial.fl]");
+            System.out.println("Example usage: [java driver ../sampleFlairPrograms/factorial.flr]");
             System.exit(-1);
         } catch (IOException e) {
         }

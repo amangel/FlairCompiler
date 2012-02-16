@@ -46,6 +46,8 @@ public class CompilerToken {
     
     public static final int REAL_VALUE_WITH_EXPONENT = 36;
     public static final int RETURN                   = 37;
+    public static final int COMMENT                  = 38;
+    public static final int PERIOD                   = 39;
     
     private String          identifier;
     private String          value;
@@ -153,6 +155,10 @@ public class CompilerToken {
                 return "REAL_VALUE_WITH_EXPONENT";
             case RETURN:
                 return "RETURN";
+            case COMMENT:
+                return "COMMENT";
+            case PERIOD:
+                return "PERIOD";
         }
         return "UNKNOWN TYPE";
     }
