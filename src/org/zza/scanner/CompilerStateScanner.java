@@ -13,7 +13,6 @@ public class CompilerStateScanner {
     private ArrayList<String>        reservedStrings;
     private Map<String, String>      states;
     private ArrayList<CompilerToken> tokens;
-    
     private String                   currentToken;
     
     public CompilerStateScanner(String input) {
