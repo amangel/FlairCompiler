@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.zza.parser.CompilerParser;
 import org.zza.scanner.*; 
 
 
@@ -32,7 +33,7 @@ public class driver {
         }
         
         CompilerStateScanner s = new CompilerStateScanner(programToUse);
-        
+        CompilerParser p = new CompilerParser(s.getTokenStream());
         
     }
     

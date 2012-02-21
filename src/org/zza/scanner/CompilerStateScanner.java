@@ -14,16 +14,21 @@ public class CompilerStateScanner {
     private Map<String, String>      states;
     private ArrayList<CompilerToken> tokens;
     private String                   currentToken;
+    private CompilerTokenStream      stream;
     
     public CompilerStateScanner(String input) {
         System.out.println(input);
         StringReader inputProgramBuffer = new StringReader(input.trim().replaceAll("\\s+", " "));
         createScannerMaps();
         generateTokens(inputProgramBuffer);
-        CompilerTokenStream stream = new CompilerTokenStream(tokens);
+        stream = new CompilerTokenStream(tokens);
         while (stream.hasNext()) {
             System.out.println(stream.getNext());
         }
+    }
+    
+    public CompilerTokenStream getTokenStream() {
+        return stream;
     }
     
     private void generateTokens(StringReader input) {
