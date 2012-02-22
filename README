@@ -14,7 +14,7 @@ Current State of Compiler
         code generator, step 2    -- due Friday, April 27
 
 Usage:
-	javac Driver.java  		--To compile the scanner
+	javac driver.java  		--To compile the scanner
 	java driver path/to/filename    --To Execute where path/to/filename is path
 				             to your Flair Program
 
