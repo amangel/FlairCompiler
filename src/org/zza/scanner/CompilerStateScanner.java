@@ -43,6 +43,8 @@ public class CompilerStateScanner {
                 state = handleStateTransition(next, state);
                 }catch(LexicalException e) {
                     e.printStackTrace();
+                    currentToken = "";
+                    state = "start";
                 }
             }
             handleStateTransition("", state);
