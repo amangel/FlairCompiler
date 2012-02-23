@@ -6,6 +6,7 @@ public class NonterminalEntry extends Entry {
         super(s);
     }
     
+    @Override
     public boolean isTerminal() {
         return false;
     }

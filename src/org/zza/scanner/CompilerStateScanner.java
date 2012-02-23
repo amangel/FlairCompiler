@@ -175,26 +175,26 @@ public class CompilerStateScanner {
     private CompilerToken processFloat(String token, final String state) throws LexicalException {
         // state: real, realexponent, realexponentzero
         final String[] parts = token.split("\\.");
-        String NEW_EXPONENT = "e1";
-        String NEW_DECIMAL = ".0e";
+        final String NEW_EXPONENT = "e1";
+        final String NEW_DECIMAL = ".0e";
         try {
-            String front = validateInteger(parts[0].split("e")[0]);
-            //Validate the integer parts of the number
+            final String front = validateInteger(parts[0].split("e")[0]);
+            // Validate the integer parts of the number
             if (token.indexOf(".") > 0) {
-                String back = validateInteger(parts[1].split("e")[0]);
+                final String back = validateInteger(parts[1].split("e")[0]);
             }
             if (state.equals("realexponent") || state.equals("realexponentzero")) {
                 final String[] exponentParts = token.split("e");
-                String exponent = validateInteger(exponentParts[1]);
+                final String exponent = validateInteger(exponentParts[1]);
             }
-            if(token.indexOf(".") > 0) {
-                if(token.indexOf("e") > 0) {
+            if (token.indexOf(".") > 0) {
+                if (token.indexOf("e") > 0) {
                 } else {
                     token += NEW_EXPONENT;
                 }
             } else {
-                if(token.indexOf("e") > 0) {
-                    String[] tokenParts = token.split("e");
+                if (token.indexOf("e") > 0) {
+                    final String[] tokenParts = token.split("e");
                     token = tokenParts[0] + NEW_DECIMAL + tokenParts[1];
                 } else {
                     throw new LexicalException("Real number created without . or e. This doesn't seem physically possible!");

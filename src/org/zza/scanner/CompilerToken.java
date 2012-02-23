@@ -44,9 +44,9 @@ public class CompilerToken {
     
     public static final int END_OF_PROGRAM = 35;
     
-    public static final int RETURN = 37;
-    public static final int COMMENT = 38;
-    public static final int PERIOD = 39;
+    public static final int RETURN = 36;
+    public static final int COMMENT = 37;
+    public static final int PERIOD = 38;
     
     private final String identifier;
     private final String value;

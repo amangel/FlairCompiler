@@ -6,6 +6,7 @@ public class TerminalEntry extends Entry {
         super(s);
     }
     
+    @Override
     public boolean isTerminal() {
         return true;
     }

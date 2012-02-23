@@ -32,4 +32,8 @@ public class CompilerTokenStream {
         }
         return current;
     }
+    
+    public boolean isEmpty() {
+        return tokens.size() == 0;
+    }
 }
