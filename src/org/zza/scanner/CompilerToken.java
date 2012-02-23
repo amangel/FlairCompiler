@@ -2,58 +2,57 @@ package org.zza.scanner;
 
 public class CompilerToken {
     
-    public static final int REAL_DECLARATION         = 0;
-    public static final int INTEGER_DECLARATION      = 1;
-    public static final int PRINTOP                  = 2;
-    public static final int ASSIGNMENTOP             = 3;
-    public static final int IDENTIFIER               = 4;
-    public static final int REAL_VALUE               = 5;
-    public static final int INTEGER_VALUE            = 6;
-    public static final int EOF_SYMBOL               = 7;
-    public static final int OPEN_PAREN               = 8;
-    public static final int CLOSE_PAREN              = 9;
-    public static final int IF                       = 10;
-    public static final int THEN                     = 11;
-    public static final int ELSE                     = 12;
-    public static final int WHILE                    = 13;
-    public static final int DO                       = 14;
-    public static final int BEGIN                    = 15;
-    public static final int END                      = 16;
-    public static final int PROGRAM                  = 17;
-    public static final int VAR                      = 18;
-    public static final int FUNCTION                 = 19;
+    public static final int REAL_DECLARATION = 0;
+    public static final int INTEGER_DECLARATION = 1;
+    public static final int PRINTOP = 2;
+    public static final int ASSIGNMENTOP = 3;
+    public static final int IDENTIFIER = 4;
+    public static final int REAL_VALUE = 5;
+    public static final int INTEGER_VALUE = 6;
+    public static final int EOF_SYMBOL = 7;
+    public static final int OPEN_PAREN = 8;
+    public static final int CLOSE_PAREN = 9;
+    public static final int IF = 10;
+    public static final int THEN = 11;
+    public static final int ELSE = 12;
+    public static final int WHILE = 13;
+    public static final int DO = 14;
+    public static final int BEGIN = 15;
+    public static final int END = 16;
+    public static final int PROGRAM = 17;
+    public static final int VAR = 18;
+    public static final int FUNCTION = 19;
     
-    public static final int PLUS                     = 20;
-    public static final int MINUS                    = 21;
-    public static final int MULTIPLICATION           = 22;
-    public static final int DIVISION                 = 23;
+    public static final int PLUS = 20;
+    public static final int MINUS = 21;
+    public static final int MULTIPLICATION = 22;
+    public static final int DIVISION = 23;
     
-    public static final int GREATER_THAN             = 24;
-    public static final int LESS_THAN                = 25;
-    public static final int NOT_EQUAL                = 26;
-    public static final int EQUAL                    = 27;
-    public static final int GREATER_THAN_OR_EQ       = 28;
-    public static final int LESS_THAN_OR_EQ          = 29;
+    public static final int GREATER_THAN = 24;
+    public static final int LESS_THAN = 25;
+    public static final int NOT_EQUAL = 26;
+    public static final int EQUAL = 27;
+    public static final int GREATER_THAN_OR_EQ = 28;
+    public static final int LESS_THAN_OR_EQ = 29;
     
-    public static final int COLON                    = 30;
+    public static final int COLON = 30;
     
-    public static final int LEFT_CURLY               = 31;
-    public static final int RIGHT_CURLY              = 32;
-    public static final int COMMA                    = 33;
-    public static final int SEMICOLON                = 34;
+    public static final int LEFT_CURLY = 31;
+    public static final int RIGHT_CURLY = 32;
+    public static final int COMMA = 33;
+    public static final int SEMICOLON = 34;
     
-    public static final int END_OF_PROGRAM           = 35;
+    public static final int END_OF_PROGRAM = 35;
     
-    public static final int REAL_VALUE_WITH_EXPONENT = 36;
-    public static final int RETURN                   = 37;
-    public static final int COMMENT                  = 38;
-    public static final int PERIOD                   = 39;
+    public static final int RETURN = 37;
+    public static final int COMMENT = 38;
+    public static final int PERIOD = 39;
     
-    private String          identifier;
-    private String          value;
-    private int             type;
+    private final String identifier;
+    private final String value;
+    private final int type;
     
-    public CompilerToken(String id, String v, int t) {
+    public CompilerToken(final String id, final String v, final int t) {
         identifier = id;
         value = v;
         type = t;
@@ -73,8 +72,7 @@ public class CompilerToken {
     
     @Override
     public String toString() {
-        return "Token:{ id: " + identifier + "  value: " + value + "  type: "
-                + getTypeName() + " }";
+        return "Token:{ id: " + identifier + "  value: " + value + "  type: " + getTypeName() + " }";
     }
     
     private String getTypeName() {
@@ -151,8 +149,6 @@ public class CompilerToken {
                 return "SEMICOLON";
             case END_OF_PROGRAM:
                 return "END_OF_PROGRAM";
-            case REAL_VALUE_WITH_EXPONENT:
-                return "REAL_VALUE_WITH_EXPONENT";
             case RETURN:
                 return "RETURN";
             case COMMENT:

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class CompilerTokenStream {
     
-    private int                      index;
-    private ArrayList<CompilerToken> tokens;
-    private CompilerToken            current;
+    private int index;
+    private final ArrayList<CompilerToken> tokens;
+    private CompilerToken current;
     
-    public CompilerTokenStream(ArrayList<CompilerToken> list) {
+    public CompilerTokenStream(final ArrayList<CompilerToken> list) {
         tokens = list;
         index = 0;
         current = null;
