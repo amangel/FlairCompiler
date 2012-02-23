@@ -1,8 +1,8 @@
 README File for Flair Compiler
 
 Written by Aaron Mangel
-	   Zach Abbott
-	   Zan Preston
+	   	   Zach Abbott
+	       Zan Preston
 
 Current State of Compiler
 	
@@ -14,14 +14,14 @@ Current State of Compiler
         code generator, step 2    -- due Friday, April 27
 
 Usage:
-	javac driver.java  		--To compile the scanner
+	javac driver.java  		        --To compile the scanner
 	java driver path/to/filename    --To Execute where path/to/filename is path
-				             to your Flair Program
+				                      to your Flair Program
 
 
 
 SCANNER
-	The primary class for the scanner is CompilerStateScanner  It scans its input 
+	The primary class for the scanner is CompilerStateScanner. It scans its input 
 	on a by-character basis. It begins in a start state, and then determines if
 	the following character is a valid state transition while also determining
 	the type of token being created. Once an invalid state transition is
