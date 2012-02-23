@@ -1,13 +1,11 @@
 package org.zza.parser;
 
-
 public class TerminalEntry extends Entry {
-
-    public TerminalEntry(String s) {
+    
+    public TerminalEntry(final String s) {
         super(s);
     }
-
-    @Override
+    
     public boolean isTerminal() {
         return true;
     }

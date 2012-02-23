@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class Table {
     
     private HashMap<String, Map<String, Integer>> tableContents;
@@ -14,8 +13,8 @@ public class Table {
         
     }
     
-    public ArrayList<Entry> find(String A, String i) {
-        int index = tableContents.get(A).get(i);
+    public ArrayList<Entry> find(final String A, final String i) {
+        final int index = tableContents.get(A).get(i);
         return ruleArray.get(index);
     }
     

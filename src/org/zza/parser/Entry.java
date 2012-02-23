@@ -2,17 +2,14 @@ package org.zza.parser;
 
 public abstract class Entry {
     
-    private String entry;
-    private String type;
-    private boolean isTerminal;
+    private final String entry;
     
-    public Entry(String s) {
+    public Entry(final String s) {
         entry = s;
-       // setType();
     }
     
     public String getType() {
-        return type;
+        return entry;
     }
     
     public abstract boolean isTerminal();
