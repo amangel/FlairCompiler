@@ -1,0 +1,26 @@
+1-2     { three tokens }
+! =     { two tokens: one bad, one good }
+: =     { two tokens }
++2      { two tokens }
+==      { two tokens }
+(-2)    { three tokens }
+(+2)    { four tokens }
+:==!=<<=>>=     { seven tokens }
+:==!=<=<>=>     { seven tokens }
++-*/{}          { four tokens, with fifth optional? }
+;.,:()          { six tokens }
+
+
+a+aBCd4        { three tokens }
+a+-aBCd4       { three tokens }
+-a+-aBCd4      { three tokens }
++a++aBCd4      { five tokens }
+
+5.0*-6.0       { three tokens }
+7.8+-9.10      { three tokens }
+1e2/3e-4       { three tokens }
+-5e6*-7e-8     { three tokens }
+
+program cosine(x:real);{      gratuitous comment      }var
+cos:real;term:real;eps:real;n:real;alt:real;begin eps:=0.0001;n:=1;cos:=1;term
+:=1;alt:=-1;while term>eps do begin term:=term*x*x/n/(n+1);cos:=cos+alt*term;alt:=-alt;n:=n+2 end end.
