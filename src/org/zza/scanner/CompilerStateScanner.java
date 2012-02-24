@@ -22,9 +22,12 @@ public class CompilerStateScanner {
         createScannerMaps();
         generateTokens(inputProgramBuffer);
         stream = new CompilerTokenStream(tokens);
-        while (stream.hasNext()) {
-            System.out.println(stream.getNext());
+        for(CompilerToken tok : tokens) {
+            System.out.println(tok);
         }
+//        while (stream.hasNext()) {
+//            System.out.println(stream.getNext());
+//        }
     }
     
     public CompilerTokenStream getTokenStream() {
@@ -40,6 +43,7 @@ public class CompilerStateScanner {
             while ((n = input.read()) != -1) {
                 final String next = Character.toString((char) n);
                 try {
+                    System.out.println("working with: "+next+" "+state);
                     state = handleStateTransition(next, state);
                 } catch (final LexicalException e) {
                     e.printStackTrace();

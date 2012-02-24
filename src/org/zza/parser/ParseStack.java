@@ -30,4 +30,8 @@ public class ParseStack {
             throw new ArrayIndexOutOfBoundsException("Stack was empty");
         }
     }
+    
+    public String toString() {
+        return stack.toString();
+    }
 }

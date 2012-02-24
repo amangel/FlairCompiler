@@ -72,7 +72,8 @@ public class CompilerToken {
     
     @Override
     public String toString() {
-        return "Token:{ id: " + identifier + "  value: " + value + "  type: " + getTypeName() + " }";
+        //return "Token:{ id: " + identifier + "  value: " + value + "  type: " + getTypeName() + " }";
+        return "Token: "+identifier;
     }
     
     private String getTypeName() {

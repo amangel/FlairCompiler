@@ -12,6 +12,14 @@ public abstract class Entry {
         return entry;
     }
     
+    public String toString() {
+        return entry;
+    }
+    
+    public boolean isEpsilon() {
+        return entry.equals("<epsilon>");
+    }
+    
     public abstract boolean isTerminal();
     
 }
