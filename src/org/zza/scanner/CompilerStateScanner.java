@@ -263,7 +263,7 @@ public class CompilerStateScanner {
                 return new CompilerToken("do", token, CompilerToken.DO);
                 
             } else if (token.equalsIgnoreCase("print")) {
-                return new CompilerToken("<identifier>", token, CompilerToken.PRINTOP);
+                return new CompilerToken("print", token, CompilerToken.PRINTOP);
                 
             } else if (token.equalsIgnoreCase("return")) {
                 return new CompilerToken("return", token, CompilerToken.RETURN);

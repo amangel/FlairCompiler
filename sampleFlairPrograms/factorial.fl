@@ -1,7 +1,7 @@
 program factorial();
 
   var x : integer;
-  var y : integer;
+      y : integer;
 
 begin
   x := 10;
@@ -10,6 +10,6 @@ begin
     begin
       y := y * x;
       x := x - 1
-    end
+    end;
   print(y)
 end.

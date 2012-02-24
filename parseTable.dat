@@ -16,7 +16,7 @@
 <PARAMETER>%;<identifier>~21
 <TYPE>%;<real>~23`<integer>~22
 <STATEMENT>%;<identifier>~24`return~28`end~29`begin~27`while~26`else~29`if~25`;~29
-<STATEMENT_LIST>%;<identifier>~30`return~30`end~30`begin~30`while~30`if~30`;~30
+<STATEMENT_LIST>%;<identifier>~30`return~30`end~30`begin~30`while~30`if~30`;~30`print~30
 <STATEMENT_LIST_TAIL>%;end~32`;~31
 <ASSIGNMENT_STATEMENT>%;<identifier>~33
 <IF_STATEMENT>%;if~34

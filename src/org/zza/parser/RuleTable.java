@@ -299,6 +299,13 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("integer")}));
         // <real>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("real")}));
+        //STATEMENT::=PRINT_STATEMENT
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PRINT_STATEMENT>")} ));
+        //PRINT_STATEMENT::=print ( ARGUMENTS )
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("print"),
+                new TerminalEntry("("),
+                new NonterminalEntry("<ARGUMENTS>"),
+                new TerminalEntry(")")} ));
     }
     
     public List<Entry> find(final String A, final String i) {
