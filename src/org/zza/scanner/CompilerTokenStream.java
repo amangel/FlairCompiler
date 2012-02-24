@@ -14,11 +14,9 @@ public class CompilerTokenStream {
     }
     
     public CompilerToken getNext() {
-        //System.out.println("stream: "+tokens);
         if (current != null) {
             return current;
         } else {
-            //return tokens.get(index++);
             return tokens.remove(0);
         }
         

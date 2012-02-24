@@ -15,6 +15,7 @@ public class CompilerParser {
     private RecentTokensStack recentTokens;
     private final CompilerTokenStream stream;
     private Entry A;
+    private CompilerToken i;
     
     public CompilerParser(final CompilerTokenStream tokenStream) {
         stream = tokenStream;
@@ -34,7 +35,7 @@ public class CompilerParser {
         addToParseStack(ruleTable.find(startSymbol, startToken));
         
         A = parseStack.peek();
-        CompilerToken  i = stream.getNext();
+        getNextToken();
         while ((A != null) || !A.getType().equals(EOF)) {
            
             A = parseStack.peek();
@@ -49,7 +50,7 @@ public class CompilerParser {
                     System.out.println("i: "+i.getId());
                     parseStack.pop();
                     A = parseStack.peek();
-                    i = stream.getNext();// i.consume();
+                    getNextToken();// i.consume();
                     System.out.println("i: "+i.getId());
                     
                 } else {
@@ -58,8 +59,8 @@ public class CompilerParser {
             } else {
                 if (isRuleContained(A, i)) {
                     System.out.println("A is not terminal, rule was found");
-                    addToParseStack(ruleTable.find(A.getType(), i.getId()));
                     parseStack.pop();
+                    addToParseStack(ruleTable.find(A.getType(), i.getId()));
                     A = parseStack.peek();
                 } else {
                     throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A.getType() + " , " + i.getId());
@@ -74,6 +75,13 @@ public class CompilerParser {
         System.out.println("Finished parser run() method.");
     }
     
+    private void getNextToken() {
+        i = stream.getNext();
+        if(i.getId().equals("COMMENT")) {
+            getNextToken();
+        }
+    }
+
     private boolean isRuleContained(final Entry A, final CompilerToken i) {
         final List<Entry> returnValue = ruleTable.find(A.getType(), i.getId());
         return returnValue != null;

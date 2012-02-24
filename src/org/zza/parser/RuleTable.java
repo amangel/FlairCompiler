@@ -156,7 +156,7 @@ public class RuleTable {
         // <VAR_DECLARATION_LIST>::=<VAR_DECLARATION>
         // <VAR_DECLARATION_LIST_TAIL>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VAR_DECLARATION>"), 
-                new NonterminalEntry("<VAR_DECLARTION_LIST_TAIL>")}));
+                new NonterminalEntry("<VAR_DECLARATION_LIST_TAIL>")}));
         // <VAR_DECLARATION>::=<identifier> : <TYPE> ;
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"),
                 new TerminalEntry(":"),
@@ -168,18 +168,20 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PARAMETER_LIST>")}));
         // <PARAMETER_LIST>::=<PARAMETER> <PARAMETER_LIST_TAIL>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PARAMETER>"), 
-                new NonterminalEntry("<PARAMETER_LIST_TAIL")}));
+                new NonterminalEntry("<PARAMETER_LIST_TAIL>")}));
         // <PARAMETER_LIST_TAIL>::=, <PARAMETER_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(","), 
                 new NonterminalEntry("<PARAMETER_LIST>")}));
+        // <epsilon>
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <PARAMETER>::=<identifier> : <TYPE>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
                 new TerminalEntry(":"), 
                 new NonterminalEntry("<TYPE>")}));
         // <TYPE>::=integer
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("integer")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<integer>")}));
         // real
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("real")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<real>")}));
         // <STATEMENT>::=<ASSIGNMENT_STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<ASSIGNMENT_STATEMENT>")}));
         // <IF_STATEMENT>
