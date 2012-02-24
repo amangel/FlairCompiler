@@ -40,6 +40,10 @@ PARSER
 	parsing stack and a table which was built from the FIRST/FOLLOW sets for the
 	Flair grammar. 
 	
+	The file parseTable.dat must be located in the same directory as the compiled
+	driver.class. Without this file, the parser table cannot be populated and
+	the parsing portion of the program will throw an exception and quit.
+	
 	The table used for the parsing is sparsely populated. Cells which correspond
 	to an invalid combination are not filled. The table will be filled by loading
 	a local file, parsingTable.dat, which should not be modified.

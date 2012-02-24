@@ -17,7 +17,6 @@ public class CompilerStateScanner {
     private final CompilerTokenStream stream;
     
     public CompilerStateScanner(final String input) {
-        System.out.println(input);
         final StringReader inputProgramBuffer = new StringReader(input.trim().replaceAll("\\s+", " "));
         createScannerMaps();
         generateTokens(inputProgramBuffer);

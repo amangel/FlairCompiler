@@ -30,20 +30,6 @@ public class RuleTable {
         
         BufferedReader reader = null;
         try {
-            
-//            File directory = new File (".");
-//            try {
-//            System.out.println ("Current directory's canonical path: " 
-//             + directory.getCanonicalPath()); 
-//              System.out.println ("Current directory's absolute  path: " 
-//             + directory.getAbsolutePath());
-//            }catch(Exception e) {
-//            System.out.println("Exceptione is ="+e.getMessage());
-//             }
-            
-            
-            
-            
             reader = new BufferedReader(new FileReader(new File(fileName)));
         } catch (final FileNotFoundException e) {
             System.out.println("Could not locate " + fileName + ". Unable to continue. Please locate this file.");
@@ -310,9 +296,9 @@ public class RuleTable {
     }
     
     public List<Entry> find(final String A, final String i) {
-        System.out.println("'"+A+"' '"+i+"'");
+        //System.out.println("'"+A+"' '"+i+"'");
         final int index = tableContents.get(A).get(i);
-        System.out.println(index);
+        //System.out.println(index);
         return ruleArray.get(index);
     }
     

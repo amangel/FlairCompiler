@@ -16,6 +16,8 @@ public class CompilerParser {
     private final CompilerTokenStream stream;
     private Entry A;
     private CompilerToken i;
+    private String previousStackValue;
+    private String submissionOutput;
     
     public CompilerParser(final CompilerTokenStream tokenStream) {
         stream = tokenStream;
@@ -29,38 +31,49 @@ public class CompilerParser {
         }
     }
     
-    public void run() throws Exception {
+    public void run() throws ParsingException {
         parseStack.push(new TerminalEntry(EOF));
         //parseStack.push(new TerminalEntry(startSymbol));
         addToParseStack(ruleTable.find(startSymbol, startToken));
-        
+        previousStackValue = "";
+        submissionOutput = "";
         A = parseStack.peek();
         getNextToken();
         while ((A != null) && !A.getType().equals(EOF)) {
            
             A = parseStack.peek();
-            System.out.println("Parse stack:" +parseStack);
-            System.out.println("working with: A:"+A +" i:"+i+" "+i.getValue()+"\n");
+//            System.out.println("Parse stack:" +parseStack);
+//            System.out.println("working with: A:"+A +" i:"+i+" "+i.getValue()+"\n");
             
             if (A.isTerminal()) {
-                System.out.println(A.getType() + " is terminal");
-                System.out.println("A: "+A.getType() + " i: "+i.getId()+" "+i.getValue());
+                
+                if(previousStackValue.equals("program") || previousStackValue.equals("<VAR_DECLARATION>")) {
+//                    System.out.println("found prog or var");
+                    submissionOutput += i.getValue()+" ";
+                } else if (previousStackValue.equals("function")) {
+                    System.out.println(submissionOutput);
+                    submissionOutput = i.getValue();
+                }
+//                System.out.println(A.getType() + " is terminal");
                 if (A.getType().equalsIgnoreCase(i.getId())) {
-                    System.out.println("A and i match");
-                    System.out.println("i: "+i.getId()+" "+i.getValue());
+//                System.out.println("A: "+A.getType() + " i: "+i.getId()+" "+i.getValue() + "prev: "+previousStackValue);
+//                    System.out.println("A and i match");
+//                    System.out.println("i: "+i.getId()+" "+i.getValue());
+                    previousStackValue = parseStack.peek().getType();//TODO: for submission output, remove
                     parseStack.pop();
                     if(parseStack.notEmpty()) {
                         A = parseStack.peek();
                         getNextToken();// i.consume();
                     }
-                    System.out.println("i: "+i.getId()+" "+i.getValue());
+//                    System.out.println("i: "+i.getId()+" "+i.getValue());
                     
                 } else {
                     throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getId() + "");
                 }
             } else {
                 if (isRuleContained(A, i)) {
-                    System.out.println("A is not terminal, rule was found");
+//                    System.out.println("A is not terminal, rule was found");
+                    previousStackValue = parseStack.peek().getType();//TODO: for submission output, remove
                     parseStack.pop();
                     addToParseStack(ruleTable.find(A.getType(), i.getId()));
                     A = parseStack.peek();
@@ -74,7 +87,10 @@ public class CompilerParser {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
         }
         
-        System.out.println("Finished parser run() method.");
+//        System.out.println("Finished parser run() method.");
+        if(submissionOutput.length() > 0) {
+            System.out.println(submissionOutput);
+        }
     }
     
     private void getNextToken() {
@@ -90,7 +106,7 @@ public class CompilerParser {
     }
     
     private void addToParseStack(final List<Entry> tableEntry) {
-        System.out.println("adding to parse stack: "+tableEntry);
+//        System.out.println("adding to parse stack: "+tableEntry);
         for (int i = tableEntry.size() - 1; i >= 0; i--) {
             if(!tableEntry.get(i).isEpsilon()) {
                 parseStack.push(tableEntry.get(i));
