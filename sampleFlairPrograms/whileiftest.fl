@@ -1,7 +1,7 @@
 program testwhileif ();
 
 var x : integer;
-var y : real;
+    y : real;
 
 begin
   x := 10;

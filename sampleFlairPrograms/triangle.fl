@@ -1,4 +1,4 @@
-program triangle (maxDepth : integer)
+program triangle (maxDepth : integer);
     var currentDepth : integer;
         index        : integer;
 begin

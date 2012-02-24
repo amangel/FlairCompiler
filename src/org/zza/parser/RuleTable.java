@@ -131,13 +131,14 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION>"), 
                 new NonterminalEntry("<FXN_DECLARATION_LIST_TAIL>")}));
         // <FXN_DECLARATION>::=<FXN_HEADING> <FXN_BODY> ;
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("FXN_HEADING>"), 
-                new NonterminalEntry("<FXN_BODY>")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_HEADING>"), 
+                new NonterminalEntry("<FXN_BODY>"),
+                new TerminalEntry(";")}));
         // <FXN_HEADING>::=function <identifier> ( <PARAMETERS> ) : <TYPE>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("function"),
                 new TerminalEntry("<identifier>"),
                 new TerminalEntry("("),
-                new NonterminalEntry("<PAREMETERS>"),
+                new NonterminalEntry("<PARAMETERS>"),
                 new TerminalEntry(")"),
                 new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>")}));

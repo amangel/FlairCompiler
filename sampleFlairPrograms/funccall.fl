@@ -5,7 +5,7 @@ function func1 (first : integer, second : integer) : integer
       begin
         second := second * first;
         first := first - 1
-      end
+      end;
     return second
   end;
 
