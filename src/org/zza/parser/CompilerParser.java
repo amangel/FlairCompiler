@@ -36,22 +36,24 @@ public class CompilerParser {
         
         A = parseStack.peek();
         getNextToken();
-        while ((A != null) || !A.getType().equals(EOF)) {
+        while ((A != null) && !A.getType().equals(EOF)) {
            
             A = parseStack.peek();
             System.out.println("Parse stack:" +parseStack);
-            System.out.println("working with: A:"+A +" i:"+i+"\n");
+            System.out.println("working with: A:"+A +" i:"+i+" "+i.getValue()+"\n");
             
             if (A.isTerminal()) {
                 System.out.println(A.getType() + " is terminal");
-                System.out.println("A: "+A.getType() + " i: "+i.getId());
+                System.out.println("A: "+A.getType() + " i: "+i.getId()+" "+i.getValue());
                 if (A.getType().equalsIgnoreCase(i.getId())) {
                     System.out.println("A and i match");
-                    System.out.println("i: "+i.getId());
+                    System.out.println("i: "+i.getId()+" "+i.getValue());
                     parseStack.pop();
-                    A = parseStack.peek();
-                    getNextToken();// i.consume();
-                    System.out.println("i: "+i.getId());
+                    if(parseStack.notEmpty()) {
+                        A = parseStack.peek();
+                        getNextToken();// i.consume();
+                    }
+                    System.out.println("i: "+i.getId()+" "+i.getValue());
                     
                 } else {
                     throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getId() + "");

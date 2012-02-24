@@ -34,4 +34,8 @@ public class ParseStack {
     public String toString() {
         return stack.toString();
     }
+    
+    public boolean notEmpty() {
+        return stack.size() > 0;
+    }
 }

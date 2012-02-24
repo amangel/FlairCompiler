@@ -187,7 +187,7 @@ public class RuleTable {
         // <IF_STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<IF_STATEMENT>")}));
         // <WHILE_STATEMENT>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<WHILE_STATEMETN>")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<WHILE_STATEMENT>")}));
         // <COMPOUND_STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<COMPOUND_STATEMENT>")}));
         // <RETURN_STATEMENT>
@@ -296,13 +296,15 @@ public class RuleTable {
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")} ));
         // <LITERAL>::=<integer>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<integer>")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("integer")}));
         // <real>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<real>")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("real")}));
     }
     
     public List<Entry> find(final String A, final String i) {
+        System.out.println("'"+A+"' '"+i+"'");
         final int index = tableContents.get(A).get(i);
+        System.out.println(index);
         return ruleArray.get(index);
     }
     
