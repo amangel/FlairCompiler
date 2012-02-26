@@ -1,6 +1,6 @@
-package org.zza.parser;
+package org.zza.parser.parsingstack;
 
-public class NonterminalEntry extends Entry {
+public class NonterminalEntry extends ParsingEntry {
     
     public NonterminalEntry(final String s) {
         super(s);

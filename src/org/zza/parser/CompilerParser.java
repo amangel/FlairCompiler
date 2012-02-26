@@ -2,15 +2,21 @@ package org.zza.parser;
 
 import java.util.List;
 
+import org.zza.parser.parsingstack.Entry;
+import org.zza.parser.parsingstack.ParseStack;
+import org.zza.parser.parsingstack.TerminalEntry;
+import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
 
 public class CompilerParser {
     
+    private static final Object COMMENT = "COMMENT";
     private final String EOF = "EOF";
     private final String startSymbol = "<PROGRAM>";
     private final String startToken = "program";
     private final ParseStack parseStack;
+    private final SemanticStack semanticStack;
     private final RuleTable ruleTable;
     private RecentTokensStack recentTokens;
     private final CompilerTokenStream stream;
@@ -21,7 +27,9 @@ public class CompilerParser {
     
     public CompilerParser(final CompilerTokenStream tokenStream) {
         stream = tokenStream;
+        recentTokens = new RecentTokensStack();
         parseStack = new ParseStack();
+        semanticStack = new SemanticStack(recentTokens);
         ruleTable = new RuleTable();
         try {
             run();
@@ -95,12 +103,13 @@ public class CompilerParser {
     
     private void getNextToken() {
         i = stream.getNext();
-        if(i.getId().equals("COMMENT")) {
+        if(i.getId().equals(COMMENT)) {
             getNextToken();
         }
     }
 
     private boolean isRuleContained(final Entry A, final CompilerToken i) {
+        System.out.println(A + " " + i);
         final List<Entry> returnValue = ruleTable.find(A.getType(), i.getId());
         return returnValue != null;
     }

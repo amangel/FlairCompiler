@@ -1,4 +1,4 @@
-package org.zza.parser;
+package org.zza.parser.parsingstack;
 
 public abstract class Entry {
     
@@ -20,6 +20,7 @@ public abstract class Entry {
         return entry.equals("<epsilon>");
     }
     
+    public abstract boolean isSemanticEntry();
     public abstract boolean isTerminal();
     
 }

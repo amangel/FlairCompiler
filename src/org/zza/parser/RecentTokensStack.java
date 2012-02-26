@@ -2,19 +2,30 @@ package org.zza.parser;
 
 import java.util.ArrayList;
 
+import org.zza.parser.parsingstack.Entry;
+import org.zza.scanner.CompilerToken;
+
 public class RecentTokensStack {
     
     private final int MAX_SIZE = 5;
-    private final ArrayList<Entry> stack;
+    private final ArrayList<CompilerToken> stack;
     
     public RecentTokensStack() {
-        stack = new ArrayList<Entry>();
+        stack = new ArrayList<CompilerToken>();
     }
     
-    public void push(final Entry e) {
+    public void push(final CompilerToken token) {
         if (stack.size() == MAX_SIZE) {
             stack.remove(0);
         }
-        stack.add(e);
+        stack.add(token);
+    }
+
+    public CompilerToken getMostRecent() throws ParsingException{
+        if(stack.size() > 0) {
+            return stack.get(stack.size()-1);
+        } else {
+            throw new ParsingException("Tried to retrieve a token from the recent token stream when it was empty.");
+        }
     }
 }

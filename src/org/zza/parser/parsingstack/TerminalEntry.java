@@ -1,6 +1,6 @@
-package org.zza.parser;
+package org.zza.parser.parsingstack;
 
-public class TerminalEntry extends Entry {
+public class TerminalEntry extends ParsingEntry {
     
     public TerminalEntry(final String s) {
         super(s);
