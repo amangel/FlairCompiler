@@ -22,14 +22,6 @@ public abstract class TwoFieldNode extends SemanticNode {
         stack.push(this);
     }
     
-    private String getTabIndentation(int number) {
-        String tabs = "";
-        for (int i = 0; i < number; i++) {
-            tabs += "\t";
-        }
-        return tabs;
-    }
-    
     public String getStringRepresentation() {
         int depth = getDepth();
         String tabs = getTabIndentation(depth);

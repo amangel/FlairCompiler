@@ -25,4 +25,13 @@ public abstract class SemanticNode {
     public int getDepth() {
         return (parent.getDepth() + 1);
     }
+    
+    
+    protected String getTabIndentation(int number) {
+        String tabs = "";
+        for (int i = 0; i < number; i++) {
+            tabs += "   ";
+        }
+        return tabs;
+    }
 }

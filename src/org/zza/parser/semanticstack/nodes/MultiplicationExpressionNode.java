@@ -16,12 +16,6 @@ public class MultiplicationExpressionNode extends TwoFieldNode {
     public void printChildren() {
         
     }
-
-    @Override
-    public String getStringRepresentation() {
-        return "MultiplicationExpression:\n\tleft:"+leftHandSide.getStringRepresentation() 
-                + "\n\tright:"+rightHandSide.getStringRepresentation();
-    }
     
     @Override
     public String getName() {

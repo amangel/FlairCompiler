@@ -16,12 +16,6 @@ public class DivisionExpressionNode extends TwoFieldNode {
     public void printChildren() {
         
     }
-
-    @Override
-    public String getStringRepresentation() {
-        return "DivisionExpression:\n\tleft:"+leftHandSide.getStringRepresentation() 
-                + "\n\tright:"+rightHandSide.getStringRepresentation();
-    }
     
     @Override
     public String getName() {

@@ -18,12 +18,6 @@ public class PlusExpressionNode extends TwoFieldNode{
     }
 
     @Override
-    public String getStringRepresentation() {
-        return "PlusExpression:\n\tleft:"+leftHandSide.getStringRepresentation() 
-                + "\n\tright:"+rightHandSide.getStringRepresentation();
-    }
-    
-    @Override
     public String getName() {
         return "PlusExpression";
     }

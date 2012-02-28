@@ -24,6 +24,7 @@ public class SemanticNodeFactory {
         nodeMap.put("minus", MinusExpressionNode.class);
         nodeMap.put("division", DivisionExpressionNode.class);
         nodeMap.put("multiplication", MultiplicationExpressionNode.class);
+        nodeMap.put("assignment", AssignmentExpressionNode.class);
     }
 
     public SemanticNode getNewNode(String nodeType) throws ParsingException{

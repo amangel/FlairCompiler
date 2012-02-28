@@ -27,7 +27,7 @@ public class IntegerNode extends SemanticNode{
 
     @Override
     public String getStringRepresentation() {
-        return value;
+        return getTabIndentation(getDepth()) + getName() + " " + value;
     }
 
     @Override

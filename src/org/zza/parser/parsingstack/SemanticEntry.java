@@ -9,6 +9,6 @@ public abstract class SemanticEntry extends Entry{
     
     @Override
     public boolean isSemanticEntry() {
-        return false;
+        return true;
     }
 }
