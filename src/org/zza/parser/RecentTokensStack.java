@@ -28,4 +28,12 @@ public class RecentTokensStack {
             throw new ParsingException("Tried to retrieve a token from the recent token stream when it was empty.");
         }
     }
+    
+    public String getStackDump() {
+        String output = "";
+        for (CompilerToken token : stack) {
+            output += token.getValue() + " ";
+        }
+        return output;
+    }
 }

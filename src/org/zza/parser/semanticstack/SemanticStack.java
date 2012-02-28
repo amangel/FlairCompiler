@@ -2,6 +2,8 @@ package org.zza.parser.semanticstack;
 
 import java.util.ArrayList;
 
+import org.zza.parser.semanticstack.nodes.SemanticNode;
+
 
 public class SemanticStack {
     

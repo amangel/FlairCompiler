@@ -1,5 +1,6 @@
-package org.zza.parser.semanticstack;
+package org.zza.parser.semanticstack.nodes;
 
+import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.scanner.CompilerToken;
 
 
@@ -9,6 +10,8 @@ public abstract class SemanticNode {
     
     public abstract void runOnSemanticStack(SemanticStack stack);
     public abstract void printChildren();
+    public abstract String getStringRepresentation();
+    public abstract String getName();
     
     public SemanticNode() {}
     

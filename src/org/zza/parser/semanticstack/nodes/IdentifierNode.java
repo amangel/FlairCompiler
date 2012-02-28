@@ -1,7 +1,6 @@
-package org.zza.parser.semanticstack;
+package org.zza.parser.semanticstack.nodes;
 
-import org.zza.scanner.CompilerToken;
-
+import org.zza.parser.semanticstack.SemanticStack;
 
 public class IdentifierNode extends SemanticNode{
 
@@ -25,5 +24,14 @@ public class IdentifierNode extends SemanticNode{
     public void printChildren() {
         
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return value;
+    }
     
+    @Override
+    public String getName() {
+        return "Identifier";
+    }
 }

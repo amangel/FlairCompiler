@@ -5,6 +5,7 @@ import java.util.List;
 import org.zza.parser.parsingstack.Entry;
 import org.zza.parser.parsingstack.ParseStack;
 import org.zza.parser.parsingstack.TerminalEntry;
+import org.zza.parser.semanticstack.SemanticNodeFactory;
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
@@ -17,6 +18,7 @@ public class CompilerParser {
     private final String startToken = "program";
     private final ParseStack parseStack;
     private final SemanticStack semanticStack;
+    private final SemanticNodeFactory nodeFactory;
     private final RuleTable ruleTable;
     private RecentTokensStack recentTokens;
     private final CompilerTokenStream stream;
@@ -29,8 +31,9 @@ public class CompilerParser {
         stream = tokenStream;
         recentTokens = new RecentTokensStack();
         parseStack = new ParseStack();
-        semanticStack = new SemanticStack(recentTokens);
+        semanticStack = new SemanticStack();
         ruleTable = new RuleTable();
+        nodeFactory = new SemanticNodeFactory(recentTokens);
         try {
             run();
         } catch (final Exception e) {
