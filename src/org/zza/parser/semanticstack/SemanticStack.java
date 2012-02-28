@@ -41,4 +41,8 @@ public class SemanticStack {
     public boolean notEmpty() {
         return stack.size() > 0;
     }
+    
+    public int getSize() {
+        return stack.size();
+    }
 }
