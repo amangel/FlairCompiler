@@ -48,18 +48,18 @@ public class CompilerToken {
     public static final int COMMENT = 37;
     public static final int PERIOD = 38;
     
-    private final String identifier;
+    private final String stringType;
     private final String value;
     private final int type;
     
-    public CompilerToken(final String id, final String v, final int t) {
-        identifier = id;
+    public CompilerToken(final String stringType, final String v, final int t) {
+        this.stringType = stringType;
         value = v;
         type = t;
     }
     
-    public String getId() {
-        return identifier;
+    public String getStringType() {
+        return stringType;
     }
     
     public String getValue() {
@@ -72,8 +72,7 @@ public class CompilerToken {
     
     @Override
     public String toString() {
-        //return "Token:{ id: " + identifier + "  value: " + value + "  type: " + getTypeName() + " }";
-        return "Token: "+identifier;
+        return "Token: "+stringType;
     }
     
     private String getTypeName() {

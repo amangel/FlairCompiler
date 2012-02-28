@@ -14,9 +14,11 @@ public class IdentifierNode extends SemanticNode{
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        if (token.getId().equals(id)) {
+        if (token.getStringType().equals(id)) {
             stack.push(this);
             value = token.getValue();
+        } else {
+            System.out.println("attempting to run "+ getName() + " on semantic stack. token did not match expected type");
         }
     }
 

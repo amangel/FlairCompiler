@@ -66,7 +66,7 @@ public class CompilerParser {
                     submissionOutput = i.getValue();
                 }
 //                System.out.println(A.getType() + " is terminal");
-                if (A.getType().equalsIgnoreCase(i.getId())) {
+                if (A.getType().equalsIgnoreCase(i.getStringType())) {
 //                System.out.println("A: "+A.getType() + " i: "+i.getId()+" "+i.getValue() + "prev: "+previousStackValue);
 //                    System.out.println("A and i match");
 //                    System.out.println("i: "+i.getId()+" "+i.getValue());
@@ -79,17 +79,17 @@ public class CompilerParser {
 //                    System.out.println("i: "+i.getId()+" "+i.getValue());
                     
                 } else {
-                    throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getId() + "");
+                    throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getStringType() + "");
                 }
             } else {
                 if (isRuleContained(A, i)) {
 //                    System.out.println("A is not terminal, rule was found");
                     previousStackValue = parseStack.peek().getType();//TODO: for submission output, remove
                     parseStack.pop();
-                    addToParseStack(ruleTable.find(A.getType(), i.getId()));
+                    addToParseStack(ruleTable.find(A.getType(), i.getStringType()));
                     A = parseStack.peek();
                 } else {
-                    throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A.getType() + " , " + i.getId());
+                    throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A.getType() + " , " + i.getStringType());
                 }
             }
         }
@@ -106,14 +106,14 @@ public class CompilerParser {
     
     private void getNextToken() {
         i = stream.getNext();
-        if(i.getId().equals(COMMENT)) {
+        if(i.getStringType().equals(COMMENT)) {
             getNextToken();
         }
     }
 
     private boolean isRuleContained(final Entry A, final CompilerToken i) {
         System.out.println(A + " " + i);
-        final List<Entry> returnValue = ruleTable.find(A.getType(), i.getId());
+        final List<Entry> returnValue = ruleTable.find(A.getType(), i.getStringType());
         return returnValue != null;
     }
     
