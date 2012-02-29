@@ -20,97 +20,97 @@ import org.zza.parser.semanticstack.nodes.VariableDeclarationNode;
 public class TypeCheckingVisitor implements NodeVisitor {
 
 	@Override
-	public void visitAssignment(AssignmentExpressionNode node) {
+	public void visit(AssignmentExpressionNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitCompoundStatement(CompoundStatementNode node) {
+	public void visit(CompoundStatementNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitDivisionExp(DivisionExpressionNode node) {
+	public void visit(DivisionExpressionNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitFunction(FunctionNode node) {
+	public void visit(FunctionNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitIdentifier(IdentifierNode node) {
+	public void visit(IdentifierNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitInteger(IntegerNode node) {
+	public void visit(IntegerNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void vistMinusExp(MinusExpressionNode node) {
+	public void visit(MinusExpressionNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitMultiplicationExp(MultiplicationExpressionNode node) {
+	public void visit(MultiplicationExpressionNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitParameters(ParametersNode node) {
+	public void visit(ParametersNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitPlusExp(PlusExpressionNode node) {
+	public void visit(PlusExpressionNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitProgram(ProgramNode node) {
+	public void visit(ProgramNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitReal(RealNode node) {
+	public void visit(RealNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitSemantic(SemanticNode node) {
+	public void visit(SemanticNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitTwoField(TwoFieldNode node) {
+	public void visit(TwoFieldNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitType(TypeNode node) {
+	public void visit(TypeNode node) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void visitVarDeclaration(VariableDeclarationNode node) {
+	public void visit(VariableDeclarationNode node) {
 		// TODO Auto-generated method stub
 
 	}
