@@ -2,35 +2,36 @@ package org.zza.visitor;
 import org.zza.parser.semanticstack.nodes.*;
 
 public interface NodeVisitor {
-	public void visit(AssignmentExpressionNode node);
+    public String visit(ProgramNode node);
+
+    public String visit(SemanticNode node);
+
+    public String visit(TwoFieldNode node);
+
+    public String visit(VariableDeclarationNode node);
+
+    public String visit(FunctionNode node);
+
+    public String visit(ParametersNode node);
+
+    public String visit(AssignmentExpressionNode node);
 	
-	public void visit(CompoundStatementNode node);
+	public String visit(CompoundStatementNode node);
 	
-	public void visit(DivisionExpressionNode node);
+	public String visit(DivisionExpressionNode node);
 	
-	public void visit(FunctionNode node);
+	public String visit(IdentifierNode node);
 	
-	public void visit(IdentifierNode node);
+	public String visit(IntegerNode node);
 	
-	public void visit(IntegerNode node);
+	public String visit(MinusExpressionNode node);
 	
-	public void visit(MinusExpressionNode node);
+	public String visit(MultiplicationExpressionNode node);
 	
-	public void visit(MultiplicationExpressionNode node);
+	public String visit(PlusExpressionNode node);
 	
-	public void visit(ParametersNode node);
+	public String visit(RealNode node);
 	
-	public void visit(PlusExpressionNode node);
+	public String visit(TypeNode node);
 	
-	public void visit(ProgramNode node);
-	
-	public void visit(RealNode node);
-	
-	public void visit(SemanticNode node);
-	
-	public void visit(TwoFieldNode node);
-	
-	public void visit(TypeNode node);
-	
-	public void visit(VariableDeclarationNode node);
 }

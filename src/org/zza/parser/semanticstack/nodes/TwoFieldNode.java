@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.visitor.NodeVisitor;
 
 
 public abstract class TwoFieldNode extends SemanticNode {
@@ -22,6 +23,15 @@ public abstract class TwoFieldNode extends SemanticNode {
         stack.push(this);
     }
     
+    public SemanticNode getLeftHand() {
+        return leftHandSide;
+    }
+    
+    public SemanticNode getRightHand() {
+        return rightHandSide;
+    }
+    
+    @Override
     public String getStringRepresentation() {
         int depth = getDepth();
         String tabs = getTabIndentation(depth);

@@ -2,6 +2,7 @@ package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.scanner.CompilerToken;
+import org.zza.visitor.NodeVisitor;
 
 
 public abstract class SemanticNode {
@@ -9,10 +10,9 @@ public abstract class SemanticNode {
     protected CompilerToken token;
     
     public abstract void runOnSemanticStack(SemanticStack stack);
-    public abstract void printChildren();
     public abstract String getStringRepresentation();
     public abstract String getName();
-    
+    public abstract String accept(NodeVisitor visitor);
     public SemanticNode() {}
     
     public void setToken(CompilerToken token) {
@@ -26,12 +26,15 @@ public abstract class SemanticNode {
         return (parent.getDepth() + 1);
     }
     
-    
     protected String getTabIndentation(int number) {
         String tabs = "";
         for (int i = 0; i < number; i++) {
             tabs += "   ";
         }
         return tabs;
+    }
+    
+    public boolean isMarker() {
+        return false;
     }
 }

@@ -1,9 +1,10 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.visitor.NodeVisitor;
 
 
-public class RealNode extends SemanticNode{
+public class RealNode extends SemanticNode {
 
     final String id = "real";
     String value;
@@ -21,11 +22,6 @@ public class RealNode extends SemanticNode{
     }
 
     @Override
-    public void printChildren() {
-        
-    }
-
-    @Override
     public String getStringRepresentation() {
         return getTabIndentation(getDepth()) + getName() + " " + value;
     }
@@ -35,4 +31,8 @@ public class RealNode extends SemanticNode{
         return "real";
     }
     
+    @Override
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
+    }
 }

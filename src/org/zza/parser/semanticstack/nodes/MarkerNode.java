@@ -4,27 +4,34 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class VariableDeclarationNode extends SemanticNode {
+public class MarkerNode extends SemanticNode {
 
+    private String value;
+    
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        // TODO Auto-generated method stub
-        
+        value = token.getValue();
+        stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        // TODO Auto-generated method stub
-        return null;
+        return "Marker: "+getName();
     }
 
     @Override
     public String getName() {
-        return "VariableDeclaration";
+        return value;
+    }
+
+    @Override
+    public String accept(NodeVisitor visitor) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
     @Override
-    public String accept(NodeVisitor visitor) {
-        return visitor.visit(this);
+    public boolean isMarker() {
+        return true;
     }
 }

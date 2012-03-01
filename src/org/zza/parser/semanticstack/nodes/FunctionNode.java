@@ -1,18 +1,13 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.visitor.NodeVisitor;
 
 
 public class FunctionNode extends SemanticNode {
 
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void printChildren() {
         // TODO Auto-generated method stub
         
     }
@@ -28,4 +23,8 @@ public class FunctionNode extends SemanticNode {
         return "Function";
     }
     
+    @Override
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
+    }
 }

@@ -1,5 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
+import org.zza.visitor.NodeVisitor;
+
 
 
 public class MinusExpressionNode extends TwoFieldNode {
@@ -13,12 +15,12 @@ public class MinusExpressionNode extends TwoFieldNode {
     }
 
     @Override
-    public void printChildren() {
-        
-    }
-
-    @Override
     public String getName() {
         return "MinusExpression";
+    }
+    
+    @Override
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
     }
 }

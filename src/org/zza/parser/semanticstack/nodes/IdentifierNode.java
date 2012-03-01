@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.visitor.NodeVisitor;
 
 public class IdentifierNode extends SemanticNode{
 
@@ -22,9 +23,8 @@ public class IdentifierNode extends SemanticNode{
         }
     }
 
-    @Override
-    public void printChildren() {
-        
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
     }
 
     @Override

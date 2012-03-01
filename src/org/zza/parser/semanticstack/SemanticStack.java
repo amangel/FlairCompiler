@@ -14,7 +14,6 @@ public class SemanticStack {
     }
     
     public boolean push(final SemanticNode node) {
-        
         return stack.add(node);
     }
     
@@ -35,7 +34,7 @@ public class SemanticStack {
     }
     
     public String toString() {
-        return stack.toString();
+        return "SemanticStack: " + stack.toString();
     }
     
     public boolean notEmpty() {

@@ -1,5 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
+import org.zza.visitor.NodeVisitor;
+
 
 
 public class MultiplicationExpressionNode extends TwoFieldNode {
@@ -11,14 +13,14 @@ public class MultiplicationExpressionNode extends TwoFieldNode {
     
     public MultiplicationExpressionNode() {
     }
-
-    @Override
-    public void printChildren() {
-        
-    }
     
     @Override
     public String getName() {
         return "MultiplicationExpression";
+    }
+    
+    @Override
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
     }
 }

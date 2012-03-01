@@ -1,5 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
+import org.zza.visitor.NodeVisitor;
+
 
 
 public class DivisionExpressionNode extends TwoFieldNode {
@@ -11,14 +13,14 @@ public class DivisionExpressionNode extends TwoFieldNode {
     
     public DivisionExpressionNode() {
     }
-
-    @Override
-    public void printChildren() {
-        
-    }
     
     @Override
     public String getName() {
         return "DivisionExpression";
+    }
+    
+    @Override
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
     }
 }

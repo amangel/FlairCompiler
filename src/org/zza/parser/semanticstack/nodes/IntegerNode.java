@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.visitor.NodeVisitor;
 
 
 public class IntegerNode extends SemanticNode{
@@ -21,11 +22,6 @@ public class IntegerNode extends SemanticNode{
     }
 
     @Override
-    public void printChildren() {
-        
-    }
-
-    @Override
     public String getStringRepresentation() {
         return getTabIndentation(getDepth()) + getName() + " " + value;
     }
@@ -35,5 +31,8 @@ public class IntegerNode extends SemanticNode{
         return "integer";
     }
     
-    
+    @Override
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
+    }
 }
