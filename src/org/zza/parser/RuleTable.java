@@ -226,9 +226,10 @@ public class RuleTable {
                 new NonterminalEntry("<EXPRESSION>")}));
         // <COMPARISON>::=<EXPRESSION> <COMPARE_OP> <EXPRESSION>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"), 
-                new NonterminalEntry("<COMPARE_OP>"), 
+                new NonterminalEntry("<COMPARE_OP>"),
                 new SemanticEntry("compare"),
-                new NonterminalEntry("<EXPRESSION>")}));
+                new NonterminalEntry("<EXPRESSION>"),
+        		new SemanticEntry("comparison")}));
         // <COMPARE_OP>::==
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("=")}));
         // <
