@@ -224,19 +224,26 @@ public class RuleTable {
         // <COMPARISON>::=<EXPRESSION> <COMPARE_OP> <EXPRESSION>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"), 
                 new NonterminalEntry("<COMPARE_OP>"), 
+                new SemanticEntry("compare"),
                 new NonterminalEntry("<EXPRESSION>")}));
         // <COMPARE_OP>::==
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("=")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("="), 
+                new SemanticEntry("compare")}));
         // <
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<"), 
+                new SemanticEntry("compare")}));
         // >
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">"), 
+                new SemanticEntry("compare")}));
         // <=
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<=")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<="), 
+                new SemanticEntry("compare")}));
         // >=
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">=")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">="), 
+                new SemanticEntry("compare")}));
         // !=
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("!=")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("!="), 
+                new SemanticEntry("compare")}));
         // <ARGUMENTS>::=<epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <ARGUMENT_LIST>
@@ -263,7 +270,8 @@ public class RuleTable {
                 new SemanticEntry("plus")}));
         // - <TERM>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("-"), 
-                new NonterminalEntry("<TERM>")}));
+                new NonterminalEntry("<TERM>"),
+                new SemanticEntry("minus")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <TERM>::=<FACTOR> <MULTIPLICATIVE_EXPRESSION>

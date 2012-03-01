@@ -105,7 +105,6 @@ public class CompilerParser {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
         }
         
-//        System.out.println("Finished parser run() method.");
         if(submissionOutput.length() > 0) {
             System.out.println(submissionOutput);
         }
