@@ -1,7 +1,7 @@
 package org.zza.parser.parsingstack;
 
 
-public abstract class SemanticEntry extends Entry{
+public class SemanticEntry extends Entry{
 
     public SemanticEntry(String entry) {
         super(entry);
@@ -10,5 +10,10 @@ public abstract class SemanticEntry extends Entry{
     @Override
     public boolean isSemanticEntry() {
         return true;
+    }
+
+    @Override
+    public boolean isTerminal() {
+        return false;
     }
 }

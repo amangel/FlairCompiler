@@ -44,4 +44,9 @@ public class SemanticStack {
     public int getSize() {
         return stack.size();
     }
+
+    //TODO: TAKE THIS OUT BEFORE SUBMITTING
+    public ArrayList<SemanticNode> getArrayToPrintAndTest() {
+        return stack;
+    }
 }

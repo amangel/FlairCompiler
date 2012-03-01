@@ -2,7 +2,6 @@ package org.zza.parser;
 
 import java.util.ArrayList;
 
-import org.zza.parser.parsingstack.Entry;
 import org.zza.scanner.CompilerToken;
 
 public class RecentTokensStack {

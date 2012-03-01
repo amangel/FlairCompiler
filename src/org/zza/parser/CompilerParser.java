@@ -7,12 +7,13 @@ import org.zza.parser.parsingstack.ParseStack;
 import org.zza.parser.parsingstack.TerminalEntry;
 import org.zza.parser.semanticstack.SemanticNodeFactory;
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.parser.semanticstack.nodes.SemanticNode;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
 
 public class CompilerParser {
     
-    private static final Object COMMENT = "COMMENT";
+    private final String COMMENT = "COMMENT";
     private final String EOF = "EOF";
     private final String startSymbol = "<PROGRAM>";
     private final String startToken = "program";
@@ -81,6 +82,10 @@ public class CompilerParser {
                 } else {
                     throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getStringType() + "");
                 }
+            } else if (A.isSemanticEntry()) {
+                SemanticNode node = nodeFactory.getNewNode(A.getType());
+                node.runOnSemanticStack(semanticStack);
+                parseStack.pop();
             } else {
                 if (isRuleContained(A, i)) {
 //                    System.out.println("A is not terminal, rule was found");
@@ -92,7 +97,9 @@ public class CompilerParser {
                     throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A.getType() + " , " + i.getStringType());
                 }
             }
+            
         }
+        printOutSemanticStack();
         
         if (!stream.isEmpty()) {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
@@ -104,7 +111,15 @@ public class CompilerParser {
         }
     }
     
+    private void printOutSemanticStack() {
+        System.out.println("Semantic stack: ");
+        for (SemanticNode node : semanticStack.getArrayToPrintAndTest()) {
+            System.out.println(node.getStringRepresentation());
+        }
+    }
+
     private void getNextToken() {
+        recentTokens.push(i);
         i = stream.getNext();
         if(i.getStringType().equals(COMMENT)) {
             getNextToken();

@@ -10,7 +10,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.zza.parser.parsingstack.*;
+
+import org.zza.parser.parsingstack.Entry;
+import org.zza.parser.parsingstack.NonterminalEntry;
+import org.zza.parser.parsingstack.SemanticEntry;
+import org.zza.parser.parsingstack.TerminalEntry;
 
 public class RuleTable {
     
@@ -89,7 +93,6 @@ public class RuleTable {
     }
     
     private void buildRuleList() {
-        final ArrayList<Entry> rule = new ArrayList<Entry>();
         ruleArray = new ArrayList<List<Entry>>();
         // <PROGRAM>::=program <identifier> ( <PARAMETERS> ) ; <DECLARATIONS>
         // <COMPOUND_STATEMENT> .
@@ -284,9 +287,11 @@ public class RuleTable {
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")} ));
         // <LITERAL>::=<integer>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("integer")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("integer"),
+                new SemanticEntry("integer")}));
         // <real>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("real")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("real"),
+                new SemanticEntry("real")}));
         //STATEMENT::=PRINT_STATEMENT
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PRINT_STATEMENT>")} ));
         //PRINT_STATEMENT::=print ( ARGUMENTS )
