@@ -25,13 +25,25 @@ public class SemanticNodeFactory {
         nodeMap.put("division", DivisionExpressionNode.class);
         nodeMap.put("multiplication", MultiplicationExpressionNode.class);
         nodeMap.put("assignment", AssignmentExpressionNode.class);
+        nodeMap.put("type", TypeNode.class);
+        nodeMap.put("function", FunctionNode.class);
+        nodeMap.put("compoundstatement", CompoundStatementNode.class);
+        nodeMap.put("integer", IntegerNode.class);
+        nodeMap.put("real", RealNode.class);
+        nodeMap.put("parameters", ParametersNode.class);
+        nodeMap.put("program", ProgramNode.class);
+        nodeMap.put("variabledeclaration", VariableDeclarationNode.class);
     }
-
+    
     public SemanticNode getNewNode(String nodeType) throws ParsingException{
         try {
-            SemanticNode node =  (SemanticNode) nodeMap.get(nodeType).newInstance();
-            node.setToken(recentTokens.getMostRecent());
-            return node;
+            if(nodeMap.containsKey(nodeType)) {
+                SemanticNode node =  (SemanticNode) nodeMap.get(nodeType).newInstance();
+                node.setToken(recentTokens.getMostRecent());
+                return node;
+            } else {
+                throw new ParsingException("Factory attempting to create node that doesn't exist: "+nodeType);
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
