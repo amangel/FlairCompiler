@@ -216,7 +216,8 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("while"),
                 new NonterminalEntry("<COMPARISON>"),
                 new TerminalEntry("do"),
-                new NonterminalEntry("<STATEMENT>")}));
+                new NonterminalEntry("<STATEMENT>"),
+                new SemanticEntry("while")}));
         // <COMPOUND_STATEMENT>::=begin <STATEMENT_LIST> end
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("begin"), 
                 new NonterminalEntry("<STATEMENT_LIST>"), 
