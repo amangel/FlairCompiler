@@ -33,6 +33,8 @@ public class SemanticNodeFactory {
         nodeMap.put("parameters", ParametersNode.class);
         nodeMap.put("program", ProgramNode.class);
         nodeMap.put("variabledeclaration", VariableDeclarationNode.class);
+        nodeMap.put("argument", ArgumentNode.class);
+        nodeMap.put("argumentbegin", MarkerNode.class);
     }
     
     public SemanticNode getNewNode(String nodeType) throws ParsingException{

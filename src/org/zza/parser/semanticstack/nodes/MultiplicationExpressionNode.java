@@ -16,7 +16,7 @@ public class MultiplicationExpressionNode extends TwoFieldNode {
     
     @Override
     public String getName() {
-        return "MultiplicationExpression";
+        return "Multiply";
     }
     
     @Override

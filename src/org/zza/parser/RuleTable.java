@@ -98,6 +98,7 @@ public class RuleTable {
         // <COMPOUND_STATEMENT> .
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("program"),
                 new TerminalEntry("<identifier>"),
+                new SemanticEntry("identifier"),
                 new TerminalEntry("("),
                 new NonterminalEntry("<PARAMETERS>"),
                 new TerminalEntry(")"),
@@ -127,6 +128,7 @@ public class RuleTable {
         // <FXN_HEADING>::=function <identifier> ( <PARAMETERS> ) : <TYPE>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("function"),
                 new TerminalEntry("<identifier>"),
+                new SemanticEntry("identifier"),
                 new TerminalEntry("("),
                 new NonterminalEntry("<PARAMETERS>"),
                 new TerminalEntry(")"),
@@ -150,6 +152,7 @@ public class RuleTable {
                 new NonterminalEntry("<VAR_DECLARATION_LIST_TAIL>")}));
         // <VAR_DECLARATION>::=<identifier> : <TYPE> ;
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"),
+                new SemanticEntry("identifier"),
                 new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>"),
                 new TerminalEntry(";")}));
@@ -167,6 +170,7 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <PARAMETER>::=<identifier> : <TYPE>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
+                new SemanticEntry("identifier"),
                 new TerminalEntry(":"), 
                 new NonterminalEntry("<TYPE>")}));
         // <TYPE>::=integer
@@ -195,6 +199,7 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <ASSIGNMENT_STATEMENT>::=<identifier> := <EXPRESSION>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
+                new SemanticEntry("identifier"),
                 new TerminalEntry(":="), 
                 new NonterminalEntry("<EXPRESSION>")}));
         // <IF_STATEMENT>::=if <COMPARISON> then <STATEMENT> else <STATEMENT>
@@ -254,7 +259,8 @@ public class RuleTable {
                 new NonterminalEntry("<ADDITIVE_EXPRESSION>")}));
         // <ADDITIVE_EXPRESSION>::=+ <TERM>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("+"), 
-                new NonterminalEntry("<TERM>")}));
+                new NonterminalEntry("<TERM>"),
+                new SemanticEntry("plus")}));
         // - <TERM>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("-"), 
                 new NonterminalEntry("<TERM>")}));
@@ -265,10 +271,12 @@ public class RuleTable {
                 new NonterminalEntry("<MULTIPLICATIVE_EXPRESSION>")}));
         // <MULTIPLICATIVE_EXPRESSION>::=* <TERM>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("*"), 
-                new NonterminalEntry("<TERM>")}));
+                new NonterminalEntry("<TERM>"),
+                new SemanticEntry("multiplication")}));
         // / <TERM>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("/"), 
-                new NonterminalEntry("<TERM>")}));
+                new NonterminalEntry("<TERM>"),
+                new SemanticEntry("division")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <FACTOR>::=( <EXPRESSION> )
@@ -277,12 +285,14 @@ public class RuleTable {
                 new TerminalEntry(")")}));
         // <identifier> FUNCTION_CALL
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
+                new SemanticEntry("identifier"),
                 new NonterminalEntry("<FUNCTION_CALL>")}));
         // <LITERAL>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<LITERAL>")}));
         // <FUNCTION_CALL>::= ( <ARGUMENTS> )
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("("),
                 new NonterminalEntry("<ARGUMENTS>"),
+                new SemanticEntry("argument"),
                 new TerminalEntry(")")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")} ));
@@ -297,7 +307,9 @@ public class RuleTable {
         //PRINT_STATEMENT::=print ( ARGUMENTS )
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("print"),
                 new TerminalEntry("("),
+                new SemanticEntry("argumentbegin"),
                 new NonterminalEntry("<ARGUMENTS>"),
+                new SemanticEntry("argument"),
                 new TerminalEntry(")")} ));
     }
     

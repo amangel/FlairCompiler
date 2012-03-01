@@ -29,7 +29,7 @@ public class IdentifierNode extends SemanticNode{
 
     @Override
     public String getStringRepresentation() {
-        return value;
+        return getName() + " " +value;
     }
     
     @Override

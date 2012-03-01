@@ -33,10 +33,6 @@ public abstract class TwoFieldNode extends SemanticNode {
     
     @Override
     public String getStringRepresentation() {
-        int depth = getDepth();
-        String tabs = getTabIndentation(depth);
-        String toReturn =  tabs + getName() + "\n"+leftHandSide.getStringRepresentation() 
-                + "\n"+rightHandSide.getStringRepresentation();
-        return toReturn;
+        return getName() + " {" + leftHandSide.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() +"} ";
     }
 }

@@ -16,7 +16,7 @@ public class DivisionExpressionNode extends TwoFieldNode {
     
     @Override
     public String getName() {
-        return "DivisionExpression";
+        return "Division";
     }
     
     @Override
