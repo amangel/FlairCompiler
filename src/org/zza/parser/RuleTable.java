@@ -201,7 +201,8 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
                 new SemanticEntry("identifier"),
                 new TerminalEntry(":="), 
-                new NonterminalEntry("<EXPRESSION>")}));
+                new NonterminalEntry("<EXPRESSION>"),
+                new SemanticEntry("assignment")}));
         // <IF_STATEMENT>::=if <COMPARISON> then <STATEMENT> else <STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("if"),
                 new NonterminalEntry("<COMPARISON>"),
