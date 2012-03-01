@@ -155,7 +155,7 @@ public class RuleTable {
                 new SemanticEntry("identifier"),
                 new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>"),
-                new TerminalEntry(";")}));
+                new TerminalEntry(";")}));//TODO: var dec here
         // <PARAMETERS>::=<epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <PARAMETER_LIST>
@@ -174,9 +174,11 @@ public class RuleTable {
                 new TerminalEntry(":"), 
                 new NonterminalEntry("<TYPE>")}));
         // <TYPE>::=integer
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<integer>")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<integer>"),
+                new SemanticEntry("type")}));
         // real
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<real>")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<real>"),
+                new SemanticEntry("type")}));
         // <STATEMENT>::=<ASSIGNMENT_STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<ASSIGNMENT_STATEMENT>")}));
         // <IF_STATEMENT>
@@ -228,23 +230,17 @@ public class RuleTable {
                 new SemanticEntry("compare"),
                 new NonterminalEntry("<EXPRESSION>")}));
         // <COMPARE_OP>::==
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("="), 
-                new SemanticEntry("compare")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("=")}));
         // <
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<"), 
-                new SemanticEntry("compare")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<")}));
         // >
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">"), 
-                new SemanticEntry("compare")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">")}));
         // <=
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<="), 
-                new SemanticEntry("compare")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<=")}));
         // >=
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">="), 
-                new SemanticEntry("compare")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(">=")}));
         // !=
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("!="), 
-                new SemanticEntry("compare")}));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("!=")}));
         // <ARGUMENTS>::=<epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <ARGUMENT_LIST>

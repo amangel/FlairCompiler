@@ -1,22 +1,9 @@
 package org.zza.parser.semanticstack.nodes;
 
-import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class VariableDeclarationNode extends SemanticNode {
-
-    @Override
-    public void runOnSemanticStack(SemanticStack stack) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public String getStringRepresentation() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+public class VariableDeclarationNode extends TwoFieldNode {
 
     @Override
     public String getName() {

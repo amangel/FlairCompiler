@@ -10,8 +10,13 @@ public class TypeNode extends SemanticNode {
     final String real = "<real>";
     String value;
     
+    public TypeNode() {
+        System.out.println("making typenode");
+    }
+    
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
+        System.out.println("type: "+token.getValue());
         if(token.getValue().equals(integer) || token.getValue().equals(real)) {
             value = token.getValue();
             stack.push(this);
