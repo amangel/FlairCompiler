@@ -1,22 +1,22 @@
 README File for Flair Compiler
 
 Written by Aaron Mangel
-	   	   Zach Abbott
-	       Zan Preston
+       	   Zach Abbott
+           Zan Preston
 
 Current State of Compiler
 	
       >>scanner                   -- due Friday, February 10
       >>parser, step 1            -- due Friday, February 24
-        parser, step 2            -- due Friday, March 9
+      >>parser, step 2            -- due Friday, March 9
         semantic checker          -- due Friday, March 30
         code generator, step 1    -- due Friday, April 13
         code generator, step 2    -- due Friday, April 27
 
 Usage:
-	javac driver.java  		        --To compile the compiler :-)
+	javac driver.java  	            --To compile the compiler :-)
 	java driver path/to/filename    --To execute where path/to/filename is path
-				                      to your Flair Program
+                                      to your Flair Program
 
 
 
