@@ -6,37 +6,35 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class ArgumentNode extends SemanticNode {
+public class AllFunctionDeclarationsNode extends SemanticNode {
 
-    private ArrayList<SemanticNode> arguments;
+    private ArrayList<SemanticNode> functionDeclarations;
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        arguments = new ArrayList<SemanticNode>();
-        while(!stack.peek().getName().equals("(")) {
-            System.out.println("adding "+stack.peek().getName()+ " to Arguments");
-            arguments.add(stack.pop());
+        functionDeclarations = new ArrayList<SemanticNode>();
+        while(stack.peek().getName().equals("Function")) {
+            functionDeclarations.add(stack.pop());
         }
-        stack.pop();
         stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + getArguments() + "}";
+        return getName() + " {" + getDeclarations() + "}";
     }
 
-    private String getArguments() {
+    private String getDeclarations() {
         String toReturn = "";
-        for (SemanticNode node : arguments) {
-            toReturn += node.getStringRepresentation() + " ";
+        for (int i = functionDeclarations.size() - 1; i >= 0; i--) {
+            toReturn += functionDeclarations.get(i).getStringRepresentation() + " ";
         }
         return toReturn;
     }
     
     @Override
     public String getName() {
-        return "Argument";
+        return "FunctionDeclarations";
     }
 
     @Override

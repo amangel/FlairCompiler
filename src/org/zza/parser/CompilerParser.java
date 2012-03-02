@@ -111,7 +111,7 @@ public class CompilerParser {
     }
     
     private void printOutSemanticStack() {
-        System.out.println("Semantic stack: ");
+        System.out.println("\n\nSemantic stack: ");
         for (SemanticNode node : semanticStack.getArrayToPrintAndTest()) {
             System.out.println(node.getStringRepresentation());
         }

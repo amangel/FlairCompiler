@@ -113,7 +113,8 @@ public class RuleTable {
         // <DECLARATIONS>::=<VARIABLE_DECLARATIONS> <FUNCTION_DECLARATIONS>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
                 new SemanticEntry("allvariables"),
-                new NonterminalEntry("<FUNCTION_DECLARATIONS>")}));
+                new NonterminalEntry("<FUNCTION_DECLARATIONS>"),
+                new SemanticEntry("allfunctions")}));
         // <FUNCTION_DECLARATIONS>::=<FXN_DECLARATION_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION_LIST>")}));
         // <epsilon>
@@ -128,7 +129,8 @@ public class RuleTable {
         // <FXN_DECLARATION>::=<FXN_HEADING> <FXN_BODY> ;
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_HEADING>"), 
                 new NonterminalEntry("<FXN_BODY>"),
-                new TerminalEntry(";")}));
+                new TerminalEntry(";"),
+                new SemanticEntry("function")}));
         // <FXN_HEADING>::=function <identifier> ( <PARAMETERS> ) : <TYPE>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("function"),
                 new TerminalEntry("<identifier>"),
@@ -138,7 +140,8 @@ public class RuleTable {
                 new SemanticEntry("allparameters"),
                 new TerminalEntry(")"),
                 new TerminalEntry(":"),
-                new NonterminalEntry("<TYPE>")}));
+                new NonterminalEntry("<TYPE>"),
+                new SemanticEntry("functionheading")}));
         // <FXN_BODY>::=<VARIABLE_DECLARATIONS> <COMPOUND_STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"),
                 new SemanticEntry("allvariables"),
@@ -309,9 +312,11 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<LITERAL>")}));
         // <FUNCTION_CALL>::= ( <ARGUMENTS> )
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("("),
+                new SemanticEntry("argumentbegin"),
                 new NonterminalEntry("<ARGUMENTS>"),
                 new SemanticEntry("argument"),
-                new TerminalEntry(")")}));
+                new TerminalEntry(")"),
+                new SemanticEntry("functioncall")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")} ));
         // <LITERAL>::=<integer>

@@ -4,11 +4,17 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class ProgramNode extends SemanticNode{
+public class ProgramNode extends SemanticNode {
 
     private SemanticNode header;
     private SemanticNode declarations;
     private SemanticNode body;
+    
+    public ProgramNode () {
+        header = new EmptyNode();
+        declarations = new EmptyNode();
+        body = new EmptyNode();
+    }
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {

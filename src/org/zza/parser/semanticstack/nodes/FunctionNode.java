@@ -6,18 +6,37 @@ import org.zza.visitor.NodeVisitor;
 
 public class FunctionNode extends SemanticNode {
 
+    private SemanticNode header;
+    private SemanticNode declarations;
+    private SemanticNode body;
+    
+    public FunctionNode () {
+        header = new EmptyNode();
+        declarations = new EmptyNode();
+        body = new EmptyNode();
+    }
+    
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        // TODO Auto-generated method stub
-        
+        if(stack.peek().getName().equals("CompoundStatement")) {
+            body = stack.pop();
+        }
+        if(stack.peek().getName().equals("Declarations")) {
+            declarations = stack.pop();
+        }
+        if(stack.peek().getName().equals("FunctionHeader")) {
+            header = stack.pop();
+        }
+        stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        // TODO Auto-generated method stub
-        return null;
+        return getName() + " {" + header.getStringRepresentation() +
+                declarations.getStringRepresentation() + 
+                body.getStringRepresentation() + "}";
     }
-
+    
     @Override
     public String getName() {
         return "Function";
@@ -27,4 +46,5 @@ public class FunctionNode extends SemanticNode {
     public String accept(NodeVisitor visitor) {
         return visitor.visit(this);
     }
+
 }
