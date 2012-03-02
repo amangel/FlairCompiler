@@ -8,7 +8,7 @@ import org.zza.parser.semanticstack.nodes.IdentifierNode;
 import org.zza.parser.semanticstack.nodes.IntegerNode;
 import org.zza.parser.semanticstack.nodes.MinusExpressionNode;
 import org.zza.parser.semanticstack.nodes.MultiplicationExpressionNode;
-import org.zza.parser.semanticstack.nodes.ParametersNode;
+import org.zza.parser.semanticstack.nodes.ParameterNode;
 import org.zza.parser.semanticstack.nodes.PlusExpressionNode;
 import org.zza.parser.semanticstack.nodes.ProgramNode;
 import org.zza.parser.semanticstack.nodes.RealNode;
@@ -68,7 +68,7 @@ public class TypeCheckingVisitor implements NodeVisitor {
 	}
 
 	@Override
-	public String visit(ParametersNode node) {
+	public String visit(ParameterNode node) {
 		return null; //TODO
 
 	}

@@ -12,7 +12,7 @@ public interface NodeVisitor {
 
     public String visit(FunctionNode node);
 
-    public String visit(ParametersNode node);
+    public String visit(ParameterNode node);
 
     public String visit(AssignmentExpressionNode node);
 	

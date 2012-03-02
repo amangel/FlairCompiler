@@ -6,40 +6,41 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class CompoundStatementNode extends SemanticNode {
-
-    private ArrayList<SemanticNode> statements;
+public class AllParametersNode extends SemanticNode {
+    
+    private ArrayList<SemanticNode> parameters;
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        statements = new ArrayList<SemanticNode>();
-        while(!stack.peek().getName().equals("begin")) {
-            statements.add(stack.pop());
+        parameters = new ArrayList<SemanticNode>();
+        while(stack.peek().getName().equals("ParameterNode")) {
+            parameters.add(stack.pop());
         }
-        stack.pop();
         stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + getDeclarations() + "}";
+        return getName() + " {" + getParameters() + "}";
     }
 
-    private String getDeclarations() {
+    private String getParameters() {
         String toReturn = "";
-        for (SemanticNode node : statements) {
+        for (SemanticNode node : parameters) {
             toReturn += node.getStringRepresentation() + " ";
         }
         return toReturn;
     }
-
-    @Override
-    public String getName() {
-        return "CompoundStatement";
-    }
     
     @Override
-    public String accept(NodeVisitor visitor) {
-        return visitor.visit(this);
+    public String getName() {
+        return "Parameters";
     }
+
+    @Override
+    public String accept(NodeVisitor visitor) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

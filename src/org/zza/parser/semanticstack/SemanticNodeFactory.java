@@ -30,7 +30,8 @@ public class SemanticNodeFactory {
         nodeMap.put("compoundstatement", CompoundStatementNode.class);
         nodeMap.put("integer", IntegerNode.class);
         nodeMap.put("real", RealNode.class);
-        nodeMap.put("parameters", ParametersNode.class);
+        nodeMap.put("parameter", ParameterNode.class);
+        nodeMap.put("allparameters", AllParametersNode.class);
         nodeMap.put("program", ProgramNode.class);
         nodeMap.put("variabledeclaration", VariableDeclarationNode.class);
         nodeMap.put("allvariables", AllVariableDeclarationsNode.class);
@@ -39,6 +40,10 @@ public class SemanticNodeFactory {
         nodeMap.put("compare", CompareNode.class);
         nodeMap.put("comparison", ComparisonNode.class);
         nodeMap.put("while", WhileExpressionNode.class);
+        nodeMap.put("negative", NegativeExpressionNode.class);
+        nodeMap.put("compoundbegin", MarkerNode.class);
+        nodeMap.put("compound", CompoundStatementNode.class);
+        nodeMap.put("programheader", ProgramHeaderNode.class);
     }
     
     public SemanticNode getNewNode(String nodeType) throws ParsingException{

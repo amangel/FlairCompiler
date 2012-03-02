@@ -53,7 +53,7 @@ public class CodeGeneratingVisitor implements NodeVisitor {
 	}
 
 	@Override
-	public String visit(ParametersNode node) {
+	public String visit(ParameterNode node) {
 		return null; //TODO
 
 	}
