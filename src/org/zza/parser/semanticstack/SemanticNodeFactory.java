@@ -33,6 +33,7 @@ public class SemanticNodeFactory {
         nodeMap.put("parameters", ParametersNode.class);
         nodeMap.put("program", ProgramNode.class);
         nodeMap.put("variabledeclaration", VariableDeclarationNode.class);
+        nodeMap.put("allvariables", AllVariableDeclarationsNode.class);
         nodeMap.put("argument", ArgumentNode.class);
         nodeMap.put("argumentbegin", MarkerNode.class);
         nodeMap.put("compare", CompareNode.class);

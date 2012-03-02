@@ -6,27 +6,27 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class ArgumentNode extends SemanticNode {
+public class AllVariableDeclarationsNode extends SemanticNode {
 
-    private ArrayList<SemanticNode> arguments;
+    private ArrayList<SemanticNode> variableDeclarations;
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        arguments = new ArrayList<SemanticNode>();
-        while(!stack.peek().getName().equals("(")) {
-            arguments.add(stack.pop());
+        variableDeclarations = new ArrayList<SemanticNode>();
+        while(stack.peek().getName().equals("VariableDeclaration")) {
+            variableDeclarations.add(stack.pop());
         }
         stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + getArguments() + "}";
+        return getName() + " {" + getDeclarations() + "}";
     }
 
-    private String getArguments() {
+    private String getDeclarations() {
         String toReturn = "";
-        for (SemanticNode node : arguments) {
+        for (SemanticNode node : variableDeclarations) {
             toReturn += node.getStringRepresentation() + " ";
         }
         return toReturn;
@@ -34,7 +34,7 @@ public class ArgumentNode extends SemanticNode {
     
     @Override
     public String getName() {
-        return "Argument";
+        return "VariableDeclarations";
     }
 
     @Override

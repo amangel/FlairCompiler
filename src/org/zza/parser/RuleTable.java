@@ -108,6 +108,7 @@ public class RuleTable {
                 new TerminalEntry(".")}));
         // <DECLARATIONS>::=<VARIABLE_DECLARATIONS> <FUNCTION_DECLARATIONS>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
+                new SemanticEntry("allvariables"),
                 new NonterminalEntry("<FUNCTION_DECLARATIONS>")}));
         // <FUNCTION_DECLARATIONS>::=<FXN_DECLARATION_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION_LIST>")}));
@@ -117,8 +118,7 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION_LIST>")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
-        // <FXN_DECLARATION_LIST>::=<FXN_DECLARATION>
-        // <FXN_DECLARATION_LIST_TAIL>
+        // <FXN_DECLARATION_LIST>::=<FXN_DECLARATION> <FXN_DECLARATION_LIST_TAIL>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION>"), 
                 new NonterminalEntry("<FXN_DECLARATION_LIST_TAIL>")}));
         // <FXN_DECLARATION>::=<FXN_HEADING> <FXN_BODY> ;
@@ -135,7 +135,8 @@ public class RuleTable {
                 new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>")}));
         // <FXN_BODY>::=<VARIABLE_DECLARATIONS> <COMPOUND_STATEMENT>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"),
+                new SemanticEntry("allvariables"),
                 new NonterminalEntry("<COMPOUND_STATEMENT>")}));
         // <VARIABLE_DECLARATIONS>::=var <VAR_DECLARATION_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("var"), 
@@ -155,7 +156,8 @@ public class RuleTable {
                 new SemanticEntry("identifier"),
                 new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>"),
-                new TerminalEntry(";")}));//TODO: var dec here
+                new SemanticEntry("variabledeclaration"),
+                new TerminalEntry(";")}));
         // <PARAMETERS>::=<epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <PARAMETER_LIST>

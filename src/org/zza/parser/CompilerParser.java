@@ -126,7 +126,7 @@ public class CompilerParser {
     }
 
     private boolean isRuleContained(final Entry A, final CompilerToken i) {
-        System.out.println(A + " " + i);
+       // System.out.println(A + " " + i);
         final List<Entry> returnValue = ruleTable.find(A.getType(), i.getStringType());
         return returnValue != null;
     }
