@@ -106,7 +106,7 @@ public class RuleTable {
                 new TerminalEntry(";"),
                 new SemanticEntry("programheader"),
                 new NonterminalEntry("<DECLARATIONS>"),
-                new SemanticEntry("declarations"),
+               //new SemanticEntry("declarations"),
                 new NonterminalEntry("<COMPOUND_STATEMENT>"), 
                 new TerminalEntry("."),
                 new SemanticEntry("program")}));
@@ -114,7 +114,8 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
                 new SemanticEntry("allvariables"),
                 new NonterminalEntry("<FUNCTION_DECLARATIONS>"),
-                new SemanticEntry("allfunctions")}));
+                new SemanticEntry("allfunctions"),
+                new SemanticEntry("declarations")}));
         // <FUNCTION_DECLARATIONS>::=<FXN_DECLARATION_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION_LIST>")}));
         // <epsilon>
@@ -145,7 +146,8 @@ public class RuleTable {
         // <FXN_BODY>::=<VARIABLE_DECLARATIONS> <COMPOUND_STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"),
                 new SemanticEntry("allvariables"),
-                new NonterminalEntry("<COMPOUND_STATEMENT>")}));
+                new NonterminalEntry("<COMPOUND_STATEMENT>"),
+                new SemanticEntry("functionbody")}));
         // <VARIABLE_DECLARATIONS>::=var <VAR_DECLARATION_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("var"), 
                 new NonterminalEntry("<VAR_DECLARATION_LIST>")}));

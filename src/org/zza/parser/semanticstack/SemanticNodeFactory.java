@@ -51,6 +51,7 @@ public class SemanticNodeFactory {
         nodeMap.put("functionheading", FunctionHeadingNode.class);
         nodeMap.put("function", FunctionNode.class);
         nodeMap.put("allfunctions", AllFunctionDeclarationsNode.class);
+        nodeMap.put("functionbody", FunctionBodyNode.class);
     }
     
     public SemanticNode getNewNode(String nodeType) throws ParsingException{

@@ -16,11 +16,15 @@ public class DeclarationsNode extends SemanticNode {
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        if(stack.peek().getName().equals("FuncionDeclarations")) {
+        if(stack.peek().getName().equals("FunctionDeclarations")) {
             functionDeclarations = stack.pop();
+        } else {
+            System.out.println("Tried to get functions for declaration, instead found: "+stack.peek().getName());
         }
         if(stack.peek().getName().equals("VariableDeclarations")) {
             variableDeclarations = stack.pop();
+        } else {
+            System.out.println("Tried to get variables for declaration, instead found: "+stack.peek().getName());
         }
         stack.push(this);
     }
