@@ -11,8 +11,6 @@ public class MarkerNode extends SemanticNode {
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
         value = token.getValue();
-        System.out.println("######################################################################################");
-        System.out.println("creating new marker with value: "+value);
         stack.push(this);
     }
 

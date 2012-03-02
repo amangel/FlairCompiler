@@ -14,7 +14,6 @@ public class ArgumentNode extends SemanticNode {
     public void runOnSemanticStack(SemanticStack stack) {
         arguments = new ArrayList<SemanticNode>();
         while(!stack.peek().getName().equals("(")) {
-            System.out.println("adding "+stack.peek().getName()+ " to Arguments");
             arguments.add(stack.pop());
         }
         stack.pop();
