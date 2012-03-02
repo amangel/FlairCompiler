@@ -106,8 +106,10 @@ public class RuleTable {
                 new TerminalEntry(";"),
                 new SemanticEntry("programheader"),
                 new NonterminalEntry("<DECLARATIONS>"),
+                new SemanticEntry("declarations"),
                 new NonterminalEntry("<COMPOUND_STATEMENT>"), 
-                new TerminalEntry(".")}));
+                new TerminalEntry("."),
+                new SemanticEntry("program")}));
         // <DECLARATIONS>::=<VARIABLE_DECLARATIONS> <FUNCTION_DECLARATIONS>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
                 new SemanticEntry("allvariables"),
@@ -326,7 +328,8 @@ public class RuleTable {
                 new SemanticEntry("argumentbegin"),
                 new NonterminalEntry("<ARGUMENTS>"),
                 new SemanticEntry("argument"),
-                new TerminalEntry(")")} ));
+                new TerminalEntry(")"),
+                new SemanticEntry("print")} ));
     }
     
     public List<Entry> find(final String A, final String i) {

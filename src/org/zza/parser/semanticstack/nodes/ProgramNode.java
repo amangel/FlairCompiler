@@ -6,19 +6,29 @@ import org.zza.visitor.NodeVisitor;
 
 public class ProgramNode extends SemanticNode{
 
+    private SemanticNode header;
+    private SemanticNode declarations;
+    private SemanticNode body;
+    
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        //TODO
+        if(stack.peek().getName().equals("CompoundStatement")) {
+            body = stack.pop();
+        }
+        if(stack.peek().getName().equals("Declarations")) {
+            declarations = stack.pop();
+        }
+        if(stack.peek().getName().equals("ProgramHeader")) {
+            header = stack.pop();
+        }
+        stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        return null;
-    }
-
-    @Override
-    public int getDepth() {
-        return 0;
+        return getName() + " {" + header.getStringRepresentation() +
+                declarations.getStringRepresentation() + 
+                body.getStringRepresentation() + "}";
     }
     
     @Override

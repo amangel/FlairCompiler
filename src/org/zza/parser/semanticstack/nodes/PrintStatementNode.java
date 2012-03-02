@@ -4,24 +4,24 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
 
-public class NegativeExpressionNode extends SemanticNode {
+public class PrintStatementNode extends SemanticNode {
 
-    private SemanticNode content;
+    private SemanticNode argument;
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        content = stack.pop();
+        argument = stack.pop();
         stack.push(this);
     }
 
     @Override
     public String getStringRepresentation() {
-        return getName() + " " + content.getStringRepresentation();
+        return getName() + " " + argument.getStringRepresentation();
     }
 
     @Override
     public String getName() {
-        return "NegativeExpression";
+        return "Print";
     }
 
     @Override

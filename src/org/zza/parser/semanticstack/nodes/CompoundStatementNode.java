@@ -27,8 +27,8 @@ public class CompoundStatementNode extends SemanticNode {
 
     private String getDeclarations() {
         String toReturn = "";
-        for (SemanticNode node : statements) {
-            toReturn += node.getStringRepresentation() + " ";
+        for (int i = statements.size() - 1; i >= 0; i--) {
+            toReturn += statements.get(i).getStringRepresentation() + " ";
         }
         return toReturn;
     }

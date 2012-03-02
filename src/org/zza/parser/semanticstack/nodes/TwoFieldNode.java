@@ -33,6 +33,6 @@ public abstract class TwoFieldNode extends SemanticNode {
     
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + leftHandSide.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() +"} ";
+        return "\n"+getName() + " {" + leftHandSide.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() +"} \n";
     }
 }

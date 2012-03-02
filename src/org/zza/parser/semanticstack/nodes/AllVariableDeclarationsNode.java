@@ -26,8 +26,8 @@ public class AllVariableDeclarationsNode extends SemanticNode {
 
     private String getDeclarations() {
         String toReturn = "";
-        for (SemanticNode node : variableDeclarations) {
-            toReturn += node.getStringRepresentation() + " ";
+        for (int i = variableDeclarations.size() - 1; i >= 0; i--) {
+            toReturn += variableDeclarations.get(i).getStringRepresentation() + " ";
         }
         return toReturn;
     }

@@ -44,6 +44,9 @@ public class SemanticNodeFactory {
         nodeMap.put("compoundbegin", MarkerNode.class);
         nodeMap.put("compound", CompoundStatementNode.class);
         nodeMap.put("programheader", ProgramHeaderNode.class);
+        nodeMap.put("program", ProgramNode.class);
+        nodeMap.put("declarations", DeclarationsNode.class);
+        nodeMap.put("print", PrintStatementNode.class);
     }
     
     public SemanticNode getNewNode(String nodeType) throws ParsingException{

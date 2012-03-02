@@ -16,6 +16,7 @@ public class ArgumentNode extends SemanticNode {
         while(!stack.peek().getName().equals("(")) {
             arguments.add(stack.pop());
         }
+        stack.pop();
         stack.push(this);
     }
 
