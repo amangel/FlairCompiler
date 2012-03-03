@@ -9,10 +9,8 @@ public class ComparisonNode extends ThreeFieldNode{
 		return "Comparison";
 	}
 
-	@Override
-	public String accept(NodeVisitor visitor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String accept(NodeVisitor visitor) {
+        return visitor.visit(this);
+    }
 
 }

@@ -28,10 +28,8 @@ public class ProgramHeaderNode extends SemanticNode {
         return "ProgramHeader";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
+
 }

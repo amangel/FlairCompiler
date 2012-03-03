@@ -10,10 +10,9 @@ public class IfStatementNode extends ThreeFieldNode {
         return "If";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
+
     
 }

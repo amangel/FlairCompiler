@@ -38,10 +38,8 @@ public class ArgumentNode extends SemanticNode {
         return "Argument";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
+
 }

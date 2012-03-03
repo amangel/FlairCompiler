@@ -24,10 +24,8 @@ public class CompareNode extends SemanticNode {
         return "Compare";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
+
 }

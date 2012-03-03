@@ -2,89 +2,90 @@ package org.zza.visitor;
 
 import org.zza.parser.semanticstack.nodes.*;
 
-public class CodeGeneratingVisitor implements NodeVisitor {
+public class StackPrintingVisitor implements NodeVisitor {
 
-	@Override
-	public String visit(AssignmentExpressionNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(CompoundStatementNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(DivisionExpressionNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(FunctionNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(IdentifierNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(IntegerNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(MinusExpressionNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(MultiplicationExpressionNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(ParameterNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(PlusExpressionNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(ProgramNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(RealNode node) {
-		return null; //TODO
-
-	}
-
-	@Override
-	public String visit(TypeNode node) {
-		return null; //TODO
-
-	}
+    @Override
+    public String visit(ProgramNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public String visit(VariableDeclarationNode node) {
-        return null; //TODO
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(FunctionNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(ParameterNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(AssignmentExpressionNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(CompoundStatementNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(DivisionExpressionNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(IdentifierNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(IntegerNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(MinusExpressionNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(MultiplicationExpressionNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(PlusExpressionNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(RealNode node) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visit(TypeNode node) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override

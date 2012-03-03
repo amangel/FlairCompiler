@@ -24,10 +24,7 @@ public class NegativeExpressionNode extends SemanticNode {
         return "NegativeExpression";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
 }

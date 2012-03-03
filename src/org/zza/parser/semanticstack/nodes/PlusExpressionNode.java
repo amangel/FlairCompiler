@@ -23,9 +23,4 @@ public class PlusExpressionNode extends TwoFieldNode{
     public String accept(NodeVisitor visitor) {
         return visitor.visit(this);
     }
-    
-//    @Override
-//    public String getStringRepresentation() {
-//        return getName() + " " + leftHandSide.getStringRepresentation() + " + " + rightHandSide.getStringRepresentation();
-//    }
 }

@@ -41,10 +41,8 @@ public class DeclarationsNode extends SemanticNode {
         return "Declarations";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
+
 }

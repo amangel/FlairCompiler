@@ -24,10 +24,8 @@ public class PrintStatementNode extends SemanticNode {
         return "Print";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
+
 }

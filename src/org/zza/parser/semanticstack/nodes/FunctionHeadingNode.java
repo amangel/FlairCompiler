@@ -10,10 +10,7 @@ public class FunctionHeadingNode extends ThreeFieldNode {
         return "FunctionHeading";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
     }
-    
 }
