@@ -14,6 +14,10 @@ public class ReturnStatementNode extends SemanticNode {
         stack.push(this);
     }
 
+    public SemanticNode getArguments() {
+        return arguments;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " {" + arguments.getStringRepresentation() + " }";

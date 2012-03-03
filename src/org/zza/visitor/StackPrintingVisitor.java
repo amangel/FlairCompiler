@@ -255,7 +255,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String parameters = node.getMiddle().accept(this);
         String type = node.getRighthand().accept(this);
         depth--;
-        return "\n" + tabs + "funcHeading: \n" + tabs + identifier + "\n" + parameters + "\n" + type;
+        return "\n" + tabs + "funcHeading: \n" + tabs + identifier + "\n" + parameters + "\n" + tabs + "Returns: \n  " + type;
     }
 
     @Override
@@ -283,14 +283,22 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(ReturnStatementNode node) {
-        // TODO Auto-generated method stub
-        return "return";
+        depth++;
+        String tabs = getTabs(depth);
+        String arguments = node.getArguments().accept(this);        
+        depth--;
+        return "\n" + tabs + "Return:" + arguments;
     }
 
     @Override
     public String visit(IfStatementNode node) {
-        // TODO Auto-generated method stub
-        return "if";
+        depth++;
+        String tabs = getTabs(depth);
+        String test = node.getLefthand().accept(this);
+        String then = node.getMiddle().accept(this);
+        String elseString = node.getRighthand().accept(this);
+        depth--;
+        return "\n" + tabs + "If:\n" + test + "\n" + then + "\n" + elseString;
     }
 
     @Override
