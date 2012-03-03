@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
@@ -16,6 +17,7 @@ public class AllVariableDeclarationsNode extends SemanticNode {
         while(stack.peek().getName().equals("VariableDeclaration")) {
             variableDeclarations.add(stack.pop());
         }
+        Collections.reverse(variableDeclarations);
         stack.push(this);
     }
 
@@ -30,8 +32,8 @@ public class AllVariableDeclarationsNode extends SemanticNode {
 
     private String getDeclarationString() {
         String toReturn = "";
-        for (int i = variableDeclarations.size() - 1; i >= 0; i--) {
-            toReturn += variableDeclarations.get(i).getStringRepresentation() + " ";
+        for (SemanticNode declaration : variableDeclarations) {
+            toReturn += declaration.getStringRepresentation() + " ";
         }
         return toReturn;
     }

@@ -14,6 +14,10 @@ public class PrintStatementNode extends SemanticNode {
         stack.push(this);
     }
 
+    public SemanticNode getArgument() {
+        return argument;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " " + argument.getStringRepresentation();

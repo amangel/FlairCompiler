@@ -25,16 +25,22 @@ public class FunctionBodyNode extends SemanticNode {
         stack.push(this);
     }
 
+    public SemanticNode getVariables() {
+        return variables;
+    }
+    
+    public SemanticNode getBody() {
+        return body;
+    }
+    
     @Override
     public String getStringRepresentation() {
-        // TODO Auto-generated method stub
         return getName() + " {" + variables.getStringRepresentation() +
         body.getStringRepresentation();
     }
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
         return "FunctionBody";
     }
 

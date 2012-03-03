@@ -14,6 +14,10 @@ public class NegativeExpressionNode extends SemanticNode {
         stack.push(this);
     }
 
+    public SemanticNode getContent() {
+        return content;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " " + content.getStringRepresentation();

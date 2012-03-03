@@ -9,7 +9,7 @@ public class StackPrintingVisitor extends NodeVisitor {
     private int depth;
     
     private String getTabs(int count) {
-        System.out.println("depth is: "+depth);
+        //System.out.println("depth is: "+depth);
         String toReturn = "";
         for (int i = 0; i <= count; i++) {
             toReturn += "  ";
@@ -43,7 +43,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String tabs = getTabs(depth+1);
         String leftHand = node.getLeftHand().accept(this);
         String rightHand = node.getRightHand().accept(this);
-        return "\n"+tabs+"var: "+leftHand + " : "+rightHand;
+        return "\n" + tabs + leftHand + " : "+rightHand;
     }
 
     @Override
@@ -68,8 +68,11 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionNode node) {
-        // TODO Auto-generated method stub
-        return "function";
+        depth++;
+        String header = node.getHeader().accept(this);
+        String body = node.getBody().accept(this);
+        depth--;
+        return "Function: " + header + "\n" + body;
     }
 
     @Override
@@ -79,7 +82,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String leftHand = node.getLeftHand().accept(this);
         String rightHand = node.getRightHand().accept(this);
         depth--;
-        return "\n"+tabs+"param: "+leftHand + " : "+rightHand;
+        return "\n"+tabs+"param: \n"+ tabs +leftHand + "\n"+tabs+rightHand;
     }
 
     @Override
@@ -101,7 +104,7 @@ public class StackPrintingVisitor extends NodeVisitor {
             statementString += statement.accept(this);
         }
         depth--;
-        return statementString;
+        return "\n" + tabs + "Compound: "+statementString;
     }
 
     @Override
@@ -116,12 +119,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(IdentifierNode node) {
-        return node.getValue();
+        return "  Identifier: "+node.getValue();
     }
 
     @Override
     public String visit(IntegerNode node) {
-        return node.getValue();
+        return "  Integer: "+ node.getValue();
     }
 
     @Override
@@ -156,12 +159,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(RealNode node) {
-        return node.getValue();
+        return "  Real: "+node.getValue();
     }
 
     @Override
     public String visit(TypeNode node) {
-        return node.getType();
+        return getTabs(depth) + node.getType();
     }
 
     @Override
@@ -179,20 +182,31 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(ArgumentNode node) {
-        // TODO Auto-generated method stub
-        return "argument";
+        depth++;
+        String tabs = getTabs(depth);
+        ArrayList<SemanticNode> arguments = node.getArguments();
+        String argumentString = tabs;
+        for (SemanticNode argument : arguments) {
+            argumentString += argument.accept(this);
+        }
+        depth--;
+        return argumentString;
     }
 
     @Override
     public String visit(CompareNode node) {
-        // TODO Auto-generated method stub
-        return "compare";
+        return node.getValue();
     }
 
     @Override
     public String visit(ComparisonNode node) {
-        // TODO Auto-generated method stub
-        return "comparison";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLefthand().accept(this);
+        String compare = node.getMiddle().accept(this);
+        String rightHand = node.getRighthand().accept(this);
+        depth--;
+        return "\n" + tabs + "Comparison: "+ leftHand + " "+compare+" "+rightHand;
     }
 
     @Override
@@ -202,19 +216,25 @@ public class StackPrintingVisitor extends NodeVisitor {
         String leftHand = node.getLeftHand().accept(this);
         String rightHand = node.getRightHand().accept(this);
         depth--;
-        return "\n"+tabs+"while: "+leftHand + " : "+rightHand;
+        return "\n"+tabs+"While: "+leftHand + " : "+rightHand;
     }
 
     @Override
     public String visit(NegativeExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "negativeexpression";
+        depth++;
+        String tabs = getTabs(depth);
+        String expression = node.getContent().accept(this);
+        depth--;
+        return "\n" + tabs + "Negative: " + expression;
     }
 
     @Override
     public String visit(PrintStatementNode node) {
-        // TODO Auto-generated method stub
-        return "print";
+        depth++;
+        String tabs = getTabs(depth);
+        String arguments = node.getArgument().accept(this);
+        depth--;
+        return "\n" + tabs + "Print: " + arguments;
     }
 
     @Override
@@ -224,13 +244,18 @@ public class StackPrintingVisitor extends NodeVisitor {
         String leftHand = node.getLeftHand().accept(this);
         String rightHand = node.getRightHand().accept(this);
         depth--;
-        return "\n"+tabs+"funcCall: "+leftHand + " : "+rightHand;
+        return "\n"+tabs+"funcCall: \n"+ tabs +leftHand + "\n"  + rightHand;
     }
 
     @Override
     public String visit(FunctionHeadingNode node) {
-        // TODO Auto-generated method stub
-        return "functionheading";
+        depth++;
+        String tabs = getTabs(depth);
+        String identifier = node.getLefthand().accept(this);
+        String parameters = node.getMiddle().accept(this);
+        String type = node.getRighthand().accept(this);
+        depth--;
+        return "\n" + tabs + "funcHeading: \n" + tabs + identifier + "\n" + parameters + "\n" + type;
     }
 
     @Override
@@ -248,8 +273,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionBodyNode node) {
-        // TODO Auto-generated method stub
-        return "functionbody";
+        depth++;
+        String tabs = getTabs(depth);
+        String variables = node.getVariables().accept(this);
+        String body = node.getBody().accept(this);
+        depth--;
+        return "\n" + tabs + "FunctionBody:\n" + variables + "\n" + body;
     }
 
     @Override

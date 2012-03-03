@@ -25,6 +25,14 @@ public class FunctionNode extends SemanticNode {
         stack.push(this) ;
     }
 
+    public SemanticNode getHeader() {
+        return header;
+    }
+    
+    public SemanticNode getBody() {
+        return body;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " {" + header.getStringRepresentation() +

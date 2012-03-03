@@ -20,12 +20,16 @@ public class ArgumentNode extends SemanticNode {
         stack.push(this);
     }
 
+    public ArrayList<SemanticNode> getArguments(){
+        return arguments;
+    }
+    
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + getArguments() + "}";
+        return getName() + " {" + getArgumentString() + "}";
     }
 
-    private String getArguments() {
+    private String getArgumentString() {
         String toReturn = "";
         for (SemanticNode node : arguments) {
             toReturn += node.getStringRepresentation() + " ";
