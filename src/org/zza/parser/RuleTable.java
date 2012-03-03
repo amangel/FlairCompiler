@@ -224,7 +224,8 @@ public class RuleTable {
                 new TerminalEntry("then"),
                 new NonterminalEntry("<STATEMENT>"),
                 new TerminalEntry("else"),
-                new NonterminalEntry("<STATEMENT>")}));
+                new NonterminalEntry("<STATEMENT>"),
+                new SemanticEntry("if")}));
         // <WHILE_STATEMENT>::=while <COMPARISON> do <STATEMENT>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("while"),
                 new NonterminalEntry("<COMPARISON>"),
@@ -239,7 +240,8 @@ public class RuleTable {
                 new TerminalEntry("end")}));
         // <RETURN_STATEMENT>::=return <EXPRESSION>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("return"), 
-                new NonterminalEntry("<EXPRESSION>")}));
+                new NonterminalEntry("<EXPRESSION>"),
+                new SemanticEntry("return")}));
         // <COMPARISON>::=<EXPRESSION> <COMPARE_OP> <EXPRESSION>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"), 
                 new NonterminalEntry("<COMPARE_OP>"),
