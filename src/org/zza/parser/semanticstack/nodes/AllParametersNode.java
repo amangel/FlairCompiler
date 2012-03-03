@@ -19,12 +19,16 @@ public class AllParametersNode extends SemanticNode {
         stack.push(this);
     }
 
+    public ArrayList<SemanticNode> getParameters(){
+        return parameters;
+    }
+    
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + getParameters() + "}";
+        return getName() + " {" + getParameterStrings() + "}";
     }
 
-    private String getParameters() {
+    private String getParameterStrings() {
         String toReturn = "";
         for (SemanticNode node : parameters) {
             toReturn += node.getStringRepresentation() + " ";
@@ -34,7 +38,7 @@ public class AllParametersNode extends SemanticNode {
     
     @Override
     public String getName() {
-        return "Parameters";
+        return "AllParameters";
     }
 
     public String accept(NodeVisitor visitor) {

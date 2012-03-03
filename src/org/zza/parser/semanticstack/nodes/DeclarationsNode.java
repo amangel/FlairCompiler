@@ -29,6 +29,14 @@ public class DeclarationsNode extends SemanticNode {
         stack.push(this);
     }
 
+    public SemanticNode getVariableDeclarations() {
+        return variableDeclarations;
+    }
+    
+    public SemanticNode getFunctionDeclarations() {
+        return functionDeclarations;
+    }
+    
     @Override
     public String getStringRepresentation() {
         // TODO Auto-generated method stub

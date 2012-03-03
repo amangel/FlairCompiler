@@ -10,6 +10,7 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.parser.semanticstack.nodes.SemanticNode;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
+import org.zza.visitor.StackPrintingVisitor;
 
 public class CompilerParser {
     
@@ -25,7 +26,7 @@ public class CompilerParser {
     private final CompilerTokenStream stream;
     private Entry A;
     private CompilerToken i;
-    private String previousStackValue;
+//    private String previousStackValue;
     private String submissionOutput;
     
     public CompilerParser(final CompilerTokenStream tokenStream) {
@@ -45,9 +46,8 @@ public class CompilerParser {
     
     public void run() throws ParsingException {
         parseStack.push(new TerminalEntry(EOF));
-        //parseStack.push(new TerminalEntry(startSymbol));
         addToParseStack(ruleTable.find(startSymbol, startToken));
-        previousStackValue = "";
+//        previousStackValue = "";
         submissionOutput = "";
         A = parseStack.peek();
         getNextToken();
@@ -59,19 +59,11 @@ public class CompilerParser {
             
             if (A.isTerminal()) {
                 
-                if(previousStackValue.equals("program") || previousStackValue.equals("<VAR_DECLARATION>")) {
-//                    System.out.println("found prog or var");
-                    submissionOutput += i.getValue()+" ";
-                } else if (previousStackValue.equals("function")) {
-                    System.out.println(submissionOutput);
-                    submissionOutput = i.getValue();
-                }
 //                System.out.println(A.getType() + " is terminal");
                 if (A.getType().equalsIgnoreCase(i.getStringType())) {
 //                System.out.println("A: "+A.getType() + " i: "+i.getId()+" "+i.getValue() + "prev: "+previousStackValue);
 //                    System.out.println("A and i match");
 //                    System.out.println("i: "+i.getId()+" "+i.getValue());
-                    previousStackValue = parseStack.peek().getType();//TODO: for submission output, remove
                     parseStack.pop();
                     if(parseStack.notEmpty()) {
                         A = parseStack.peek();
@@ -89,7 +81,6 @@ public class CompilerParser {
             } else {
                 if (isRuleContained(A, i)) {
 //                    System.out.println("A is not terminal, rule was found");
-                    previousStackValue = parseStack.peek().getType();//TODO: for submission output, remove
                     parseStack.pop();
                     addToParseStack(ruleTable.find(A.getType(), i.getStringType()));
                     A = parseStack.peek();
@@ -108,6 +99,8 @@ public class CompilerParser {
         if(submissionOutput.length() > 0) {
             System.out.println(submissionOutput);
         }
+        StackPrintingVisitor printer = new StackPrintingVisitor();
+        System.out.println(printer.visit(semanticStack.pop()));
     }
     
     private void printOutSemanticStack() {

@@ -101,15 +101,15 @@ public class RuleTable {
                 new SemanticEntry("identifier"),
                 new TerminalEntry("("),
                 new NonterminalEntry("<PARAMETERS>"),
-                new SemanticEntry("allparameters"),
+                new SemanticEntry("AllParameters"),
                 new TerminalEntry(")"),
                 new TerminalEntry(";"),
-                new SemanticEntry("programheader"),
+                new SemanticEntry("ProgramHeader"),
                 new NonterminalEntry("<DECLARATIONS>"),
                //new SemanticEntry("declarations"),
                 new NonterminalEntry("<COMPOUND_STATEMENT>"), 
                 new TerminalEntry("."),
-                new SemanticEntry("program")}));
+                new SemanticEntry("Program")}));
         // <DECLARATIONS>::=<VARIABLE_DECLARATIONS> <FUNCTION_DECLARATIONS>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
                 new SemanticEntry("allvariables"),
@@ -138,7 +138,7 @@ public class RuleTable {
                 new SemanticEntry("identifier"),
                 new TerminalEntry("("),
                 new NonterminalEntry("<PARAMETERS>"),
-                new SemanticEntry("allparameters"),
+                new SemanticEntry("AllParameters"),
                 new TerminalEntry(")"),
                 new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>"),
@@ -185,7 +185,7 @@ public class RuleTable {
                 new SemanticEntry("identifier"),
                 new TerminalEntry(":"), 
                 new NonterminalEntry("<TYPE>"),
-                new SemanticEntry("parameter")}));
+                new SemanticEntry("ParameterNode")}));
         // <TYPE>::=integer
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<integer>"),
                 new SemanticEntry("type")}));

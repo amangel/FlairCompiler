@@ -19,12 +19,16 @@ public class AllVariableDeclarationsNode extends SemanticNode {
         stack.push(this);
     }
 
+    public ArrayList<SemanticNode> getDeclarations(){
+        return variableDeclarations;
+    }
+    
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + getDeclarations() + "}";
+        return getName() + " {" + getDeclarationString() + "}";
     }
 
-    private String getDeclarations() {
+    private String getDeclarationString() {
         String toReturn = "";
         for (int i = variableDeclarations.size() - 1; i >= 0; i--) {
             toReturn += variableDeclarations.get(i).getStringRepresentation() + " ";

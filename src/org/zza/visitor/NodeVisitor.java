@@ -1,66 +1,168 @@
 package org.zza.visitor;
 import org.zza.parser.semanticstack.nodes.*;
 
-public interface NodeVisitor {
-    public String visit(ProgramNode node);
+public abstract class NodeVisitor {
+    public String visit(SemanticNode node) {
+        if(node instanceof ProgramNode) {
+            return visit((ProgramNode) node);
+            
+        } else if (node instanceof VariableDeclarationNode) {
+            return visit((VariableDeclarationNode) node);
+            
+        } else if (node instanceof FunctionNode) {
+            return visit((FunctionNode) node);
+            
+        } else if (node instanceof ParameterNode) {
+            return visit((ParameterNode) node);
+            
+        } else if (node instanceof AssignmentExpressionNode) {
+            return visit((AssignmentExpressionNode) node);
+            
+        } else if (node instanceof CompoundStatementNode) {
+            return visit((CompoundStatementNode) node);
+            
+        } else if (node instanceof DivisionExpressionNode) {
+            return visit((DivisionExpressionNode) node);
+            
+        } else if (node instanceof IdentifierNode) {
+            return visit((IdentifierNode) node);
+            
+        } else if (node instanceof IntegerNode) {
+            return visit((IntegerNode) node);
+            
+        } else if (node instanceof IntegerNode) {
+            return visit((IntegerNode) node);
+            
+        } else if (node instanceof MinusExpressionNode) {
+            return visit((MinusExpressionNode) node);
+            
+        } else if (node instanceof MultiplicationExpressionNode) {
+            return visit((MultiplicationExpressionNode) node);
+            
+        } else if (node instanceof PlusExpressionNode) {
+            return visit((PlusExpressionNode) node);
+            
+        } else if (node instanceof RealNode) {
+            return visit((RealNode) node);
+            
+        } else if (node instanceof TypeNode) {
+            return visit((TypeNode) node);
+            
+        } else if (node instanceof AllParametersNode) {
+            return visit((AllParametersNode) node);
+            
+        } else if (node instanceof AllVariableDeclarationsNode) {
+            return visit((AllVariableDeclarationsNode) node);
+            
+        } else if (node instanceof ArgumentNode) {
+            return visit((ArgumentNode) node);
+            
+        } else if (node instanceof CompareNode) {
+            return visit((CompareNode) node);
+            
+        } else if (node instanceof ComparisonNode) {
+            return visit((ComparisonNode) node);
+            
+        } else if (node instanceof WhileExpressionNode) {
+            return visit((WhileExpressionNode) node);
+            
+        } else if (node instanceof NegativeExpressionNode) {
+            return visit((NegativeExpressionNode) node);
+            
+        } else if (node instanceof ProgramHeaderNode) {
+            return visit((ProgramHeaderNode) node);
+            
+        } else if (node instanceof DeclarationsNode) {
+            return visit((DeclarationsNode) node);
+            
+        } else if (node instanceof PrintStatementNode) {
+            return visit((PrintStatementNode) node);
+            
+        } else if (node instanceof FunctionCallNode) {
+            return visit((FunctionCallNode) node);
+            
+        } else if (node instanceof FunctionHeadingNode) {
+            return visit((FunctionHeadingNode) node);
+            
+        } else if (node instanceof AllFunctionDeclarationsNode) {
+            return visit((AllFunctionDeclarationsNode) node);
+            
+        } else if (node instanceof FunctionBodyNode) {
+            return visit((FunctionBodyNode) node);
+            
+        } else if (node instanceof ReturnStatementNode) {
+            return visit((ReturnStatementNode) node);
+            
+        } else if (node instanceof IfStatementNode) {
+            return visit((IfStatementNode) node);
+            
+        } else if (node instanceof EmptyNode) {
+            return visit((EmptyNode) node);
+            
+        } else {
+            return "Could not find type for : "+node.getStringRepresentation();
+        }
+    }
+    
+    public abstract String visit(ProgramNode node);
 
-    public String visit(VariableDeclarationNode node);
+    public abstract String visit(VariableDeclarationNode node);
 
-    public String visit(FunctionNode node);
+    public abstract String visit(FunctionNode node);
 
-    public String visit(ParameterNode node);
+    public abstract String visit(ParameterNode node);
 
-    public String visit(AssignmentExpressionNode node);
+    public abstract String visit(AssignmentExpressionNode node);
 	
-	public String visit(CompoundStatementNode node);
+	public abstract String visit(CompoundStatementNode node);
 	
-	public String visit(DivisionExpressionNode node);
+	public abstract String visit(DivisionExpressionNode node);
 	
-	public String visit(IdentifierNode node);
+	public abstract String visit(IdentifierNode node);
 	
-	public String visit(IntegerNode node);
+	public abstract String visit(IntegerNode node);
 	
-	public String visit(MinusExpressionNode node);
+	public abstract String visit(MinusExpressionNode node);
 	
-	public String visit(MultiplicationExpressionNode node);
+	public abstract String visit(MultiplicationExpressionNode node);
 	
-	public String visit(PlusExpressionNode node);
+	public abstract String visit(PlusExpressionNode node);
 	
-	public String visit(RealNode node);
+	public abstract String visit(RealNode node);
 	
-	public String visit(TypeNode node);
+	public abstract String visit(TypeNode node);
 
-	public String visit(AllParametersNode node);
+	public abstract String visit(AllParametersNode node);
 
-	public String visit(AllVariableDeclarationsNode node);
+	public abstract String visit(AllVariableDeclarationsNode node);
 
-	public String visit(ArgumentNode node);
+	public abstract String visit(ArgumentNode node);
 
-	public String visit(CompareNode node);
+	public abstract String visit(CompareNode node);
 
-	public String visit(ComparisonNode node);
+	public abstract String visit(ComparisonNode node);
 
-	public String visit(WhileExpressionNode node);
+	public abstract String visit(WhileExpressionNode node);
 
-	public String visit(NegativeExpressionNode node);
+	public abstract String visit(NegativeExpressionNode node);
 
-	public String visit(ProgramHeaderNode node);
+	public abstract String visit(ProgramHeaderNode node);
 
-	public String visit(DeclarationsNode node);
+	public abstract String visit(DeclarationsNode node);
 
-	public String visit(PrintStatementNode node);
+	public abstract String visit(PrintStatementNode node);
 
-	public String visit(FunctionCallNode node);
+	public abstract String visit(FunctionCallNode node);
 
-	public String visit(FunctionHeadingNode node);
+	public abstract String visit(FunctionHeadingNode node);
 
-	public String visit(AllFunctionDeclarationsNode node);
+	public abstract String visit(AllFunctionDeclarationsNode node);
 
-	public String visit(FunctionBodyNode node);
+	public abstract String visit(FunctionBodyNode node);
 
-	public String visit(ReturnStatementNode node);
+	public abstract String visit(ReturnStatementNode node);
 
-	public String visit(IfStatementNode node);
+	public abstract String visit(IfStatementNode node);
 	
-	public String visit(EmptyNode node);
+	public abstract String visit(EmptyNode node);
 }

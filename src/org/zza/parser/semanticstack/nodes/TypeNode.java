@@ -20,6 +20,10 @@ public class TypeNode extends SemanticNode {
         }
     }
     
+    public String getType() {
+        return value;
+    }
+    
     @Override
     public String getName() {
         return "Type";

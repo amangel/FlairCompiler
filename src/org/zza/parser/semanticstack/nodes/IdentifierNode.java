@@ -32,6 +32,10 @@ public class IdentifierNode extends SemanticNode{
         return getName() + " " +value;
     }
     
+    public String getValue() {
+        return value;
+    }
+    
     @Override
     public String getName() {
         return "Identifier";

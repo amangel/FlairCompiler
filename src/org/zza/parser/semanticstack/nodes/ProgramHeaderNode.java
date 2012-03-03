@@ -11,13 +11,21 @@ public class ProgramHeaderNode extends SemanticNode {
     
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        if(stack.peek().getName().equals("Parameters")) {
+        if(stack.peek().getName().equals("AllParameters")) {
             parameters = stack.pop();
         }
         name = stack.pop();
         stack.push(this);
     }
 
+    public SemanticNode getIdentifier() {
+        return name;
+    }
+    
+    public SemanticNode getParameters() {
+        return parameters;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " : " + name.getStringRepresentation() + " : " + parameters.getStringRepresentation();

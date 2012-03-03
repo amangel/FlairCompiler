@@ -37,10 +37,12 @@ public class AllFunctionDeclarationsNode extends SemanticNode {
         return "FunctionDeclarations";
     }
 
-    @Override
     public String accept(NodeVisitor visitor) {
-        // TODO Auto-generated method stub
-        return null;
+        return visitor.visit(this);
+    }
+
+    public ArrayList<SemanticNode> getFunctions() {
+        return functionDeclarations;
     }
     
 }

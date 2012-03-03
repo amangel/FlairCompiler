@@ -30,6 +30,18 @@ public class ProgramNode extends SemanticNode {
         stack.push(this);
     }
 
+    public SemanticNode getHeader() {
+        return header;
+    }
+    
+    public SemanticNode getDeclarations() {
+        return declarations;
+    }
+    
+    public SemanticNode getbody() {
+        return body;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " {" + header.getStringRepresentation() +

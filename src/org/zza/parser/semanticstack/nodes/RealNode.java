@@ -21,6 +21,10 @@ public class RealNode extends SemanticNode {
         }
     }
 
+    public String getValue() {
+        return value;
+    }
+    
     @Override
     public String getStringRepresentation() {
         return getName() + " " + value;

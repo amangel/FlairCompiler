@@ -34,7 +34,7 @@ import org.zza.parser.semanticstack.nodes.TypeNode;
 import org.zza.parser.semanticstack.nodes.VariableDeclarationNode;
 import org.zza.parser.semanticstack.nodes.WhileExpressionNode;
 
-public class TypeCheckingVisitor implements NodeVisitor {
+public class TypeCheckingVisitor extends NodeVisitor {
 
 	@Override
 	public String visit(AssignmentExpressionNode node) {

@@ -2,7 +2,7 @@ package org.zza.visitor;
 
 import org.zza.parser.semanticstack.nodes.*;
 
-public class CodeGeneratingVisitor implements NodeVisitor {
+public class CodeGeneratingVisitor extends NodeVisitor {
 
 	@Override
 	public String visit(AssignmentExpressionNode node) {
