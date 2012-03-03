@@ -19,7 +19,7 @@ public class FunctionNode extends SemanticNode {
         if(stack.peek().getName().equals("FunctionBody")) {
             body = stack.pop();
         }
-        if(stack.peek().getName().equals("FunctionHeader")) {
+        if(stack.peek().getName().equals("FunctionHeading")) {
             header = stack.pop();
         }
         stack.push(this) ;
