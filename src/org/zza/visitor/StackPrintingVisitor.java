@@ -40,9 +40,10 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(VariableDeclarationNode node) {
-        
-        // TODO Auto-generated method stub
-        return "vardec";
+        String tabs = getTabs(depth+1);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        return "\n"+tabs+"var: "+leftHand + " : "+rightHand;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class StackPrintingVisitor extends NodeVisitor {
             declarationString += declaration.accept(this);
         }
         depth--;
-        return tabs + "VariableDeclarations: \n"+declarationString;
+        return tabs + "VariableDeclarations:"+declarationString;
     }
     
     @Override
@@ -73,28 +74,44 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(ParameterNode node) {
-        String tabs = getTabs(depth+1);
+        depth++;
+        String tabs = getTabs(depth);
         String leftHand = node.getLeftHand().accept(this);
         String rightHand = node.getRightHand().accept(this);
+        depth--;
         return "\n"+tabs+"param: "+leftHand + " : "+rightHand;
     }
 
     @Override
     public String visit(AssignmentExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "assignment";
-    }
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"assignment: "+leftHand + " : "+rightHand;    }
 
     @Override
     public String visit(CompoundStatementNode node) {
-        // TODO Auto-generated method stub
-        return "compound";
+        depth++;
+        ArrayList<SemanticNode> statements = node.getStatements();
+        String tabs = getTabs(depth);
+        String statementString = tabs;
+        for (SemanticNode statement : statements) {
+            statementString += statement.accept(this);
+        }
+        depth--;
+        return statementString;
     }
 
     @Override
     public String visit(DivisionExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "division";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"division: "+leftHand + " : "+rightHand;
     }
 
     @Override
@@ -109,20 +126,32 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(MinusExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "minus";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"minus: "+leftHand + " : "+rightHand;
     }
 
     @Override
     public String visit(MultiplicationExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "multiExp";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"multiplication: "+leftHand + " : "+rightHand;
     }
 
     @Override
     public String visit(PlusExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "plusexp";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"plus: "+leftHand + " : "+rightHand;
     }
 
     @Override
@@ -168,8 +197,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(WhileExpressionNode node) {
-        // TODO Auto-generated method stub
-        return "while";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"while: "+leftHand + " : "+rightHand;
     }
 
     @Override
@@ -186,8 +219,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionCallNode node) {
-        // TODO Auto-generated method stub
-        return "functioncall";
+        depth++;
+        String tabs = getTabs(depth);
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        depth--;
+        return "\n"+tabs+"funcCall: "+leftHand + " : "+rightHand;
     }
 
     @Override

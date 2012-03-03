@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
@@ -16,6 +17,7 @@ public class CompoundStatementNode extends SemanticNode {
         while(!stack.peek().getName().equals("begin")) {
             statements.add(stack.pop());
         }
+        Collections.reverse(statements);
         stack.pop();
         stack.push(this);
     }
@@ -25,10 +27,14 @@ public class CompoundStatementNode extends SemanticNode {
         return getName() + " {" + getDeclarations() + "}";
     }
 
+    public ArrayList<SemanticNode> getStatements(){
+        return statements;
+    }
+    
     private String getDeclarations() {
         String toReturn = "";
-        for (int i = statements.size() - 1; i >= 0; i--) {
-            toReturn += statements.get(i).getStringRepresentation() + " ";
+        for (SemanticNode statement : statements) {
+            toReturn += statement.getStringRepresentation() + " ";
         }
         return toReturn;
     }
