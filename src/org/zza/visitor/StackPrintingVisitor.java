@@ -189,7 +189,9 @@ public class StackPrintingVisitor extends NodeVisitor {
         String tabs = getTabs(depth);
         String arguments = node.getArgument().accept(this);
         depth--;
-        return "\n" + tabs + "Print: " + arguments;
+        return "\n" + tabs + "Print:\n " + arguments;
+//        return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
+
     }
 
     @Override
@@ -212,7 +214,7 @@ public class StackPrintingVisitor extends NodeVisitor {
             functionsString += function.accept(this);
         }
         depth--;
-        return  tabs + "FunctionDeclarations: \n"+functionsString;
+        return  "\n" + tabs + "FunctionDeclarations: \n"+functionsString;
     }
 
     @Override
@@ -257,6 +259,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         depth--;
         return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
     }
+
     @Override
     public String visit(EmptyNode node) {
         return "empty";

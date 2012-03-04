@@ -67,7 +67,6 @@ public class SemanticNodeFactory {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        System.out.println("error while geting new node from node factory, returning null");
-        return null;//TODO: make the catch handle the situtation and die gracefully instead of returning null?
+        throw new ParsingException("Error while geting new node from node factory. Tried to retrieve: "+nodeType);
     }
 }

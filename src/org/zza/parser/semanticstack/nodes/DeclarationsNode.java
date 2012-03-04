@@ -39,7 +39,6 @@ public class DeclarationsNode extends SemanticNode {
     
     @Override
     public String getStringRepresentation() {
-        // TODO Auto-generated method stub
         return "\n"+getName() + " { variables " + variableDeclarations.getStringRepresentation() 
                 + ": func " + functionDeclarations.getStringRepresentation() + "}\n";
     }

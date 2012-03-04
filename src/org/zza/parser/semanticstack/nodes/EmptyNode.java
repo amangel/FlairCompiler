@@ -8,7 +8,8 @@ public class EmptyNode extends SemanticNode {
 
     @Override
     public void runOnSemanticStack(SemanticStack stack) {
-        //TODO: throw exception if run?
+        System.out.println("Empty node cannot be run on the stack.");
+        //TODO: create and call a static "kill program run" function
     }
 
     @Override
