@@ -11,7 +11,7 @@ public class StackPrintingVisitor extends NodeVisitor {
     private String getTabs(int count) {
         String toReturn = "";
         for (int i = 0; i <= count; i++) {
-            toReturn += "  ";
+            toReturn += "   ";
         }
         return toReturn;
     }
@@ -23,7 +23,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String header = node.getHeader().accept(this);
         String declarations = node.getDeclarations().accept(this);
         String body = node.getbody().accept(this);
-        return "Program:\n" + tabs + "Header: "+header + "\n"+ tabs +"Declarations: "+declarations + "\n"+ tabs +"Body: "+body;
+        return "Program:\n" + tabs + "Header: "+header + "\n"+ tabs + "Declarations: "+declarations + tabs + "Body: "+body;
     }
     
     @Override
@@ -33,7 +33,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String identifier = node.getIdentifier().accept(this);
         String parameters = node.getParameters().accept(this);
         depth--;
-        return "\n"+tabs+"Identifier: "+identifier + "\n"+tabs+"Parameters: "+parameters;
+        return "\n"+tabs+"ProgramHeader:\n"+identifier + "\n"+tabs+parameters;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class StackPrintingVisitor extends NodeVisitor {
             declarationString += declaration.accept(this);
         }
         depth--;
-        return tabs + "VariableDeclarations:"+declarationString;
+        return "\n" + tabs + "VariableDeclarations:\n"+declarationString;
     }
     
     @Override
@@ -64,10 +64,11 @@ public class StackPrintingVisitor extends NodeVisitor {
     @Override
     public String visit(FunctionNode node) {
         depth++;
+        String tabs = getTabs(depth);
         String header = node.getHeader().accept(this);
         String body = node.getBody().accept(this);
         depth--;
-        return "Function: " + header + "\n" + body;
+        return "\n" +tabs + "Function:\n" + header + "\n" + body;
     }
 
     @Override
@@ -100,12 +101,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(IdentifierNode node) {
-        return getTabs(depth+1) + "Identifier: "+node.getValue();
+        return handleTerminal(node.getValue(), "Identifier");
     }
 
     @Override
     public String visit(IntegerNode node) {
-        return getTabs(depth+1) + "Integer: "+ node.getValue();
+        return handleTerminal(node.getValue(), "Integer");
     }
 
     @Override
@@ -125,43 +126,43 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(RealNode node) {
-        return getTabs(depth+1) + "Real: "+node.getValue();
+        return handleTerminal(node.getValue(), "Real");
     }
 
     @Override
     public String visit(TypeNode node) {
-        return getTabs(depth+1) + node.getType();
+        return handleTerminal(node.getType(), "Type");
     }
 
     @Override
     public String visit(AllParametersNode node) {
         depth++;
+        String tabs = getTabs(depth);
         ArrayList<SemanticNode> parameters = node.getParameters();
         String parameterString = getTabs(depth);
         for (SemanticNode parameter : parameters) {
             parameterString += parameter.accept(this);
         }
         depth--;
-        return parameterString;
+        return "\n" + tabs + "AllParameters:\n"+parameterString;
     }
-
 
     @Override
     public String visit(ArgumentNode node) {
         depth++;
         String tabs = getTabs(depth);
         ArrayList<SemanticNode> arguments = node.getArguments();
-        String argumentString = tabs;
+        String argumentString = "";
         for (SemanticNode argument : arguments) {
             argumentString += argument.accept(this);
         }
         depth--;
-        return argumentString;
+        return "\n" + tabs + "Arguments:\n"+argumentString;
     }
 
     @Override
     public String visit(CompareNode node) {
-        return getTabs(depth+1) + node.getValue();
+        return handleTerminal(node.getValue(), "Compare");
     }
 
     @Override
@@ -189,9 +190,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String tabs = getTabs(depth);
         String arguments = node.getArgument().accept(this);
         depth--;
-        return "\n" + tabs + "Print:\n " + arguments;
-//        return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
-
+        return "\n" + tabs + "Print:" + arguments;
     }
 
     @Override
@@ -260,6 +259,10 @@ public class StackPrintingVisitor extends NodeVisitor {
         return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
     }
 
+    private String handleTerminal(String node, String type) {
+        return getTabs(depth+1) + type + " : " + node;
+    }
+    
     @Override
     public String visit(EmptyNode node) {
         return "empty";

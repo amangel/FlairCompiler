@@ -11,7 +11,7 @@ public class driver {
      * @param args
      */
     public static void main(final String[] args) {
-        
+        long start = System.currentTimeMillis();
         final StringBuffer sb = new StringBuffer();
         String programToUse = "";
         try {
@@ -32,7 +32,8 @@ public class driver {
         
         final CompilerStateScanner s = new CompilerStateScanner(programToUse);
         final CompilerParser p = new CompilerParser(s.getTokenStream());
-        
+        long end = System.currentTimeMillis();
+        System.out.println("time: "+(end-start));
     }
     
 }
