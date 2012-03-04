@@ -55,7 +55,7 @@ public class CompilerParser {
            
             A = parseStack.peek();
 //            System.out.println("Parse stack:" +parseStack);
-//            System.out.println("working with: A:"+A +" i:"+i+" "+i.getValue()+"\n");
+//            System.out.println("working with: A:"+A +" i:"+i+" "+i.getValue()+" "+i.getStringType()+"\n");
             
             if (A.isTerminal()) {
                 
