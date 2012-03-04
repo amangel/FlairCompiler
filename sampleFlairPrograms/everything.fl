@@ -1,9 +1,15 @@
 program everything(x : real, y : integer);
+
 {This program contains everything in our language.  It is currently 4 AM}
 
-function no(y: real) : real
+function no(y : real) : real
   begin
     return y
+  end;
+
+function yes() : integer
+  begin
+    return 1
   end;
 
 var 
@@ -20,7 +26,8 @@ begin
       print (fp);
       fp := fp + 1 - 0.0;
       fp := fp * (1 / 1.0)
-    end
+    end;
+
   if x > 3 then print(x) else print(0);
   if x >= 3 then print(0) else print(no(0.0));
   if x != 4 then print(in) else print(7);
