@@ -9,7 +9,6 @@ public class StackPrintingVisitor extends NodeVisitor {
     private int depth;
     
     private String getTabs(int count) {
-        //System.out.println("depth is: "+depth);
         String toReturn = "";
         for (int i = 0; i <= count; i++) {
             toReturn += "  ";
@@ -18,8 +17,7 @@ public class StackPrintingVisitor extends NodeVisitor {
     }
     
     @Override
-    public String visit(ProgramNode node) {
-        
+    public String visit(ProgramNode node) {        
         depth = 0;
         String tabs = getTabs(depth);
         String header = node.getHeader().accept(this);
@@ -40,10 +38,7 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(VariableDeclarationNode node) {
-        String tabs = getTabs(depth+1);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        return "\n" + tabs + leftHand + " : "+rightHand;
+        return handleTwoFieldNode(node, "VariableDeclaration");
     }
 
     @Override
@@ -77,22 +72,13 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(ParameterNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"param: \n"+ tabs +leftHand + "\n"+tabs+rightHand;
+        return handleTwoFieldNode(node, "Parameter");
     }
 
     @Override
     public String visit(AssignmentExpressionNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"assignment: "+leftHand + " : "+rightHand;    }
+        return handleTwoFieldNode(node, "Assignment");    
+    }
 
     @Override
     public String visit(CompoundStatementNode node) {
@@ -109,62 +95,42 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(DivisionExpressionNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"division: "+leftHand + " : "+rightHand;
+        return handleTwoFieldNode(node, "Division");
     }
 
     @Override
     public String visit(IdentifierNode node) {
-        return "  Identifier: "+node.getValue();
+        return getTabs(depth+1) + "Identifier: "+node.getValue();
     }
 
     @Override
     public String visit(IntegerNode node) {
-        return "  Integer: "+ node.getValue();
+        return getTabs(depth+1) + "Integer: "+ node.getValue();
     }
 
     @Override
     public String visit(MinusExpressionNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"minus: "+leftHand + " : "+rightHand;
+        return handleTwoFieldNode(node, "Minus");
     }
 
     @Override
     public String visit(MultiplicationExpressionNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"multiplication: "+leftHand + " : "+rightHand;
+        return handleTwoFieldNode(node, "Multiplication");
     }
 
     @Override
     public String visit(PlusExpressionNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"plus: "+leftHand + " : "+rightHand;
+        return handleTwoFieldNode(node, "Plus");
     }
 
     @Override
     public String visit(RealNode node) {
-        return "  Real: "+node.getValue();
+        return getTabs(depth+1) + "Real: "+node.getValue();
     }
 
     @Override
     public String visit(TypeNode node) {
-        return getTabs(depth) + node.getType();
+        return getTabs(depth+1) + node.getType();
     }
 
     @Override
@@ -195,28 +161,17 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(CompareNode node) {
-        return node.getValue();
+        return getTabs(depth+1) + node.getValue();
     }
 
     @Override
     public String visit(ComparisonNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLefthand().accept(this);
-        String compare = node.getMiddle().accept(this);
-        String rightHand = node.getRighthand().accept(this);
-        depth--;
-        return "\n" + tabs + "Comparison: "+ leftHand + " "+compare+" "+rightHand;
+        return handleThreeFieldNode(node, "Comparison");
     }
 
     @Override
     public String visit(WhileExpressionNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"While: "+leftHand + " : "+rightHand;
+        return handleTwoFieldNode(node, "While");
     }
 
     @Override
@@ -239,23 +194,12 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionCallNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
-        depth--;
-        return "\n"+tabs+"funcCall: \n"+ tabs +leftHand + "\n"  + rightHand;
+        return handleTwoFieldNode(node, "FunctionCall");
     }
 
     @Override
     public String visit(FunctionHeadingNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String identifier = node.getLefthand().accept(this);
-        String parameters = node.getMiddle().accept(this);
-        String type = node.getRighthand().accept(this);
-        depth--;
-        return "\n" + tabs + "funcHeading: \n" + tabs + identifier + "\n" + parameters + "\n" + tabs + "Returns: \n  " + type;
+        return handleThreeFieldNode(node, "FunctionHeading");
     }
 
     @Override
@@ -287,20 +231,32 @@ public class StackPrintingVisitor extends NodeVisitor {
         String tabs = getTabs(depth);
         String arguments = node.getArguments().accept(this);        
         depth--;
-        return "\n" + tabs + "Return:" + arguments;
+        return "\n" + tabs + "Return:\n" + arguments;
     }
 
     @Override
     public String visit(IfStatementNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        String test = node.getLefthand().accept(this);
-        String then = node.getMiddle().accept(this);
-        String elseString = node.getRighthand().accept(this);
-        depth--;
-        return "\n" + tabs + "If:\n" + test + "\n" + then + "\n" + elseString;
+        return handleThreeFieldNode(node, "If");
     }
 
+    private String handleThreeFieldNode(ThreeFieldNode node, String nodeType) {
+        depth++;
+        String tabs = getTabs(depth);
+        String left = node.getLefthand().accept(this);
+        String middle = node.getMiddle().accept(this);
+        String right = node.getRighthand().accept(this);
+        depth--;
+        return "\n" + tabs + nodeType + ":\n" + left + "\n" + middle + "\n" + right;
+    }
+    
+    private String handleTwoFieldNode(TwoFieldNode node, String nodeType) {
+        depth++;
+        String tabs = getTabs(depth);
+        String left = node.getLeftHand().accept(this);
+        String right= node.getRightHand().accept(this);
+        depth--;
+        return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
+    }
     @Override
     public String visit(EmptyNode node) {
         return "empty";
