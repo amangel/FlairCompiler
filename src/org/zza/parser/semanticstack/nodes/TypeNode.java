@@ -3,7 +3,6 @@ package org.zza.parser.semanticstack.nodes;
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
-
 public class TypeNode extends SemanticNode {
     
     final String integer = "integer";
@@ -11,12 +10,12 @@ public class TypeNode extends SemanticNode {
     String value;
     
     @Override
-    public void runOnSemanticStack(SemanticStack stack) {
-        if(token.getValue().equals(integer) || token.getValue().equals(real)) {
+    public void runOnSemanticStack(final SemanticStack stack) {
+        if (token.getValue().equals(integer) || token.getValue().equals(real)) {
             value = token.getValue();
             stack.push(this);
         } else {
-            System.out.println("attempting to run "+ getName() + " on semantic stack. token did not match expected type");
+            System.out.println("attempting to run " + getName() + " on semantic stack. token did not match expected type");
         }
     }
     
@@ -28,14 +27,14 @@ public class TypeNode extends SemanticNode {
     public String getName() {
         return "Type";
     }
-
+    
     @Override
     public String getStringRepresentation() {
-        return getName() + " " +value;
+        return getName() + " " + value;
     }
     
     @Override
-    public String accept(NodeVisitor visitor) {
+    public String accept(final NodeVisitor visitor) {
         return visitor.visit(this);
     }
     

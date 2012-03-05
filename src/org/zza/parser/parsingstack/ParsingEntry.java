@@ -1,9 +1,8 @@
 package org.zza.parser.parsingstack;
 
-
 public abstract class ParsingEntry extends Entry {
-
-    public ParsingEntry(String entry) {
+    
+    public ParsingEntry(final String entry) {
         super(entry);
     }
     

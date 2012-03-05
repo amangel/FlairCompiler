@@ -3,33 +3,32 @@ package org.zza.parser.semanticstack.nodes;
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
-
 public class ProgramNode extends SemanticNode {
-
+    
     private SemanticNode header;
     private SemanticNode declarations;
     private SemanticNode body;
     
-    public ProgramNode () {
+    public ProgramNode() {
         header = new EmptyNode();
         declarations = new EmptyNode();
         body = new EmptyNode();
     }
     
     @Override
-    public void runOnSemanticStack(SemanticStack stack) {
-        if(stack.peek().getName().equals("CompoundStatement")) {
+    public void runOnSemanticStack(final SemanticStack stack) {
+        if (stack.peek().getName().equals("CompoundStatement")) {
             body = stack.pop();
         }
-        if(stack.peek().getName().equals("Declarations")) {
+        if (stack.peek().getName().equals("Declarations")) {
             declarations = stack.pop();
         }
-        if(stack.peek().getName().equals("ProgramHeader")) {
+        if (stack.peek().getName().equals("ProgramHeader")) {
             header = stack.pop();
         }
         stack.push(this);
     }
-
+    
     public SemanticNode getHeader() {
         return header;
     }
@@ -44,9 +43,7 @@ public class ProgramNode extends SemanticNode {
     
     @Override
     public String getStringRepresentation() {
-        return getName() + " {" + header.getStringRepresentation() +
-                declarations.getStringRepresentation() + 
-                body.getStringRepresentation() + "}";
+        return getName() + " {" + header.getStringRepresentation() + declarations.getStringRepresentation() + body.getStringRepresentation() + "}";
     }
     
     @Override
@@ -55,7 +52,7 @@ public class ProgramNode extends SemanticNode {
     }
     
     @Override
-    public String accept(NodeVisitor visitor) {
+    public String accept(final NodeVisitor visitor) {
         return visitor.visit(this);
     }
 }

@@ -341,7 +341,7 @@ public class RuleTable {
                 new SemanticEntry("print")} ));
     }
     
-    public List<Entry> find(final String A, final String i) {
+    public List<Entry> find(final String A, final String i) throws ParsingException {
 //        System.out.println("'"+A+"' '"+i+"'");
         final int index = tableContents.get(A).get(i);
         //System.out.println(index);

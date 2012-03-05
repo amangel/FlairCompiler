@@ -19,10 +19,10 @@ public class RecentTokensStack {
         }
         stack.add(token);
     }
-
-    public CompilerToken getMostRecent() throws ParsingException{
-        if(stack.size() > 0) {
-            return stack.get(stack.size()-1);
+    
+    public CompilerToken getMostRecent() throws ParsingException {
+        if (stack.size() > 0) {
+            return stack.get(stack.size() - 1);
         } else {
             throw new ParsingException("Tried to retrieve a token from the recent token stream when it was empty.");
         }
@@ -30,8 +30,10 @@ public class RecentTokensStack {
     
     public String getStackDump() {
         String output = "";
-        for (CompilerToken token : stack) {
-            output += token.getValue() + " ";
+        for (final CompilerToken token : stack) {
+            if (token != null) {
+                output += token.getValue() + " ";
+            }
         }
         return output;
     }

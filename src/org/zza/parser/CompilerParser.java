@@ -22,11 +22,10 @@ public class CompilerParser {
     private final SemanticStack semanticStack;
     private final SemanticNodeFactory nodeFactory;
     private final RuleTable ruleTable;
-    private RecentTokensStack recentTokens;
+    private static RecentTokensStack recentTokens;
     private final CompilerTokenStream stream;
     private Entry A;
     private CompilerToken i;
-//    private String previousStackValue;
     private String submissionOutput;
     
     public CompilerParser(final CompilerTokenStream tokenStream) {
@@ -39,48 +38,34 @@ public class CompilerParser {
         try {
             run();
         } catch (final Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
+            parsingErrorEncountered(e);
         }
     }
     
     public void run() throws ParsingException {
         parseStack.push(new TerminalEntry(EOF));
         addToParseStack(ruleTable.find(startSymbol, startToken));
-//        previousStackValue = "";
         submissionOutput = "";
         A = parseStack.peek();
         getNextToken();
         while ((A != null) && !A.getType().equals(EOF)) {
-           
             A = parseStack.peek();
-//            System.out.println("Parse stack:" +parseStack);
-//            System.out.println("working with: A:"+A +" i:"+i+" "+i.getValue()+" "+i.getStringType()+"\n");
-            
             if (A.isTerminal()) {
-                
-//                System.out.println(A.getType() + " is terminal");
                 if (A.getType().equalsIgnoreCase(i.getStringType())) {
-//                System.out.println("A: "+A.getType() + " i: "+i.getId()+" "+i.getValue() + "prev: "+previousStackValue);
-//                    System.out.println("A and i match");
-//                    System.out.println("i: "+i.getId()+" "+i.getValue());
                     parseStack.pop();
-                    if(parseStack.notEmpty()) {
+                    if (parseStack.notEmpty()) {
                         A = parseStack.peek();
-                        getNextToken();// i.consume();
+                        getNextToken();
                     }
-//                    System.out.println("i: "+i.getId()+" "+i.getValue());
-                    
                 } else {
                     throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getStringType() + "");
                 }
             } else if (A.isSemanticEntry()) {
-                SemanticNode node = nodeFactory.getNewNode(A.getType());
+                final SemanticNode node = nodeFactory.getNewNode(A.getType());
                 node.runOnSemanticStack(semanticStack);
                 parseStack.pop();
             } else {
                 if (isRuleContained(A, i)) {
-//                    System.out.println("A is not terminal, rule was found");
                     parseStack.pop();
                     addToParseStack(ruleTable.find(A.getType(), i.getStringType()));
                     A = parseStack.peek();
@@ -88,7 +73,6 @@ public class CompilerParser {
                     throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A.getType() + " , " + i.getStringType());
                 }
             }
-            
         }
         printOutSemanticStack();
         
@@ -96,41 +80,53 @@ public class CompilerParser {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
         }
         
-        if(submissionOutput.length() > 0) {
+        if (submissionOutput.length() > 0) {
             System.out.println(submissionOutput);
         }
-        StackPrintingVisitor printer = new StackPrintingVisitor();
+        final StackPrintingVisitor printer = new StackPrintingVisitor();
         System.out.println(printer.visit(semanticStack.pop()));
     }
     
+    // TODO: remove this before submitting
     private void printOutSemanticStack() {
         System.out.println("\n\nSemantic stack: ");
-        for (SemanticNode node : semanticStack.getArrayToPrintAndTest()) {
+        for (final SemanticNode node : semanticStack.getArrayToPrintAndTest()) {
             System.out.println(node.getStringRepresentation());
         }
         System.out.println("SemanticStack contains " + semanticStack.getSize() + " items");
     }
-
+    
     private void getNextToken() {
         recentTokens.push(i);
         i = stream.getNext();
-        if(i.getStringType().equals(COMMENT)) {
+        if (i.getStringType().equals(COMMENT)) {
             getNextToken();
         }
     }
-
-    private boolean isRuleContained(final Entry A, final CompilerToken i) {
-       // System.out.println(A + " " + i);
-        final List<Entry> returnValue = ruleTable.find(A.getType(), i.getStringType());
+    
+    private boolean isRuleContained(final Entry A, final CompilerToken i) throws ParsingException {
+        // System.out.println(A + " " + i);
+        List<Entry> returnValue = null;
+        try {
+            returnValue = ruleTable.find(A.getType(), i.getStringType());
+        } catch (final NullPointerException e) {
+            throw new ParsingException("Program contains a grammatical error: Looking for: " + A.getType() + ", found: " + i.getStringType());
+        }
         return returnValue != null;
     }
     
     private void addToParseStack(final List<Entry> tableEntry) {
-//        System.out.println("adding to parse stack: "+tableEntry);
         for (int i = tableEntry.size() - 1; i >= 0; i--) {
-            if(!tableEntry.get(i).isEpsilon()) {
+            if (!tableEntry.get(i).isEpsilon()) {
                 parseStack.push(tableEntry.get(i));
             }
         }
+    }
+    
+    public static void parsingErrorEncountered(final Exception e) {
+        System.out.println("An error was encountered while parsing the program. Code before the error is:\n");
+        System.out.println(recentTokens.getStackDump());
+        System.out.println(e.getMessage());
+        System.exit(-1);
     }
 }

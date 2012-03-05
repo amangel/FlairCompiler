@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.zza.parser.semanticstack.nodes.SemanticNode;
 
-
 public class SemanticStack {
     
     private final ArrayList<SemanticNode> stack;
@@ -33,6 +32,7 @@ public class SemanticStack {
         }
     }
     
+    @Override
     public String toString() {
         return "SemanticStack: " + stack.toString();
     }
@@ -44,8 +44,8 @@ public class SemanticStack {
     public int getSize() {
         return stack.size();
     }
-
-    //TODO: TAKE THIS OUT BEFORE SUBMITTING
+    
+    // TODO: TAKE THIS OUT BEFORE SUBMITTING
     public ArrayList<SemanticNode> getArrayToPrintAndTest() {
         return stack;
     }

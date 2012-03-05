@@ -1,21 +1,20 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
-import org.zza.visitor.NodeVisitor;
-
 
 public abstract class TwoFieldNode extends SemanticNode {
-
+    
     protected SemanticNode leftHandSide;
     protected SemanticNode rightHandSide;
-    //protected SemanticNode parent from SemanticNode
-    //protected CompilerToken token from SemanticNode
+    
+    // protected SemanticNode parent from SemanticNode
+    // protected CompilerToken token from SemanticNode
     
     public TwoFieldNode() {
     }
     
     @Override
-    public void runOnSemanticStack(SemanticStack stack) {
+    public void runOnSemanticStack(final SemanticStack stack) {
         rightHandSide = stack.pop();
         leftHandSide = stack.pop();
         leftHandSide.setParent(this);
@@ -33,6 +32,6 @@ public abstract class TwoFieldNode extends SemanticNode {
     
     @Override
     public String getStringRepresentation() {
-        return "\n"+getName() + " {" + leftHandSide.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() +"} \n";
+        return "\n" + getName() + " {" + leftHandSide.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() + "} \n";
     }
 }

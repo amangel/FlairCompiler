@@ -5,21 +5,20 @@ import java.util.ArrayList;
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
-
 public class AllParametersNode extends SemanticNode {
     
     private ArrayList<SemanticNode> parameters;
     
     @Override
-    public void runOnSemanticStack(SemanticStack stack) {
+    public void runOnSemanticStack(final SemanticStack stack) {
         parameters = new ArrayList<SemanticNode>();
-        while(stack.peek().getName().equals("ParameterNode")) {
+        while (stack.peek().getName().equals("ParameterNode")) {
             parameters.add(stack.pop());
         }
         stack.push(this);
     }
-
-    public ArrayList<SemanticNode> getParameters(){
+    
+    public ArrayList<SemanticNode> getParameters() {
         return parameters;
     }
     
@@ -27,10 +26,10 @@ public class AllParametersNode extends SemanticNode {
     public String getStringRepresentation() {
         return getName() + " {" + getParameterStrings() + "}";
     }
-
+    
     private String getParameterStrings() {
         String toReturn = "";
-        for (SemanticNode node : parameters) {
+        for (final SemanticNode node : parameters) {
             toReturn += node.getStringRepresentation() + " ";
         }
         return toReturn;
@@ -40,9 +39,10 @@ public class AllParametersNode extends SemanticNode {
     public String getName() {
         return "AllParameters";
     }
-
-    public String accept(NodeVisitor visitor) {
+    
+    @Override
+    public String accept(final NodeVisitor visitor) {
         return visitor.visit(this);
     }
-
+    
 }

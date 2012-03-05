@@ -72,7 +72,7 @@ public class CompilerToken {
     
     @Override
     public String toString() {
-        return "Token: "+stringType;
+        return "Token: " + stringType;
     }
     
     private String getTypeName() {

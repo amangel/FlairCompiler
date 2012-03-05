@@ -24,7 +24,7 @@ begin
   while fp < 1 do
     begin 
       print (fp);
-      fp := fp + (1 - 0.0);
+      fp := fp + (1 - 0.0)
       fp := fp * (1 / 1.0)
     end;
 

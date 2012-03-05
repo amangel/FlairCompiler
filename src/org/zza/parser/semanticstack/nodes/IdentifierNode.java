@@ -3,33 +3,35 @@ package org.zza.parser.semanticstack.nodes;
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
-public class IdentifierNode extends SemanticNode{
-
+public class IdentifierNode extends SemanticNode {
+    
     final String id = "<identifier>";
     String value;
-    //protected SemanticNode parent from SemanticNode
-    //protected CompilerToken token from SemanticNode
+    
+    // protected SemanticNode parent from SemanticNode
+    // protected CompilerToken token from SemanticNode
     
     public IdentifierNode() {
     }
     
     @Override
-    public void runOnSemanticStack(SemanticStack stack) {
+    public void runOnSemanticStack(final SemanticStack stack) {
         if (token.getStringType().equals(id)) {
             stack.push(this);
             value = token.getValue();
         } else {
-            System.out.println("attempting to run "+ getName() + " on semantic stack. token did not match expected type");
+            System.out.println("attempting to run " + getName() + " on semantic stack. token did not match expected type");
         }
     }
-
-    public String accept(NodeVisitor visitor) {
+    
+    @Override
+    public String accept(final NodeVisitor visitor) {
         return visitor.visit(this);
     }
-
+    
     @Override
     public String getStringRepresentation() {
-        return getName() + " " +value;
+        return getName() + " " + value;
     }
     
     public String getValue() {

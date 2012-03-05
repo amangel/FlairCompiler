@@ -31,6 +31,7 @@ public class ParseStack {
         }
     }
     
+    @Override
     public String toString() {
         return stack.toString();
     }

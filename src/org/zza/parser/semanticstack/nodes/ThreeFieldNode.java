@@ -1,7 +1,6 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
-import org.zza.visitor.NodeVisitor;
 
 public abstract class ThreeFieldNode extends SemanticNode {
     
@@ -10,7 +9,7 @@ public abstract class ThreeFieldNode extends SemanticNode {
     protected SemanticNode middle;
     
     @Override
-    public void runOnSemanticStack(SemanticStack stack) {
+    public void runOnSemanticStack(final SemanticStack stack) {
         rightHandSide = stack.pop();
         middle = stack.pop();
         leftHandSide = stack.pop();
@@ -21,22 +20,21 @@ public abstract class ThreeFieldNode extends SemanticNode {
         
     }
     
-    public SemanticNode getLefthand(){
+    public SemanticNode getLefthand() {
         return leftHandSide;
     }
     
-    public SemanticNode getMiddle(){
+    public SemanticNode getMiddle() {
         return middle;
     }
     
-    public SemanticNode getRighthand(){
+    public SemanticNode getRighthand() {
         return rightHandSide;
     }
     
     @Override
     public String getStringRepresentation() {
-        return "\n"+getName() + " {" + leftHandSide.getStringRepresentation() + " : " + middle.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() +"} \n";
+        return "\n" + getName() + " {" + leftHandSide.getStringRepresentation() + " : " + middle.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() + "} \n";
     }
-    
     
 }

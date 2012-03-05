@@ -1,38 +1,6 @@
 package org.zza.visitor;
 
-import org.zza.parser.semanticstack.nodes.AllFunctionDeclarationsNode;
-import org.zza.parser.semanticstack.nodes.AllParametersNode;
-import org.zza.parser.semanticstack.nodes.AllVariableDeclarationsNode;
-import org.zza.parser.semanticstack.nodes.ArgumentNode;
-import org.zza.parser.semanticstack.nodes.AssignmentExpressionNode;
-import org.zza.parser.semanticstack.nodes.CompareNode;
-import org.zza.parser.semanticstack.nodes.ComparisonNode;
-import org.zza.parser.semanticstack.nodes.CompoundStatementNode;
-import org.zza.parser.semanticstack.nodes.DeclarationsNode;
-import org.zza.parser.semanticstack.nodes.DivisionExpressionNode;
-import org.zza.parser.semanticstack.nodes.EmptyNode;
-import org.zza.parser.semanticstack.nodes.FunctionBodyNode;
-import org.zza.parser.semanticstack.nodes.FunctionCallNode;
-import org.zza.parser.semanticstack.nodes.FunctionHeadingNode;
-import org.zza.parser.semanticstack.nodes.FunctionNode;
-import org.zza.parser.semanticstack.nodes.IdentifierNode;
-import org.zza.parser.semanticstack.nodes.IfStatementNode;
-import org.zza.parser.semanticstack.nodes.IntegerNode;
-import org.zza.parser.semanticstack.nodes.MinusExpressionNode;
-import org.zza.parser.semanticstack.nodes.MultiplicationExpressionNode;
-import org.zza.parser.semanticstack.nodes.NegativeExpressionNode;
-import org.zza.parser.semanticstack.nodes.ParameterNode;
-import org.zza.parser.semanticstack.nodes.PlusExpressionNode;
-import org.zza.parser.semanticstack.nodes.PrintStatementNode;
-import org.zza.parser.semanticstack.nodes.ProgramHeaderNode;
-import org.zza.parser.semanticstack.nodes.ProgramNode;
-import org.zza.parser.semanticstack.nodes.RealNode;
-import org.zza.parser.semanticstack.nodes.ReturnStatementNode;
-import org.zza.parser.semanticstack.nodes.SemanticNode;
-import org.zza.parser.semanticstack.nodes.TwoFieldNode;
-import org.zza.parser.semanticstack.nodes.TypeNode;
-import org.zza.parser.semanticstack.nodes.VariableDeclarationNode;
-import org.zza.parser.semanticstack.nodes.WhileExpressionNode;
+import org.zza.parser.semanticstack.nodes.*;
 
 public class TypeCheckingVisitor extends NodeVisitor {
 

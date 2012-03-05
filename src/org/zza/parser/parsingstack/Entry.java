@@ -12,6 +12,7 @@ public abstract class Entry {
         return entry;
     }
     
+    @Override
     public String toString() {
         return entry;
     }
@@ -21,6 +22,7 @@ public abstract class Entry {
     }
     
     public abstract boolean isSemanticEntry();
+    
     public abstract boolean isTerminal();
     
 }
