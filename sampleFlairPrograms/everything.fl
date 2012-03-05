@@ -5,6 +5,7 @@ program everything(x : real, y : integer);
 var 
   a : integer;
   b : real;
+  negin : integer;
   
 function no(y : real) : real
   begin
