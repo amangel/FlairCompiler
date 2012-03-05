@@ -15,7 +15,6 @@ public class CompilerStateScanner {
     private ArrayList<CompilerToken> tokens;
     private String currentToken;
     private final CompilerTokenStream stream;
-    private HashMap<String, String> stateToTypeMap;
     
     public CompilerStateScanner(final String input) {
         final StringReader inputProgramBuffer = new StringReader(input.trim().replaceAll("\\s+", " "));
@@ -88,42 +87,110 @@ public class CompilerStateScanner {
         } else if (state.equalsIgnoreCase("real")) {
             return processFloat(token, state);
             
+        } else if (state.equalsIgnoreCase("plus")) {
+            return new CompilerToken("+", token);
+            
+        } else if (state.equalsIgnoreCase("minus")) {
+            return new CompilerToken("-", token);
+            
+        } else if (state.equalsIgnoreCase("multiplication")) {
+            return new CompilerToken("*", token);
+            
+        } else if (state.equalsIgnoreCase("division")) {
+            return new CompilerToken("/", token);
+            
         } else if (state.equalsIgnoreCase("bang")) {
             throw new LexicalException("Invalid modifier ! found.");
+            
+        } else if (state.equalsIgnoreCase("notequal")) {
+            return new CompilerToken("!=", token);
+            
+        } else if (state.equalsIgnoreCase("equal")) {
+            return new CompilerToken("=", token);
+            
+        } else if (state.equalsIgnoreCase("colon")) {
+            return new CompilerToken(":", token);
+            
+        } else if (state.equalsIgnoreCase("assignment")) {
+            return new CompilerToken(":=", token);
+            
+        } else if (state.equalsIgnoreCase("lessthan")) {
+            return new CompilerToken("<", token);
+            
+        } else if (state.equalsIgnoreCase("lessthanoreq")) {
+            return new CompilerToken("<=", token);
+            
+        } else if (state.equalsIgnoreCase("greaterthan")) {
+            return new CompilerToken(">", token);
+            
+        } else if (state.equalsIgnoreCase("greaterthanoreq")) {
+            return new CompilerToken(">=", token);
+            
+        } else if (state.equalsIgnoreCase("leftcurly")) {
+            return new CompilerToken("{", token);
+            
+        } else if (state.equalsIgnoreCase("rightcurly")) {
+            return new CompilerToken("}", token);
+            
+        } else if (state.equalsIgnoreCase("leftparen")) {
+            return new CompilerToken("(", token);
+            
+        } else if (state.equalsIgnoreCase("rightparen")) {
+            return new CompilerToken(")", token);
+            
+        } else if (state.equalsIgnoreCase("comma")) {
+            return new CompilerToken(",", token);
+            
+        } else if (state.equalsIgnoreCase("semicolon")) {
+            return new CompilerToken(";", token);
+            
+        } else if (state.equalsIgnoreCase("endofprogram")) {
+            return new CompilerToken(".", token);
+            
+        } else if (state.equalsIgnoreCase("EOF")) {
+            return new CompilerToken("EOF", token);
             
         } else if (state.equalsIgnoreCase("realexponentzero")) {
             return processFloat(token, state);
             
         } else if (state.equalsIgnoreCase("zerointeger")) {
             return processInteger(token);
+            
+        } else if (state.equalsIgnoreCase("closedcomment")) {
+            return new CompilerToken("COMMENT", token);
+            
+        } else if (state.equalsIgnoreCase("period")) {
+            return new CompilerToken(".", token);
+            
         } else {
-            return new CompilerToken(stateToTypeMap.get(state), token);//, -1);
+            System.out.println("Unknown token type: " + token + " with state: " + state);
         }
+        return new CompilerToken("", "");
     }
     
     private CompilerToken processFloat(String token, final String state) throws LexicalException {
+        // state: real, realexponent, realexponentzero
         final String[] parts = token.split("\\.");
         final String NEW_EXPONENT = "e1";
         final String NEW_DECIMAL = ".0e";
-        final String EXPONENT_SYMBOL = "e";
         try {
-            validateInteger(parts[0].split(EXPONENT_SYMBOL)[0]);
+            validateInteger(parts[0].split("e")[0]);
             // Validate the integer parts of the number
             if (token.indexOf(".") > 0) {
-                validateInteger(parts[1].split(EXPONENT_SYMBOL)[0]);
+                validateInteger(parts[1].split("e")[0]);
             }
             if (state.equals("realexponent") || state.equals("realexponentzero")) {
-                final String[] exponentParts = token.split(EXPONENT_SYMBOL);
+                final String[] exponentParts = token.split("e");
                 validateInteger(exponentParts[1]);
             }
             if (token.indexOf(".") > 0) {
-                if (token.indexOf(EXPONENT_SYMBOL) > 0) {
+                if (token.indexOf("e") > 0) {
                 } else {
                     token += NEW_EXPONENT;
                 }
             } else {
-                if (token.indexOf(EXPONENT_SYMBOL) > 0) {
-                    final String[] tokenParts = token.split(EXPONENT_SYMBOL);
+                if (token.indexOf("e") > 0) {
+                    final String[] tokenParts = token.split("e");
                     token = tokenParts[0] + NEW_DECIMAL + tokenParts[1];
                 } else {
                     throw new LexicalException("Real number created without . or e. This doesn't seem physically possible!");
@@ -148,20 +215,61 @@ public class CompilerStateScanner {
         // -1 less, 0 equal, 1 greater
         try {
             if (!((toReturn.compareTo(max) == -1) && (toReturn.compareTo(min) == 1))) {
-                throw new LexicalException("Integers must be strictly less than " + max + " and greater than " + min + ". Received " + token);
+                throw new LexicalException("LexicalException: Integers must be strictly less than " + max + " and greater than " + min + ". Received " + token);
             }
         } catch (final NumberFormatException e) {
-            throw new LexicalException("Integers must be strictly less than " + max + " and greater than " + min + ". Received " + token);
+            throw new LexicalException("LexicalException: Integers must be strictly less than " + max + " and greater than " + min + ". Received " + token);
         }
         return token;
     }
     
     private CompilerToken processIdentifier(final String token) throws LexicalException {
         if (reservedStrings.contains(token)) {
-            return new CompilerToken(stateToTypeMap.get(token), token);
+            if (token.equalsIgnoreCase("program")) {
+                return new CompilerToken("program", token);
+                
+            } else if (token.equalsIgnoreCase("var")) {
+                return new CompilerToken("var", token);
+                
+            } else if (token.equalsIgnoreCase("function")) {
+                return new CompilerToken("function", token);
+                
+            } else if (token.equalsIgnoreCase("integer")) {
+                return new CompilerToken("<integer>", token);
+                
+            } else if (token.equalsIgnoreCase("real")) {
+                return new CompilerToken("<real>", token);
+                
+            } else if (token.equalsIgnoreCase("begin")) {
+                return new CompilerToken("begin", token);
+                
+            } else if (token.equalsIgnoreCase("end")) {
+                return new CompilerToken("end", token);
+                
+            } else if (token.equalsIgnoreCase("if")) {
+                return new CompilerToken("if", token);
+                
+            } else if (token.equalsIgnoreCase("then")) {
+                return new CompilerToken("then", token);
+                
+            } else if (token.equalsIgnoreCase("else")) {
+                return new CompilerToken("else", token);
+                
+            } else if (token.equalsIgnoreCase("while")) {
+                return new CompilerToken("while", token);
+                
+            } else if (token.equalsIgnoreCase("do")) {
+                return new CompilerToken("do", token);
+                
+            } else if (token.equalsIgnoreCase("print")) {
+                return new CompilerToken("print", token);
+                
+            } else if (token.equalsIgnoreCase("return")) {
+                return new CompilerToken("return", token);
+            }
         }
         if (token.length() <= 256) {
-            return new CompilerToken("<identifier>", token); 
+            return new CompilerToken("<identifier>", token);
         } else {
             throw new LexicalException("Identifier names must be under 256 characters long. " + token.length() + " is too many.");
         }
@@ -257,45 +365,7 @@ public class CompilerStateScanner {
                 "while",
                 "do",
                 "print"}));
-        stateToTypeMap = new HashMap<String, String>();
-        //Reserved Words
-        stateToTypeMap.put("program", "program");
-        stateToTypeMap.put("var","var");
-        stateToTypeMap.put("return","return");
-        stateToTypeMap.put("function","function");
-        stateToTypeMap.put("integer","<integer>");
-        stateToTypeMap.put("real","<real>");
-        stateToTypeMap.put("begin","begin");
-        stateToTypeMap.put("end","end");
-        stateToTypeMap.put("if","if");
-        stateToTypeMap.put("then","then");
-        stateToTypeMap.put("else","else");
-        stateToTypeMap.put("while","while");
-        stateToTypeMap.put("do","do");
-        stateToTypeMap.put("print","print");
-        //other valid end states
-        stateToTypeMap.put("plus", "+");
-        stateToTypeMap.put("minus", "-");
-        stateToTypeMap.put("multiplication", "*");
-        stateToTypeMap.put("division", "/");
-        stateToTypeMap.put("notequal", "!=");
-        stateToTypeMap.put("equal", "=");
-        stateToTypeMap.put("colon", ":");
-        stateToTypeMap.put("assignment", ":=");
-        stateToTypeMap.put("lessthan", "<");
-        stateToTypeMap.put("lessthanoreq", "<=");
-        stateToTypeMap.put("greaterthan", ">");
-        stateToTypeMap.put("greaterthanoreq", ">=");
-        stateToTypeMap.put("leftcurly", "{");
-        stateToTypeMap.put("rightcurly", "}");
-        stateToTypeMap.put("leftparen", "(");
-        stateToTypeMap.put("rightparen", ")");
-        stateToTypeMap.put("comma", ",");
-        stateToTypeMap.put("semicolon", ";");
-        stateToTypeMap.put("endofprogram", ".");
-        stateToTypeMap.put("EOF", "EOF");
-        stateToTypeMap.put("closedcomment", "COMMENT");
-        stateToTypeMap.put("period", ".");
+        
         tokens = new ArrayList<CompilerToken>();
     }
 }
