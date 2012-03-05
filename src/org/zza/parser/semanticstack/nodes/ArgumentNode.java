@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
@@ -15,6 +16,7 @@ public class ArgumentNode extends SemanticNode {
         while (!stack.peek().getName().equals("(")) {
             arguments.add(stack.pop());
         }
+        Collections.reverse(arguments);
         stack.pop();
         stack.push(this);
     }

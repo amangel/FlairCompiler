@@ -9,7 +9,6 @@ public class CompilerTokenStream {
     
     public CompilerTokenStream(final ArrayList<CompilerToken> list) {
         tokens = list;
-        // index = 0;
         current = null;
     }
     

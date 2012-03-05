@@ -32,6 +32,7 @@ public class driver {
         
         final CompilerStateScanner s = new CompilerStateScanner(programToUse);
         final CompilerParser p = new CompilerParser(s.getTokenStream());
+        
         final long end = System.currentTimeMillis();
         System.out.println("time: " + (end - start));
     }

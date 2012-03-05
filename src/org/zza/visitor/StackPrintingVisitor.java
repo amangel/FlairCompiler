@@ -23,7 +23,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         String header = node.getHeader().accept(this);
         String declarations = node.getDeclarations().accept(this);
         String body = node.getbody().accept(this);
-        return "Program:\n" + tabs + "Header: "+header + "\n"+ tabs + "Declarations: "+declarations + tabs + "Body: "+body;
+        return "Program:\n" + tabs + "Header: "+header + "\n"+ tabs + "Declarations: "+declarations + "\n" + tabs + "Body: "+body;
     }
     
     @Override
@@ -154,7 +154,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         ArrayList<SemanticNode> arguments = node.getArguments();
         String argumentString = "";
         for (SemanticNode argument : arguments) {
-            argumentString += argument.accept(this);
+            argumentString += argument.accept(this) + "\n";
         }
         depth--;
         return "\n" + tabs + "Arguments:\n"+argumentString;
