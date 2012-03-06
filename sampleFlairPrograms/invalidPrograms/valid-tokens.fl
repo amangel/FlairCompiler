@@ -1,0 +1,54 @@
+    program   var       function  integer   real
+    begin     end       if        then      else
+    while     do        print     return    :=
+    =         !=        <         <=        >        >=
+    +         -         *         /         {         }
+    ;         .         ,         :         (         )
+
+a
+a1
+a2b
+abc3
+ABC3
+aBCd4
+aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBC4d
+aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4aBCd4Abc3
+
+    Program   Var       FUNCtion  intEGER   Real
+    BEGIN     End       IF        Then      Else
+    While     DO        Print     RETURN
+
+1
+-2
+30
+-40
+5.0
+-6.0
+7.8
+-9.10
+1e2
+3e-4
+-5e6
+-7e-8
+1.2e3
+-4.5e6
+7.8e-9
+-1.2e-3
+
+4294967295
+-4294967296
+
+4294967295e-4294967296
+4294967295.4294967295e-4294967296
+
+{ single line comment print(x) }
+
+{  *********************************************
+
+   multi-line comment
+
+    program   var       function  integer   real
+    begin     end       if        then      else
+    while     do        print     return    :=
+
+************************************************ }

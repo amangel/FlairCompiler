@@ -1,0 +1,9 @@
+program IntegerDivision (x : integer, y : integer);
+	var quotient : integer;
+		remainder : integer;
+	begin
+		quotient := x/y;
+		remainder := x - (y * remainder);
+		print ( quotient );
+		print ( reminader )
+	end .
