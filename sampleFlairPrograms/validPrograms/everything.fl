@@ -1,0 +1,42 @@
+program everything(x : real, y : integer);
+
+{This program contains everything in our language.  It is currently 4 AM}
+
+var 
+  a : integer;
+  b : real;
+  negin : integer;
+  
+function no(y : real) : real
+  begin
+    return y
+  end;
+
+function yes() : integer
+  begin
+    return 1
+  end;
+
+begin
+  fp := 0.001;
+  in := 1;
+  negin := -3;
+
+  while fp < 1 do
+    begin 
+      print (fp);
+      fp := fp + (1 - 0.0);
+      fp := fp * (1 / 1.0)
+    end;
+
+  if x > 3 then print(x) else print(0);
+  if x >= 3 then print(0) else print(no(0.0));
+  if x != 4 then print(in) else print(7);
+  if x <= 3 then print(5.0e1) else print(negin);
+  if x < 3.0 then print(negin) else print(3);      
+  if x = 40 then print(x) else print(y);
+  negin := no(0.4)
+
+end.
+  
+      
