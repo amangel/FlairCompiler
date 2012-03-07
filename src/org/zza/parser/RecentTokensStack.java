@@ -6,7 +6,7 @@ import org.zza.scanner.CompilerToken;
 
 public class RecentTokensStack {
     
-    private final int MAX_SIZE = 5;
+    private final int MAX_SIZE = 10;
     private final ArrayList<CompilerToken> stack;
     
     public RecentTokensStack() {
