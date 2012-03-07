@@ -1,0 +1,27 @@
+program triangle (maxDepth : integer);
+    var currentDepth : integer;
+        index        : ;
+begin
+    currentDepth := 0;
+    while currentDepth < maxDepth do
+        begin
+            index := 0;
+            while index <= currentDepth do
+                begin
+                    print(1);
+                    x := x + 1;
+                end;
+            currentDepth := currentDepth + 1;
+        end;
+    while currentDepth > 0 do
+        begin
+            index := 0;
+            while index < currentDepth do
+                begin
+                    print(1);
+                    x := x + 1;
+                end;
+            currentDepth := currentDepth - 1;
+        end;
+end.
+                

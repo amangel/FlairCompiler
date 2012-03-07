@@ -1,0 +1,14 @@
+program functiontest (third : integer, fourth : real);
+function func1 (first : integer, second : integer) : integer
+  begin 
+    while first > 1 do
+      begin
+        second := second  first;
+        first := first - 1
+      end;
+    return second
+  end;
+
+begin
+  print( func1(10, 1) )
+end.

@@ -1,0 +1,36 @@
+program SquareRootViaNewtonsMethod(n : real, epsilon : real);
+
+function f( x : real) : real
+  begin
+    return (x * x) - n
+  end;
+  
+function df( x : real ) : real
+  begin
+    return 2 * x
+  end;
+
+function abs( n : real ) : real
+  begin
+    if n < 0 then
+	  return 0 - n
+	else
+	  return n
+  end;
+
+function newton( guess : real ) : real
+  begin 
+  var previous : real;
+  previous := guess;
+	guess := guess - f(guess)/df(guess);
+	while abs(previous-guess) > epsilon do
+	  begin
+	    previous := guess;
+		guess := guess - f(guess)/df(guess)
+	  end;
+	return guess
+  end;
+
+begin
+  print( newton(n/2) )
+end.
