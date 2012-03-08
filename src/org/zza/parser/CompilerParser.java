@@ -74,7 +74,7 @@ public class CompilerParser {
                 }
             }
         }
-        printOutSemanticStack();
+        semanticStack.printOutSemanticStack();
         
         if (!stream.isEmpty()) {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
@@ -85,15 +85,6 @@ public class CompilerParser {
         }
         final StackPrintingVisitor printer = new StackPrintingVisitor();
         System.out.println(printer.visit(semanticStack.pop()));
-    }
-    
-    // TODO: remove this before submitting
-    private void printOutSemanticStack() {
-        System.out.println("\n\nSemantic stack: ");
-        for (final SemanticNode node : semanticStack.getArrayToPrintAndTest()) {
-            System.out.println(node.getStringRepresentation());
-        }
-        System.out.println("SemanticStack contains " + semanticStack.getSize() + " items");
     }
     
     private void getNextToken() {

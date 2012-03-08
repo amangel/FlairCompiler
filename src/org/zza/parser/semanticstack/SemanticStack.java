@@ -44,9 +44,12 @@ public class SemanticStack {
     public int getSize() {
         return stack.size();
     }
-    
-    // TODO: TAKE THIS OUT BEFORE SUBMITTING
-    public ArrayList<SemanticNode> getArrayToPrintAndTest() {
-        return stack;
+
+    public void printOutSemanticStack() {
+        System.out.println("\n\nSemantic stack: ");
+        for (final SemanticNode node : stack) {
+            System.out.println(node.getStringRepresentation());
+        }
+        System.out.println("SemanticStack contains " + getSize() + " items");
     }
 }
