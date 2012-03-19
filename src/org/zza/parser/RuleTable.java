@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class RuleTable {
         buildTable();
     }
     
-    private void buildTable() {
+    private void buildTable() {        
         tableContents = new HashMap<String, Map<String, Integer>>();
         
         BufferedReader reader = null;
@@ -47,6 +48,7 @@ public class RuleTable {
         }
         
         while (nextLine != null) {
+            System.out.println("reading line: "+nextLine);
             String nonterminal = "";
             String terminal = "";
             Integer ruleIndex = 0;
@@ -77,7 +79,8 @@ public class RuleTable {
     private void addToTable(final String nonterminal, final String terminal, final Integer ruleIndex) throws Exception {
         if (tableContents.containsKey(nonterminal)) {
             if (tableContents.get(nonterminal).containsKey(terminal)) {
-                throw new Exception("Attempting to overwrite rule in parsing table. :" + nonterminal + " , " + terminal + " , " + ruleIndex + ".");
+                throw new Exception("Attempting to overwrite rule in parsing table. :" + 
+                        nonterminal + " , " + terminal + " , " + ruleIndex + ".");
             } else {
                 tableContents.get(nonterminal).put(terminal, ruleIndex);
             }
@@ -106,7 +109,6 @@ public class RuleTable {
                 new TerminalEntry(";"),
                 new SemanticEntry("ProgramHeader"),
                 new NonterminalEntry("<DECLARATIONS>"),
-               //new SemanticEntry("declarations"),
                 new NonterminalEntry("<COMPOUND_STATEMENT>"), 
                 new TerminalEntry("."),
                 new SemanticEntry("Program")}));
@@ -247,7 +249,7 @@ public class RuleTable {
                 new NonterminalEntry("<COMPARE_OP>"),
                 new SemanticEntry("compare"),
                 new NonterminalEntry("<EXPRESSION>"),
-        		new SemanticEntry("comparison")}));
+                new SemanticEntry("comparison")}));
         // <COMPARE_OP>::==
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("=")}));
         // <
@@ -342,7 +344,7 @@ public class RuleTable {
     }
     
     public List<Entry> find(final String A, final String i) throws ParsingException {
-//        System.out.println("'"+A+"' '"+i+"'");
+        //        System.out.println("'"+A+"' '"+i+"'");
         final int index = tableContents.get(A).get(i);
         //System.out.println(index);
         return ruleArray.get(index);

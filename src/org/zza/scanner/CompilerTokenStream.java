@@ -18,7 +18,6 @@ public class CompilerTokenStream {
         } else {
             return tokens.remove(0);
         }
-        
     }
     
     public boolean hasNext() {
