@@ -35,11 +35,15 @@ public class CompilerParser {
         semanticStack = new SemanticStack();
         ruleTable = new RuleTable();
         nodeFactory = new SemanticNodeFactory(recentTokens);
+    }
+    
+    public SemanticNode parseProgram() {
         try {
             run();
         } catch (final Exception e) {
             parsingErrorEncountered(e);
         }
+        return semanticStack.pop();
     }
     
     public void run() throws ParsingException {
@@ -84,7 +88,7 @@ public class CompilerParser {
             System.out.println(submissionOutput);
         }
         final StackPrintingVisitor printer = new StackPrintingVisitor();
-        System.out.println(printer.visit(semanticStack.pop()));
+        System.out.println(printer.visit(semanticStack.peek()));
     }
     
     private void getNextToken() {
@@ -117,6 +121,7 @@ public class CompilerParser {
     public static void parsingErrorEncountered(final Exception e) {
         System.out.println("An error was encountered while parsing the program. Code before the error is:\n");
         System.out.println(recentTokens.getStackDump());
+        e.printStackTrace();
         System.out.println(e.getMessage());
         System.exit(-1);
     }
