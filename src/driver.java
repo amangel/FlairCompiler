@@ -8,11 +8,13 @@ import org.zza.scanner.CompilerStateScanner;
 
 public class driver {
     
+    private static long start;
+    
     /**
      * @param args
      */
     public static void main(final String[] args) {
-        final long start = System.currentTimeMillis();
+        startTime();
         final StringBuffer sb = new StringBuffer(50000);
         try {
             final BufferedReader in = new BufferedReader(new FileReader(args[0]));
@@ -28,13 +30,15 @@ public class driver {
             System.exit(-1);
         } catch (final IOException e) {
         }
-        
-        final CompilerStateScanner s = new CompilerStateScanner(sb);
-        final CompilerParser p = new CompilerParser(s.getTokenStream());
-        SemanticNode program = p.parseProgram();
-        
-        final long end = System.currentTimeMillis();
-        System.out.println("time: " + (end - start));
+        ThreadedDriver threaded = new ThreadedDriver(sb);
     }
     
+    public static void startTime() {        
+        start = System.currentTimeMillis();
+    }
+    
+    public static void endTime() {        
+        final long end = System.currentTimeMillis();
+        System.out.println("runtime in ms: " + (end - start));
+    }
 }

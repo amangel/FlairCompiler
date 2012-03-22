@@ -78,17 +78,12 @@ public class CompilerParser {
                 }
             }
         }
-        semanticStack.printOutSemanticStack();
+//        semanticStack.printOutSemanticStack();
         
         if (!stream.isEmpty()) {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
         }
         
-        if (submissionOutput.length() > 0) {
-            System.out.println(submissionOutput);
-        }
-        final StackPrintingVisitor printer = new StackPrintingVisitor();
-        System.out.println(printer.visit(semanticStack.peek()));
     }
     
     private void getNextToken() {

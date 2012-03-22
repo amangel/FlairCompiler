@@ -12,15 +12,19 @@ public class CompilerStateScanner {
     
     private ArrayList<String> reservedStrings;
     private Map<String, String> states;
-    private ArrayList<CompilerToken> tokens;
+//    private ArrayList<CompilerToken> tokens;
     private String currentToken;
     private final CompilerTokenStream stream;
     private HashMap<String, String> tokenStateMap;
     
-    public CompilerStateScanner(final StringBuffer buffer) {
+    public CompilerStateScanner(final StringBuffer buffer, CompilerTokenStream tokenStream) {
+        stream = tokenStream;
         createScannerMaps();
         generateTokens(new StringReader(buffer.toString()));
-        stream = new CompilerTokenStream(tokens);
+    }
+    
+    private void addTokenToStream(CompilerToken token) {
+        stream.addToken(token);
     }
     
     public CompilerTokenStream getTokenStream() {
@@ -47,6 +51,7 @@ public class CompilerStateScanner {
             handleStateTransition("", state);
             currentToken = "EOF";
             handleStateTransition("EOF", "EOF");
+            stream.finishedStream();
             
         } catch (final LexicalException e) {
             e.printStackTrace();
@@ -62,7 +67,8 @@ public class CompilerStateScanner {
             return states.get(state + next);
         } else {
             if (currentToken.trim().length() > 0) {
-                tokens.add(makeToken(currentToken.trim(), state));
+                //tokens.add(makeToken(currentToken.trim(), state));
+                addTokenToStream(makeToken(currentToken.trim(), state));
             }
             if (states.containsKey("start" + next)) {
                 currentToken = next;
@@ -254,7 +260,7 @@ public class CompilerStateScanner {
                 "do",
         "print"}));
         
-        tokens = new ArrayList<CompilerToken>(100);
+//        tokens = new ArrayList<CompilerToken>(100);
         
         tokenStateMap = new HashMap<String, String>();
         tokenStateMap.put("program", "program");
