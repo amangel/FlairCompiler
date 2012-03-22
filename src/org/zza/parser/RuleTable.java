@@ -30,7 +30,7 @@ public class RuleTable {
         buildTable();
     }
     
-    private void buildTable() {        
+    private void buildTable() {
         tableContents = new HashMap<String, Map<String, Integer>>();
         
         BufferedReader reader = null;
@@ -60,7 +60,7 @@ public class RuleTable {
                 terminal = term[0];
                 ruleIndex = Integer.parseInt(term[1]);
                 try {
-                    addToTable(nonterminal, terminal, ruleIndex);   
+                    addToTable(nonterminal, terminal, ruleIndex);
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
@@ -77,8 +77,7 @@ public class RuleTable {
     private void addToTable(final String nonterminal, final String terminal, final Integer ruleIndex) throws Exception {
         if (tableContents.containsKey(nonterminal)) {
             if (tableContents.get(nonterminal).containsKey(terminal)) {
-                throw new Exception("Attempting to overwrite rule in parsing table. :" + 
-                        nonterminal + " , " + terminal + " , " + ruleIndex + ".");
+                throw new Exception("Attempting to overwrite rule in parsing table. :" + nonterminal + " , " + terminal + " , " + ruleIndex + ".");
             } else {
                 tableContents.get(nonterminal).put(terminal, ruleIndex);
             }
@@ -89,7 +88,7 @@ public class RuleTable {
         }
     }
     
-    private void addToRuleArray(List<Entry> rule) {
+    private void addToRuleArray(final List<Entry> rule) {
         ruleArray.add(rule);
     }
     
@@ -107,11 +106,11 @@ public class RuleTable {
                 new TerminalEntry(";"),
                 new SemanticEntry("ProgramHeader"),
                 new NonterminalEntry("<DECLARATIONS>"),
-                new NonterminalEntry("<COMPOUND_STATEMENT>"), 
+                new NonterminalEntry("<COMPOUND_STATEMENT>"),
                 new TerminalEntry("."),
                 new SemanticEntry("Program")}));
         // <DECLARATIONS>::=<VARIABLE_DECLARATIONS> <FUNCTION_DECLARATIONS>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VARIABLE_DECLARATIONS>"),
                 new SemanticEntry("allvariables"),
                 new NonterminalEntry("<FUNCTION_DECLARATIONS>"),
                 new SemanticEntry("allfunctions"),
@@ -124,11 +123,12 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION_LIST>")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
-        // <FXN_DECLARATION_LIST>::=<FXN_DECLARATION> <FXN_DECLARATION_LIST_TAIL>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION>"), 
+        // <FXN_DECLARATION_LIST>::=<FXN_DECLARATION>
+        // <FXN_DECLARATION_LIST_TAIL>
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_DECLARATION>"),
                 new NonterminalEntry("<FXN_DECLARATION_LIST_TAIL>")}));
         // <FXN_DECLARATION>::=<FXN_HEADING> <FXN_BODY> ;
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_HEADING>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FXN_HEADING>"),
                 new NonterminalEntry("<FXN_BODY>"),
                 new TerminalEntry(";"),
                 new SemanticEntry("function")}));
@@ -149,7 +149,7 @@ public class RuleTable {
                 new NonterminalEntry("<COMPOUND_STATEMENT>"),
                 new SemanticEntry("functionbody")}));
         // <VARIABLE_DECLARATIONS>::=var <VAR_DECLARATION_LIST>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("var"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("var"),
                 new NonterminalEntry("<VAR_DECLARATION_LIST>")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
@@ -159,7 +159,7 @@ public class RuleTable {
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <VAR_DECLARATION_LIST>::=<VAR_DECLARATION>
         // <VAR_DECLARATION_LIST_TAIL>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VAR_DECLARATION>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<VAR_DECLARATION>"),
                 new NonterminalEntry("<VAR_DECLARATION_LIST_TAIL>")}));
         // <VAR_DECLARATION>::=<identifier> : <TYPE> ;
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"),
@@ -173,17 +173,17 @@ public class RuleTable {
         // <PARAMETER_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PARAMETER_LIST>")}));
         // <PARAMETER_LIST>::=<PARAMETER> <PARAMETER_LIST_TAIL>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PARAMETER>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PARAMETER>"),
                 new NonterminalEntry("<PARAMETER_LIST_TAIL>")}));
         // <PARAMETER_LIST_TAIL>::=, <PARAMETER_LIST>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(","), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(","),
                 new NonterminalEntry("<PARAMETER_LIST>")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <PARAMETER>::=<identifier> : <TYPE>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"),
                 new SemanticEntry("identifier"),
-                new TerminalEntry(":"), 
+                new TerminalEntry(":"),
                 new NonterminalEntry("<TYPE>"),
                 new SemanticEntry("ParameterNode")}));
         // <TYPE>::=integer
@@ -205,17 +205,17 @@ public class RuleTable {
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <STATEMENT_LIST>::=<STATEMENT> <STATEMENT_LIST_TAIL>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<STATEMENT>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<STATEMENT>"),
                 new NonterminalEntry("<STATEMENT_LIST_TAIL>")}));
         // <STATEMENT_LIST_TAIL>::=; <STATEMENT_LIST>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(";"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(";"),
                 new NonterminalEntry("<STATEMENT_LIST>")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <ASSIGNMENT_STATEMENT>::=<identifier> := <EXPRESSION>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"),
                 new SemanticEntry("identifier"),
-                new TerminalEntry(":="), 
+                new TerminalEntry(":="),
                 new NonterminalEntry("<EXPRESSION>"),
                 new SemanticEntry("assignment")}));
         // <IF_STATEMENT>::=if <COMPARISON> then <STATEMENT> else <STATEMENT>
@@ -239,11 +239,11 @@ public class RuleTable {
                 new SemanticEntry("compound"),
                 new TerminalEntry("end")}));
         // <RETURN_STATEMENT>::=return <EXPRESSION>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("return"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("return"),
                 new NonterminalEntry("<EXPRESSION>"),
                 new SemanticEntry("return")}));
         // <COMPARISON>::=<EXPRESSION> <COMPARE_OP> <EXPRESSION>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"),
                 new NonterminalEntry("<COMPARE_OP>"),
                 new SemanticEntry("compare"),
                 new NonterminalEntry("<EXPRESSION>"),
@@ -265,51 +265,51 @@ public class RuleTable {
         // <ARGUMENT_LIST>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<ARGUMENT_LIST>")}));
         // <ARGUMENT_LIST>::=<EXPRESSION> <ARGUMENT_LIST_TAIL>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION>"),
                 new NonterminalEntry("<ARGUMENT_LIST_TAIL>")}));
         // <ARGUMENT_LIST_TAIL>::=<epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // , <ARGUMENT_LIST>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(","), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry(","),
                 new NonterminalEntry("<ARGUMENT_LIST>")}));
         // <EXPRESSION>::=- <EXPRESSION_BODY>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("-"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("-"),
                 new NonterminalEntry("<EXPRESSION_BODY>"),
                 new SemanticEntry("negative")}));
         // <EXPRESSION_BODY>
         addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<EXPRESSION_BODY>")}));
         // <EXPRESSION_BODY>::=<TERM> <ADDITIVE_EXPRESSION>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<TERM>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<TERM>"),
                 new NonterminalEntry("<ADDITIVE_EXPRESSION>")}));
         // <ADDITIVE_EXPRESSION>::=+ <TERM>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("+"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("+"),
                 new NonterminalEntry("<TERM>"),
                 new SemanticEntry("plus")}));
         // - <TERM>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("-"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("-"),
                 new NonterminalEntry("<TERM>"),
                 new SemanticEntry("minus")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <TERM>::=<FACTOR> <MULTIPLICATIVE_EXPRESSION>
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FACTOR>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<FACTOR>"),
                 new NonterminalEntry("<MULTIPLICATIVE_EXPRESSION>")}));
         // <MULTIPLICATIVE_EXPRESSION>::=* <TERM>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("*"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("*"),
                 new NonterminalEntry("<TERM>"),
                 new SemanticEntry("multiplication")}));
         // / <TERM>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("/"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("/"),
                 new NonterminalEntry("<TERM>"),
                 new SemanticEntry("division")}));
         // <epsilon>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <FACTOR>::=( <EXPRESSION> )
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("("), 
-                new NonterminalEntry("<EXPRESSION>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("("),
+                new NonterminalEntry("<EXPRESSION>"),
                 new TerminalEntry(")")}));
         // <identifier> FUNCTION_CALL
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"), 
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<identifier>"),
                 new SemanticEntry("identifier"),
                 new NonterminalEntry("<FUNCTION_CALL>")}));
         // <LITERAL>
@@ -322,23 +322,23 @@ public class RuleTable {
                 new TerminalEntry(")"),
                 new SemanticEntry("functioncall")}));
         // <epsilon>
-        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")} ));
+        addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("<epsilon>")}));
         // <LITERAL>::=<integer>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("integer"),
                 new SemanticEntry("integer")}));
         // <real>
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("real"),
                 new SemanticEntry("real")}));
-        //STATEMENT::=PRINT_STATEMENT
-        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PRINT_STATEMENT>")} ));
-        //PRINT_STATEMENT::=print ( ARGUMENTS )
+        // STATEMENT::=PRINT_STATEMENT
+        addToRuleArray(Arrays.asList(new Entry[] {new NonterminalEntry("<PRINT_STATEMENT>")}));
+        // PRINT_STATEMENT::=print ( ARGUMENTS )
         addToRuleArray(Arrays.asList(new Entry[] {new TerminalEntry("print"),
                 new TerminalEntry("("),
                 new SemanticEntry("argumentbegin"),
                 new NonterminalEntry("<ARGUMENTS>"),
                 new SemanticEntry("argument"),
                 new TerminalEntry(")"),
-                new SemanticEntry("print")} ));
+                new SemanticEntry("print")}));
     }
     
     public List<Entry> find(final String A, final String i) throws ParsingException {

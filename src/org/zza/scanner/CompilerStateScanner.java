@@ -12,18 +12,18 @@ public class CompilerStateScanner {
     
     private ArrayList<String> reservedStrings;
     private Map<String, String> states;
-//    private ArrayList<CompilerToken> tokens;
+    // private ArrayList<CompilerToken> tokens;
     private String currentToken;
     private final CompilerTokenStream stream;
     private HashMap<String, String> tokenStateMap;
     
-    public CompilerStateScanner(final StringBuffer buffer, CompilerTokenStream tokenStream) {
+    public CompilerStateScanner(final StringBuffer buffer, final CompilerTokenStream tokenStream) {
         stream = tokenStream;
         createScannerMaps();
         generateTokens(new StringReader(buffer.toString()));
     }
     
-    private void addTokenToStream(CompilerToken token) {
+    private void addTokenToStream(final CompilerToken token) {
         stream.addToken(token);
     }
     
@@ -67,7 +67,7 @@ public class CompilerStateScanner {
             return states.get(state + next);
         } else {
             if (currentToken.trim().length() > 0) {
-                //tokens.add(makeToken(currentToken.trim(), state));
+                // tokens.add(makeToken(currentToken.trim(), state));
                 addTokenToStream(makeToken(currentToken.trim(), state));
             }
             if (states.containsKey("start" + next)) {
@@ -258,9 +258,9 @@ public class CompilerStateScanner {
                 "else",
                 "while",
                 "do",
-        "print"}));
+                "print"}));
         
-//        tokens = new ArrayList<CompilerToken>(100);
+        // tokens = new ArrayList<CompilerToken>(100);
         
         tokenStateMap = new HashMap<String, String>();
         tokenStateMap.put("program", "program");
@@ -299,6 +299,6 @@ public class CompilerStateScanner {
         tokenStateMap.put("endofprogram", ".");
         tokenStateMap.put("EOF", "EOF");
         tokenStateMap.put("closedcomment", "COMMENT");
-        tokenStateMap.put("period", ".");    
+        tokenStateMap.put("period", ".");
     }
 }

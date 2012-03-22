@@ -10,7 +10,6 @@ import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.parser.semanticstack.nodes.SemanticNode;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
-import org.zza.visitor.StackPrintingVisitor;
 
 public class CompilerParser {
     
@@ -26,7 +25,6 @@ public class CompilerParser {
     private final CompilerTokenStream stream;
     private Entry A;
     private CompilerToken i;
-    private String submissionOutput;
     
     public CompilerParser(final CompilerTokenStream tokenStream) {
         stream = tokenStream;
@@ -49,7 +47,6 @@ public class CompilerParser {
     public void run() throws ParsingException {
         parseStack.push(new TerminalEntry(EOF));
         addToParseStack(ruleTable.find(startSymbol, startToken));
-        submissionOutput = "";
         A = parseStack.peek();
         getNextToken();
         while ((A != null) && !A.getType().equals(EOF)) {
@@ -78,7 +75,7 @@ public class CompilerParser {
                 }
             }
         }
-//        semanticStack.printOutSemanticStack();
+        // semanticStack.printOutSemanticStack();
         
         if (!stream.isEmpty()) {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");

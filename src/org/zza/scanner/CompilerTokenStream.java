@@ -1,23 +1,25 @@
 package org.zza.scanner;
 
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CompilerTokenStream {
     
-    private final ArrayList<CompilerToken> tokens;
+    // private final ArrayList<CompilerToken> tokens;
+    private final ConcurrentLinkedQueue<CompilerToken> otherTokens;
     private CompilerToken current;
     private boolean completed;
     private boolean waiting;
     
-    public CompilerTokenStream(final ArrayList<CompilerToken> list) {
-        tokens = list;
+    public CompilerTokenStream(final ConcurrentLinkedQueue<CompilerToken> list) {
+        otherTokens = list;
+        // tokens = list;
         current = null;
         completed = false;
     }
     
-    public void addToken(CompilerToken token) {
-        tokens.add(token);
-        if(waiting) {
+    public void addToken(final CompilerToken token) {
+        otherTokens.add(token);
+        if (waiting) {
             notify();
             waiting = false;
         }
@@ -30,25 +32,25 @@ public class CompilerTokenStream {
     public boolean isStreamFinished() {
         return completed;
     }
-        
+    
     public CompilerToken getNext() {
         if (current != null) {
             return current;
         } else {
-            if(tokens.size() == 0 && !completed) {
+            if ((otherTokens.peek() == null) && !completed) {
                 try {
                     waiting = true;
                     wait();
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            return tokens.remove(0);
+            return otherTokens.remove();
         }
     }
     
     public boolean hasNext() {
-        return tokens.size() > 0 || !completed;
+        return (otherTokens.peek() != null) || !completed;
     }
     
     public CompilerToken peek() {
@@ -59,6 +61,6 @@ public class CompilerTokenStream {
     }
     
     public boolean isEmpty() {
-        return tokens.size() == 0 && completed;
+        return (otherTokens.peek() == null) && completed;
     }
 }

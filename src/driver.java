@@ -2,10 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.zza.parser.CompilerParser;
-import org.zza.parser.semanticstack.nodes.SemanticNode;
-import org.zza.scanner.CompilerStateScanner;
-
 public class driver {
     
     private static long start;
@@ -30,15 +26,16 @@ public class driver {
             System.exit(-1);
         } catch (final IOException e) {
         }
-        ThreadedDriver threaded = new ThreadedDriver(sb);
+        final ThreadedDriver threaded = new ThreadedDriver(sb);
     }
     
-    public static void startTime() {        
+    public static void startTime() {
         start = System.currentTimeMillis();
     }
     
-    public static void endTime() {        
+    public static void endTime() {
         final long end = System.currentTimeMillis();
-        System.out.println("runtime in ms: " + (end - start));
+        final long time = end - start;
+        System.out.println("runtime in ms: "+time);
     }
 }

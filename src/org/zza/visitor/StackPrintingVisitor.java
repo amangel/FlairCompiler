@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.zza.parser.semanticstack.nodes.*;
 
 public class StackPrintingVisitor extends NodeVisitor {
-
+    
     private int depth;
     
-    private String getTabs(int count) {
+    private String getTabs(final int count) {
         String toReturn = "";
         for (int i = 0; i <= count; i++) {
             toReturn += "   ";
@@ -17,250 +17,250 @@ public class StackPrintingVisitor extends NodeVisitor {
     }
     
     @Override
-    public String visit(ProgramNode node) {        
+    public String visit(final ProgramNode node) {
         depth = 0;
-        String tabs = getTabs(depth);
-        String header = node.getHeader().accept(this);
-        String declarations = node.getDeclarations().accept(this);
-        String body = node.getbody().accept(this);
-        return "Program:\n" + tabs + "Header: "+header + "\n"+ tabs + "Declarations: "+declarations + "\n" + tabs + "Body: "+body;
+        final String tabs = getTabs(depth);
+        final String header = node.getHeader().accept(this);
+        final String declarations = node.getDeclarations().accept(this);
+        final String body = node.getbody().accept(this);
+        return "Program:\n" + tabs + "Header: " + header + "\n" + tabs + "Declarations: " + declarations + "\n" + tabs + "Body: " + body;
     }
     
     @Override
-    public String visit(ProgramHeaderNode node) {
+    public String visit(final ProgramHeaderNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        String identifier = node.getIdentifier().accept(this);
-        String parameters = node.getParameters().accept(this);
+        final String tabs = getTabs(depth);
+        final String identifier = node.getIdentifier().accept(this);
+        final String parameters = node.getParameters().accept(this);
         depth--;
-        return "\n"+tabs+"ProgramHeader:\n"+identifier + "\n"+tabs+parameters;
+        return "\n" + tabs + "ProgramHeader:\n" + identifier + "\n" + tabs + parameters;
     }
-
+    
     @Override
-    public String visit(VariableDeclarationNode node) {
+    public String visit(final VariableDeclarationNode node) {
         return handleTwoFieldNode(node, "VariableDeclaration");
     }
-
+    
     @Override
-    public String visit(AllVariableDeclarationsNode node) {
+    public String visit(final AllVariableDeclarationsNode node) {
         depth++;
-        ArrayList<SemanticNode> declarations = node.getArray();
-        String tabs = getTabs(depth);
+        final ArrayList<SemanticNode> declarations = node.getArray();
+        final String tabs = getTabs(depth);
         String declarationString = tabs;
-        for (SemanticNode declaration : declarations) {
+        for (final SemanticNode declaration : declarations) {
             declarationString += declaration.accept(this);
         }
         depth--;
-        return "\n" + tabs + "VariableDeclarations:\n"+declarationString;
+        return "\n" + tabs + "VariableDeclarations:\n" + declarationString;
     }
     
     @Override
-    public String visit(DeclarationsNode node) {
-        String variables = node.getVariableDeclarations().accept(this);
-        String functions = node.getFunctionDeclarations().accept(this);
-        return "\n"+variables + "\n"+functions;
+    public String visit(final DeclarationsNode node) {
+        final String variables = node.getVariableDeclarations().accept(this);
+        final String functions = node.getFunctionDeclarations().accept(this);
+        return "\n" + variables + "\n" + functions;
     }
-
+    
     @Override
-    public String visit(FunctionNode node) {
+    public String visit(final FunctionNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        String header = node.getHeader().accept(this);
-        String body = node.getBody().accept(this);
+        final String tabs = getTabs(depth);
+        final String header = node.getHeader().accept(this);
+        final String body = node.getBody().accept(this);
         depth--;
-        return "\n" +tabs + "Function:\n" + header + "\n" + body;
+        return "\n" + tabs + "Function:\n" + header + "\n" + body;
     }
-
+    
     @Override
-    public String visit(ParameterNode node) {
+    public String visit(final ParameterNode node) {
         return handleTwoFieldNode(node, "Parameter");
     }
-
+    
     @Override
-    public String visit(AssignmentExpressionNode node) {
-        return handleTwoFieldNode(node, "Assignment");    
+    public String visit(final AssignmentExpressionNode node) {
+        return handleTwoFieldNode(node, "Assignment");
     }
-
+    
     @Override
-    public String visit(CompoundStatementNode node) {
+    public String visit(final CompoundStatementNode node) {
         depth++;
-        ArrayList<SemanticNode> statements = node.getStatements();
-        String tabs = getTabs(depth);
+        final ArrayList<SemanticNode> statements = node.getStatements();
+        final String tabs = getTabs(depth);
         String statementString = tabs;
-        for (SemanticNode statement : statements) {
+        for (final SemanticNode statement : statements) {
             statementString += statement.accept(this);
         }
         depth--;
-        return "\n" + tabs + "Compound: "+statementString;
+        return "\n" + tabs + "Compound: " + statementString;
     }
-
+    
     @Override
-    public String visit(DivisionExpressionNode node) {
+    public String visit(final DivisionExpressionNode node) {
         return handleTwoFieldNode(node, "Division");
     }
-
+    
     @Override
-    public String visit(IdentifierNode node) {
+    public String visit(final IdentifierNode node) {
         return handleTerminal(node.getValue(), "Identifier");
     }
-
+    
     @Override
-    public String visit(IntegerNode node) {
+    public String visit(final IntegerNode node) {
         return handleTerminal(node.getValue(), "Integer");
     }
-
+    
     @Override
-    public String visit(MinusExpressionNode node) {
+    public String visit(final MinusExpressionNode node) {
         return handleTwoFieldNode(node, "Minus");
     }
-
+    
     @Override
-    public String visit(MultiplicationExpressionNode node) {
+    public String visit(final MultiplicationExpressionNode node) {
         return handleTwoFieldNode(node, "Multiplication");
     }
-
+    
     @Override
-    public String visit(PlusExpressionNode node) {
+    public String visit(final PlusExpressionNode node) {
         return handleTwoFieldNode(node, "Plus");
     }
-
+    
     @Override
-    public String visit(RealNode node) {
+    public String visit(final RealNode node) {
         return handleTerminal(node.getValue(), "Real");
     }
-
+    
     @Override
-    public String visit(TypeNode node) {
+    public String visit(final TypeNode node) {
         return handleTerminal(node.getType(), "Type");
     }
-
+    
     @Override
-    public String visit(AllParametersNode node) {
+    public String visit(final AllParametersNode node) {
         return handleArrayNode(node, "AllParameters");
     }
-
+    
     @Override
-    public String visit(ArgumentNode node) {
+    public String visit(final ArgumentNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        ArrayList<SemanticNode> arguments = node.getArguments();
+        final String tabs = getTabs(depth);
+        final ArrayList<SemanticNode> arguments = node.getArguments();
         String argumentString = "";
-        for (SemanticNode argument : arguments) {
+        for (final SemanticNode argument : arguments) {
             argumentString += argument.accept(this) + "\n";
         }
         depth--;
-        return "\n" + tabs + "Arguments:\n"+argumentString;
+        return "\n" + tabs + "Arguments:\n" + argumentString;
     }
-
+    
     @Override
-    public String visit(CompareNode node) {
+    public String visit(final CompareNode node) {
         return handleTerminal(node.getValue(), "Compare");
     }
-
+    
     @Override
-    public String visit(ComparisonNode node) {
+    public String visit(final ComparisonNode node) {
         return handleThreeFieldNode(node, "Comparison");
     }
-
+    
     @Override
-    public String visit(WhileExpressionNode node) {
+    public String visit(final WhileExpressionNode node) {
         return handleTwoFieldNode(node, "While");
     }
-
+    
     @Override
-    public String visit(NegativeExpressionNode node) {
+    public String visit(final NegativeExpressionNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        String expression = node.getContent().accept(this);
+        final String tabs = getTabs(depth);
+        final String expression = node.getContent().accept(this);
         depth--;
         return "\n" + tabs + "Negative: " + expression;
     }
-
+    
     @Override
-    public String visit(PrintStatementNode node) {
+    public String visit(final PrintStatementNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        String arguments = node.getArgument().accept(this);
+        final String tabs = getTabs(depth);
+        final String arguments = node.getArgument().accept(this);
         depth--;
         return "\n" + tabs + "Print:" + arguments;
     }
-
+    
     @Override
-    public String visit(FunctionCallNode node) {
+    public String visit(final FunctionCallNode node) {
         return handleTwoFieldNode(node, "FunctionCall");
     }
-
+    
     @Override
-    public String visit(FunctionHeadingNode node) {
+    public String visit(final FunctionHeadingNode node) {
         return handleThreeFieldNode(node, "FunctionHeading");
     }
-
+    
     @Override
-    public String visit(AllFunctionDeclarationsNode node) {
+    public String visit(final AllFunctionDeclarationsNode node) {
         return handleArrayNode(node, "FunctionDeclarations");
     }
-
+    
     @Override
-    public String visit(FunctionBodyNode node) {
+    public String visit(final FunctionBodyNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        String variables = node.getVariables().accept(this);
-        String body = node.getBody().accept(this);
+        final String tabs = getTabs(depth);
+        final String variables = node.getVariables().accept(this);
+        final String body = node.getBody().accept(this);
         depth--;
         return "\n" + tabs + "FunctionBody:\n" + variables + "\n" + body;
     }
-
+    
     @Override
-    public String visit(ReturnStatementNode node) {
+    public String visit(final ReturnStatementNode node) {
         depth++;
-        String tabs = getTabs(depth);
-        String arguments = node.getArguments().accept(this);        
+        final String tabs = getTabs(depth);
+        final String arguments = node.getArguments().accept(this);
         depth--;
         return "\n" + tabs + "Return:\n" + arguments;
     }
-
+    
     @Override
-    public String visit(IfStatementNode node) {
+    public String visit(final IfStatementNode node) {
         return handleThreeFieldNode(node, "If");
     }
-
-    private String handleThreeFieldNode(ThreeFieldNode node, String nodeType) {
+    
+    private String handleThreeFieldNode(final ThreeFieldNode node, final String nodeType) {
         depth++;
-        String tabs = getTabs(depth);
-        String left = node.getLefthand().accept(this);
-        String middle = node.getMiddle().accept(this);
-        String right = node.getRighthand().accept(this);
+        final String tabs = getTabs(depth);
+        final String left = node.getLefthand().accept(this);
+        final String middle = node.getMiddle().accept(this);
+        final String right = node.getRighthand().accept(this);
         depth--;
         return "\n" + tabs + nodeType + ":\n" + left + "\n" + middle + "\n" + right;
     }
     
-    private String handleTwoFieldNode(TwoFieldNode node, String nodeType) {
+    private String handleTwoFieldNode(final TwoFieldNode node, final String nodeType) {
         depth++;
-        String tabs = getTabs(depth);
-        String left = node.getLeftHand().accept(this);
-        String right= node.getRightHand().accept(this);
+        final String tabs = getTabs(depth);
+        final String left = node.getLeftHand().accept(this);
+        final String right = node.getRightHand().accept(this);
         depth--;
         return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
     }
-
-    private String handleArrayNode(ArrayNode node, String string) {
+    
+    private String handleArrayNode(final ArrayNode node, final String string) {
         depth++;
-        String tabs = getTabs(depth);
-        ArrayList<SemanticNode> parameters = node.getArray();
+        final String tabs = getTabs(depth);
+        final ArrayList<SemanticNode> parameters = node.getArray();
         String parameterString = getTabs(depth);
-        for (SemanticNode parameter : parameters) {
+        for (final SemanticNode parameter : parameters) {
             parameterString += parameter.accept(this);
         }
         depth--;
-        return "\n" + tabs + string + ":\n"+parameterString;
+        return "\n" + tabs + string + ":\n" + parameterString;
     }
     
-    private String handleTerminal(String node, String type) {
-        return getTabs(depth+1) + type + " : " + node;
+    private String handleTerminal(final String node, final String type) {
+        return getTabs(depth + 1) + type + " : " + node;
     }
     
     @Override
-    public String visit(EmptyNode node) {
+    public String visit(final EmptyNode node) {
         return "empty";
     }
 }

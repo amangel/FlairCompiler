@@ -44,7 +44,7 @@ public class SemanticStack {
     public int getSize() {
         return stack.size();
     }
-
+    
     public void printOutSemanticStack() {
         System.out.println("\n\nSemantic stack: ");
         for (final SemanticNode node : stack) {
