@@ -23,7 +23,7 @@ public class AllVariableDeclarationsNode extends ArrayNode {
     }
     
     @Override
-    protected boolean popFromSemanticStackUntil(SemanticStack stack) {
+    protected boolean popFromSemanticStackUntil(final SemanticStack stack) {
         return stack.peek().getName().equals("VariableDeclaration");
     }
 }

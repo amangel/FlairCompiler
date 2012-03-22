@@ -26,6 +26,8 @@ public class DeclarationsNode extends SemanticNode {
             System.out.println("Tried to get variables for declaration, instead found: " + stack.peek().getName());
         }
         stack.push(this);
+        variableDeclarations.setParent(this);
+        functionDeclarations.setParent(this);
     }
     
     public SemanticNode getVariableDeclarations() {

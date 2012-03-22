@@ -26,6 +26,9 @@ public class ProgramNode extends SemanticNode {
         if (stack.peek().getName().equals("ProgramHeader")) {
             header = stack.pop();
         }
+        body.setParent(this);
+        declarations.setParent(this);
+        header.setParent(this);
         stack.push(this);
     }
     

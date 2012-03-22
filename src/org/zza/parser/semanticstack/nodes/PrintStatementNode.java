@@ -11,6 +11,7 @@ public class PrintStatementNode extends SemanticNode {
     public void runOnSemanticStack(final SemanticStack stack) {
         argument = stack.pop();
         stack.push(this);
+        argument.setParent(this);
     }
     
     public SemanticNode getArgument() {

@@ -7,11 +7,11 @@ public class AllParametersNode extends ArrayNode {
     
     @Override
     protected void orderArray() {
-        //do nothing
+        // do nothing
     }
     
     @Override
-    protected boolean popFromSemanticStackUntil(SemanticStack stack) {
+    protected boolean popFromSemanticStackUntil(final SemanticStack stack) {
         return stack.peek().getName().equals("ParameterNode");
     }
     
@@ -23,5 +23,5 @@ public class AllParametersNode extends ArrayNode {
     @Override
     public String accept(final NodeVisitor visitor) {
         return visitor.visit(this);
-    } 
+    }
 }

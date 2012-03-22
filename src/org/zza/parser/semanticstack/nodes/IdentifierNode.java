@@ -8,9 +8,6 @@ public class IdentifierNode extends SemanticNode {
     final String id = "<identifier>";
     String value;
     
-    // protected SemanticNode parent from SemanticNode
-    // protected CompilerToken token from SemanticNode
-    
     public IdentifierNode() {
     }
     

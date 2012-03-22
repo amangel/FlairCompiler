@@ -11,6 +11,7 @@ public class ReturnStatementNode extends SemanticNode {
     public void runOnSemanticStack(final SemanticStack stack) {
         arguments = stack.pop();
         stack.push(this);
+        arguments.setParent(this);
     }
     
     public SemanticNode getArguments() {

@@ -11,14 +11,18 @@ public abstract class ArrayNode extends SemanticNode {
     @Override
     public void runOnSemanticStack(final SemanticStack stack) {
         nodeArray = new ArrayList<SemanticNode>();
+        SemanticNode node = null;
         while (popFromSemanticStackUntil(stack)) {
-            nodeArray.add(stack.pop());
+            node = stack.pop();
+            node.setParent(this);
+            nodeArray.add(node);
         }
         stack.push(this);
         orderArray();
     }
     
     protected abstract void orderArray();
+    
     protected abstract boolean popFromSemanticStackUntil(SemanticStack stack);
     
     @Override
@@ -33,7 +37,7 @@ public abstract class ArrayNode extends SemanticNode {
         }
         return toReturn;
     }
-
+    
     public ArrayList<SemanticNode> getArray() {
         return nodeArray;
     }

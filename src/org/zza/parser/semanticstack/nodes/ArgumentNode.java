@@ -13,8 +13,11 @@ public class ArgumentNode extends SemanticNode {
     @Override
     public void runOnSemanticStack(final SemanticStack stack) {
         arguments = new ArrayList<SemanticNode>();
+        SemanticNode node = null;
         while (!stack.peek().getName().equals("(")) {
-            arguments.add(stack.pop());
+            node = stack.pop();
+            node.setParent(this);
+            arguments.add(node);
         }
         Collections.reverse(arguments);
         stack.pop();

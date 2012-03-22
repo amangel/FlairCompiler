@@ -4,11 +4,6 @@ import org.zza.visitor.NodeVisitor;
 
 public class AssignmentExpressionNode extends TwoFieldNode {
     
-    // protected SemanticNode leftHandSide from TwoFieldNode
-    // protected SemanticNode rightHandSide from TwoFieldNode
-    // protected SemanticNode parent from SemanticNode
-    // protected CompilerToken token from SemanticNode
-    
     public AssignmentExpressionNode() {
     }
     

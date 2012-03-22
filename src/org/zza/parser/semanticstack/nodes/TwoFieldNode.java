@@ -7,9 +7,6 @@ public abstract class TwoFieldNode extends SemanticNode {
     protected SemanticNode leftHandSide;
     protected SemanticNode rightHandSide;
     
-    // protected SemanticNode parent from SemanticNode
-    // protected CompilerToken token from SemanticNode
-    
     public TwoFieldNode() {
     }
     

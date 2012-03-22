@@ -5,8 +5,6 @@ import org.zza.visitor.NodeVisitor;
 
 public class FunctionBodyNode extends SemanticNode {
     
-    // variable dec, compound statement
-    
     private SemanticNode body;
     private SemanticNode variables;
     
@@ -22,6 +20,8 @@ public class FunctionBodyNode extends SemanticNode {
             variables = stack.pop();
         }
         stack.push(this);
+        body.setParent(this);
+        variables.setParent(this);
     }
     
     public SemanticNode getVariables() {

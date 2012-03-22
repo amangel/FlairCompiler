@@ -14,6 +14,8 @@ public class ProgramHeaderNode extends SemanticNode {
             parameters = stack.pop();
         }
         name = stack.pop();
+        parameters.setParent(this);
+        name.setParent(this);
         stack.push(this);
     }
     

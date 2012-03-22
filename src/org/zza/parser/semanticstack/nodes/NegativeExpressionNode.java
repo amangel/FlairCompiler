@@ -11,6 +11,7 @@ public class NegativeExpressionNode extends SemanticNode {
     public void runOnSemanticStack(final SemanticStack stack) {
         content = stack.pop();
         stack.push(this);
+        content.setParent(this);
     }
     
     public SemanticNode getContent() {

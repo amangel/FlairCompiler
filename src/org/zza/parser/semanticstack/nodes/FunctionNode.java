@@ -22,6 +22,8 @@ public class FunctionNode extends SemanticNode {
             header = stack.pop();
         }
         stack.push(this);
+        body.setParent(this);
+        header.setParent(this);
     }
     
     public SemanticNode getHeader() {

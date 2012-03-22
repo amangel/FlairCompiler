@@ -13,8 +13,11 @@ public class CompoundStatementNode extends SemanticNode {
     @Override
     public void runOnSemanticStack(final SemanticStack stack) {
         statements = new ArrayList<SemanticNode>();
+        SemanticNode node = null;
         while (!stack.peek().getName().equals("begin")) {
-            statements.add(stack.pop());
+            node = stack.pop();
+            node.setParent(this);
+            statements.add(node);
         }
         Collections.reverse(statements);
         stack.pop();
