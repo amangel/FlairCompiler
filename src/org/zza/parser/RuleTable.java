@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,7 +47,6 @@ public class RuleTable {
         }
         
         while (nextLine != null) {
-            System.out.println("reading line: "+nextLine);
             String nonterminal = "";
             String terminal = "";
             Integer ruleIndex = 0;
@@ -344,9 +342,7 @@ public class RuleTable {
     }
     
     public List<Entry> find(final String A, final String i) throws ParsingException {
-        //        System.out.println("'"+A+"' '"+i+"'");
         final int index = tableContents.get(A).get(i);
-        //System.out.println(index);
         return ruleArray.get(index);
     }
     

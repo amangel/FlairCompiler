@@ -44,7 +44,7 @@ public class StackPrintingVisitor extends NodeVisitor {
     @Override
     public String visit(AllVariableDeclarationsNode node) {
         depth++;
-        ArrayList<SemanticNode> declarations = node.getDeclarations();
+        ArrayList<SemanticNode> declarations = node.getArray();
         String tabs = getTabs(depth);
         String declarationString = tabs;
         for (SemanticNode declaration : declarations) {
@@ -136,15 +136,7 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(AllParametersNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        ArrayList<SemanticNode> parameters = node.getParameters();
-        String parameterString = getTabs(depth);
-        for (SemanticNode parameter : parameters) {
-            parameterString += parameter.accept(this);
-        }
-        depth--;
-        return "\n" + tabs + "AllParameters:\n"+parameterString;
+        return handleArrayNode(node, "AllParameters");
     }
 
     @Override
@@ -205,15 +197,7 @@ public class StackPrintingVisitor extends NodeVisitor {
 
     @Override
     public String visit(AllFunctionDeclarationsNode node) {
-        depth++;
-        String tabs = getTabs(depth);
-        ArrayList<SemanticNode> functions = node.getFunctions();
-        String functionsString = getTabs(depth);
-        for (SemanticNode function : functions) {
-            functionsString += function.accept(this);
-        }
-        depth--;
-        return  "\n" + tabs + "FunctionDeclarations: \n"+functionsString;
+        return handleArrayNode(node, "FunctionDeclarations");
     }
 
     @Override
@@ -259,6 +243,18 @@ public class StackPrintingVisitor extends NodeVisitor {
         return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
     }
 
+    private String handleArrayNode(ArrayNode node, String string) {
+        depth++;
+        String tabs = getTabs(depth);
+        ArrayList<SemanticNode> parameters = node.getArray();
+        String parameterString = getTabs(depth);
+        for (SemanticNode parameter : parameters) {
+            parameterString += parameter.accept(this);
+        }
+        depth--;
+        return "\n" + tabs + string + ":\n"+parameterString;
+    }
+    
     private String handleTerminal(String node, String type) {
         return getTabs(depth+1) + type + " : " + node;
     }

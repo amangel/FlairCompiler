@@ -1,38 +1,18 @@
 package org.zza.parser.semanticstack.nodes;
 
-import java.util.ArrayList;
-
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
-public class AllParametersNode extends SemanticNode {
-    
-    private ArrayList<SemanticNode> parameters;
+public class AllParametersNode extends ArrayNode {
     
     @Override
-    public void runOnSemanticStack(final SemanticStack stack) {
-        parameters = new ArrayList<SemanticNode>();
-        while (stack.peek().getName().equals("ParameterNode")) {
-            parameters.add(stack.pop());
-        }
-        stack.push(this);
-    }
-    
-    public ArrayList<SemanticNode> getParameters() {
-        return parameters;
+    protected void orderArray() {
+        //do nothing
     }
     
     @Override
-    public String getStringRepresentation() {
-        return getName() + " {" + getParameterStrings() + "}";
-    }
-    
-    private String getParameterStrings() {
-        String toReturn = "";
-        for (final SemanticNode node : parameters) {
-            toReturn += node.getStringRepresentation() + " ";
-        }
-        return toReturn;
+    protected boolean popFromSemanticStackUntil(SemanticStack stack) {
+        return stack.peek().getName().equals("ParameterNode");
     }
     
     @Override
@@ -43,6 +23,5 @@ public class AllParametersNode extends SemanticNode {
     @Override
     public String accept(final NodeVisitor visitor) {
         return visitor.visit(this);
-    }
-    
+    } 
 }
