@@ -6,6 +6,7 @@ import org.zza.semanticchecker.SymbolTable;
 public class TypeCheckingVisitor extends NodeVisitor {
 
     private SymbolTable table;
+    private String scope;
     
     public TypeCheckingVisitor() {
         table = SymbolTable.getInstance();
@@ -13,7 +14,9 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(ProgramNode node) {
-        String header = node.getHeader().accept(this);
+        scope = "program";
+        node.getDeclarations().accept(this);
+        node.getbody().accept(this);
         return null;
     }
 
@@ -25,7 +28,8 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionNode node) {
-        // TODO Auto-generated method stub
+        String id = node.getHeader().accept(this);
+        node.getBody().accept(this);
         return null;
     }
 
@@ -37,56 +41,61 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(AssignmentExpressionNode node) {
-        // TODO Auto-generated method stub
+        String oldScope = scope;
+        String leftHand = node.getLeftHand().accept(this);
+        String rightHand = node.getRightHand().accept(this);
+        if (leftHand.equals(rightHand)) {
+            System.out.println("match");
+        } else {
+            System.out.println("no match");
+        }
+        scope = oldScope;
         return null;
     }
 
     @Override
     public String visit(CompoundStatementNode node) {
-        // TODO Auto-generated method stub
+        for (SemanticNode sNode : node.getStatements()) {
+            sNode.accept(this);
+        }
         return null;
     }
 
     @Override
     public String visit(DivisionExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return handleTwoFieldNode(node);
     }
 
     @Override
     public String visit(IdentifierNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        scope += "_" + node.getValue();
+        System.out.println(scope);
+        return table.getSymbol(scope).getType();
     }
 
     @Override
     public String visit(IntegerNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return "integer";
     }
 
     @Override
     public String visit(MinusExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return handleTwoFieldNode(node);
     }
 
     @Override
     public String visit(MultiplicationExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return handleTwoFieldNode(node);
     }
 
     @Override
     public String visit(PlusExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return handleTwoFieldNode(node);
     }
 
     @Override
     public String visit(RealNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return "real";
     }
 
     @Override
@@ -145,7 +154,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(DeclarationsNode node) {
-        // TODO Auto-generated method stub
+        node.getFunctionDeclarations().accept(this);
         return null;
     }
 
@@ -163,25 +172,30 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionHeadingNode node) {
-        // TODO Auto-generated method stub
+        node.getLefthand().accept(this);
         return null;
     }
 
     @Override
     public String visit(AllFunctionDeclarationsNode node) {
-        // TODO Auto-generated method stub
+        String oldScope = scope;
+        scope = "function";
+        for(SemanticNode fNode : node.getArray()) {
+            fNode.accept(this);
+        }
+        scope = oldScope;
         return null;
     }
 
     @Override
     public String visit(FunctionBodyNode node) {
-        // TODO Auto-generated method stub
+        node.getBody().accept(this);
         return null;
     }
 
     @Override
     public String visit(ReturnStatementNode node) {
-        // TODO Auto-generated method stub
+        node.getArguments().accept(this);
         return null;
     }
 
@@ -196,5 +210,33 @@ public class TypeCheckingVisitor extends NodeVisitor {
         // TODO Auto-generated method stub
         return null;
     }
+
+    private String handleTwoFieldNode(TwoFieldNode node) {
+        String leftHandSide = node.getLeftHand().accept(this);
+        String rightHandSide = node.getRightHand().accept(this);
+        return compare(leftHandSide, rightHandSide, node);
+    }
     
+    private String compare(String leftHandSide, String rightHandSide, TwoFieldNode node) {
+        if (leftHandSide.equals("integer")) {
+            if (rightHandSide.equals("integer")) {
+                return "integer";
+            } else if (rightHandSide.equals("real")){
+                //TODO: CONVERT LEFT HAND TO REAL?
+                return "real";
+            } else {
+                System.out.println("comparing, else statement: "+leftHandSide + " " + rightHandSide);
+            }
+        } else if (leftHandSide.equals("real")) {
+            if (rightHandSide.equals("integer") || rightHandSide.equals("real")) {
+                //TODO: CONVERT RIGHT HAND TO REAL IF INT?
+                return "real";
+            } else  {
+                System.out.println("comparing, else statement: "+leftHandSide + " " + rightHandSide);                
+            }
+        } else {
+            System.out.println("comparing, else statement: "+leftHandSide + " " + rightHandSide);
+        }
+        return null;
+    }
 }

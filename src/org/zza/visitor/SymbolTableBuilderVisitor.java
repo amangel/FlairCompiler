@@ -27,7 +27,7 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         scope = "program";
         node.getHeader().accept(this);
         node.getDeclarations().accept(this);
-        node.getbody().accept(this);
+//        node.getbody().accept(this);
 //        return "header: " + header + "\ndeclarations: " + declarations + "\nbody: "+body;
         return null;
     }

@@ -10,10 +10,10 @@ var
    alt  : real;
 begin
    eps := 0.0001;
-   n := 1;
-   cos := 1;
-   term := 1;
-   alt := -1;
+   n := 1.0;
+   cos := 1.0;
+   term := 1.0;
+   alt := -1.0;
    while term > eps do
    begin
       term := term * x * x / n / (n+1);
