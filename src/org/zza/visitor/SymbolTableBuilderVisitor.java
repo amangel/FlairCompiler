@@ -1,38 +1,63 @@
 package org.zza.visitor;
 
 import org.zza.parser.semanticstack.nodes.*;
+import org.zza.semanticchecker.FunctionSymbol;
+import org.zza.semanticchecker.Symbol;
 import org.zza.semanticchecker.SymbolTable;
 
-public class TypeCheckingVisitor extends NodeVisitor {
 
+public class SymbolTableBuilderVisitor extends NodeVisitor {
+    
+    private String scope;
+    
     private SymbolTable table;
+    private SymbolFactory symbolFactory;
     
-    public TypeCheckingVisitor() {
+    private Symbol symbol;
+    
+    public SymbolTableBuilderVisitor() {
+        symbol = null;
+        scope = "";
         table = SymbolTable.getInstance();
+        symbolFactory = SymbolFactory.getInstance();
     }
-    
+
     @Override
     public String visit(ProgramNode node) {
-        String header = node.getHeader().accept(this);
+        scope = "program";
+        node.getHeader().accept(this);
+        node.getDeclarations().accept(this);
+        node.getbody().accept(this);
+//        return "header: " + header + "\ndeclarations: " + declarations + "\nbody: "+body;
         return null;
     }
 
     @Override
     public String visit(VariableDeclarationNode node) {
-        // TODO Auto-generated method stub
+        String id = node.getLeftHand().accept(this);
+        String type = node.getRightHand().accept(this);
+        symbol = symbolFactory.getSymbol(id, "variable", type);
+        table.addSymbol(symbol, scope+"_"+id);
         return null;
     }
 
     @Override
     public String visit(FunctionNode node) {
-        // TODO Auto-generated method stub
+        String oldScope = scope;
+        scope = "function";
+        node.getHeader().accept(this);
+        node.getBody().accept(this);
+        scope = oldScope;
         return null;
     }
 
     @Override
     public String visit(ParameterNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        String identifier = node.getLeftHand().accept(this);
+        String type = node.getRightHand().accept(this);
+        symbol = symbolFactory.getSymbol(identifier, "variable", type);
+        table.addSymbol(symbol, scope+"_"+identifier);
+        return type;
     }
 
     @Override
@@ -55,8 +80,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(IdentifierNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return node.getValue();
     }
 
     @Override
@@ -91,19 +115,22 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(TypeNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return node.getType();
     }
 
     @Override
     public String visit(AllParametersNode node) {
-        // TODO Auto-generated method stub
+        for (SemanticNode pNode : node.getArray()) {
+            pNode.accept(this);
+        }
         return null;
     }
 
     @Override
     public String visit(AllVariableDeclarationsNode node) {
-        // TODO Auto-generated method stub
+        for (SemanticNode vNode : node.getArray()) {
+            vNode.accept(this);
+        }
         return null;
     }
 
@@ -139,13 +166,14 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(ProgramHeaderNode node) {
-        // TODO Auto-generated method stub
+        node.getParameters().accept(this);
         return null;
     }
 
     @Override
     public String visit(DeclarationsNode node) {
-        // TODO Auto-generated method stub
+        node.getVariableDeclarations().accept(this);
+        node.getFunctionDeclarations().accept(this);
         return null;
     }
 
@@ -163,13 +191,21 @@ public class TypeCheckingVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionHeadingNode node) {
-        // TODO Auto-generated method stub
+        String id = node.getLefthand().accept(this);
+        scope += "_" + id;
+        String parameters = node.getMiddle().accept(this);
+        String returnType = node.getRighthand().accept(this);
+        FunctionSymbol funcSymbol = (FunctionSymbol) symbolFactory.getSymbol(id, "function", parameters);
+        funcSymbol.setReturnType(returnType);
+        table.addSymbol(funcSymbol, scope);
         return null;
     }
 
     @Override
     public String visit(AllFunctionDeclarationsNode node) {
-        // TODO Auto-generated method stub
+        for(SemanticNode fNode : node.getArray() ) {
+            fNode.accept(this);
+        }
         return null;
     }
 

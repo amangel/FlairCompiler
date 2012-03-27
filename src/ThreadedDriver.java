@@ -5,7 +5,8 @@ import org.zza.parser.semanticstack.nodes.SemanticNode;
 import org.zza.scanner.CompilerStateScanner;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
-import org.zza.visitor.StackPrintingVisitor;
+import org.zza.visitor.SymbolTableBuilderVisitor;
+import org.zza.visitor.TypeCheckingVisitor;
 
 public class ThreadedDriver {
     
@@ -30,8 +31,11 @@ public class ThreadedDriver {
             public void run() {
                 final CompilerParser parser = new CompilerParser(stream);
                 program = parser.parseProgram();
-                final StackPrintingVisitor printer = new StackPrintingVisitor();
-                System.out.println(printer.visit(program));
+                final SymbolTableBuilderVisitor printer = new SymbolTableBuilderVisitor();
+                printer.visit(program);
+//                SymbolTable.getInstance().printTable();
+                final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
+                typeChecker.visit(program);
                 driver.endTime();
             }
         }).start();
