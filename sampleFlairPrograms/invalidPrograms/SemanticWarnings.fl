@@ -15,11 +15,10 @@ function print() : int
   
 function no(y : real) : real
  var
-   unavailable: real
+   unavailable: real;
 
   begin
-    unavailable := 0.1 
-	{Took out the return so it no longer returns anything}
+    unavailable := 0.1;  {Took out the return so it no longer returns anything}
   end;
 
 function yes() : integer
@@ -46,7 +45,7 @@ begin
   if x < 3.0 then print(negin) else print(3);      
   if x = 40 then print(x) else print(y);
   return 1; {Unreachable code below and return in a spot where it sholdn't be}
-  negin := no(3, 1) {Giving the func no the wrong amount of arguments}
+  negin := no(3, 1); {Giving the func no the wrong amount of arguments}
   negin := no(1) {Giving func the wrong type of argument}
 end.
   
