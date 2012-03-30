@@ -1,0 +1,52 @@
+program semanticWarnings(x : real, y : integer);
+
+{This program contains everything in our language that can be broken for the semantic checker}
+
+var 
+  negin : real;
+  {Took out declaration of fp}
+  in : integer;
+
+{Defined print from user}
+function print() : int
+  begin
+    return 1
+  end;
+  
+function no(y : real) : real
+ var
+   unavailable: real;
+
+  begin
+    unavailable := 0.1;  {Took out the return so it no longer returns anything}
+  end;
+
+function yes() : integer
+  begin
+    return print(1)  {print in a place that requires a value}
+  end;
+
+begin
+  fp := 0.001;
+  {Took out : in := 1; so its no longer initialized}
+  negin := -3;
+
+  while fp < 1 do
+    begin 
+      print (fp);
+      fp := fp + (unavailable - 0.0); {refer to non visible ident}
+      fp := fp * (1 / 1.0)
+    end;
+
+  if x > 3 then print(x) else print(0);
+  if x >= 3 then print(0) else print(no(0.0));
+  if x != 4 then print(in) else print(7);
+  if x <= 3 then print(5.0e1) else print(negin);
+  if x < 3.0 then print(negin) else print(3);      
+  if x = 40 then print(x) else print(y);
+  return 1; {Unreachable code below and return in a spot where it sholdn't be}
+  negin := no(3, 1); {Giving the func no the wrong amount of arguments}
+  negin := no(1) {Giving func the wrong type of argument}
+end.
+  
+      
