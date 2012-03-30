@@ -42,7 +42,7 @@ public abstract class NodeVisitor {
     
     public abstract String visit(ArgumentNode node);
     
-    public abstract String visit(CompareNode node);
+    public abstract String visit(CompareOperatorNode node);
     
     public abstract String visit(ComparisonNode node);
     

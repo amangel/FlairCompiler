@@ -120,10 +120,14 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
 
     @Override
     public String visit(AllParametersNode node) {
+        String toReturn = "";
         for (SemanticNode pNode : node.getArray()) {
-            pNode.accept(this);
+            toReturn += pNode.accept(this) + "_";
         }
-        return null;
+        if(toReturn.length() > 0) {
+            toReturn = toReturn.substring(0, toReturn.length() -1);
+        }
+        return toReturn;
     }
 
     @Override
@@ -141,7 +145,7 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
     }
 
     @Override
-    public String visit(CompareNode node) {
+    public String visit(CompareOperatorNode node) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -195,6 +199,7 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         scope += "_" + id;
         String parameters = node.getMiddle().accept(this);
         String returnType = node.getRighthand().accept(this);
+        System.out.println("symboltablebuilder found: "+parameters);
         FunctionSymbol funcSymbol = (FunctionSymbol) symbolFactory.getSymbol(id, "function", parameters);
         funcSymbol.setReturnType(returnType);
         table.addSymbol(funcSymbol, scope);

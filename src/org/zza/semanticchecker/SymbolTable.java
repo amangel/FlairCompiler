@@ -26,7 +26,12 @@ public class SymbolTable {
     }
     
     public Symbol getSymbol(String symbolName) {
-        return table.get(symbolName);
+        if(table.containsKey(symbolName)) {
+            return table.get(symbolName);
+        } else {
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Use before declaration: couldn't find symbol: "+symbolName + " in the table."));
+            return null;
+        }
     }
 
     public void printTable() {

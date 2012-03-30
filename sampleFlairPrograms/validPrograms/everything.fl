@@ -3,9 +3,9 @@ program everything(x : real, y : integer);
 {This program contains everything in our language.  It is currently 4 AM}
 
 var 
-  a : integer;
-  b : real;
-  negin : integer;
+  negin : real;
+  fp : real;
+  in : integer;
   
 function no(y : real) : real
   begin
@@ -35,7 +35,8 @@ begin
   if x <= 3 then print(5.0e1) else print(negin);
   if x < 3.0 then print(negin) else print(3);      
   if x = 40 then print(x) else print(y);
-  negin := no(0.4)
+  return 1;
+  negin := no(0.4, 1)
 
 end.
   

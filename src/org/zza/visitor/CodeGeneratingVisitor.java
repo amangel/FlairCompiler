@@ -106,7 +106,7 @@ public class CodeGeneratingVisitor extends NodeVisitor {
     }
     
     @Override
-    public String visit(final CompareNode node) {
+    public String visit(final CompareOperatorNode node) {
         // TODO Auto-generated method stub
         return null;
     }

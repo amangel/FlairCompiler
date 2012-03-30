@@ -153,7 +153,7 @@ public class StackPrintingVisitor extends NodeVisitor {
     }
     
     @Override
-    public String visit(final CompareNode node) {
+    public String visit(final CompareOperatorNode node) {
         return handleTerminal(node.getValue(), "Compare");
     }
     

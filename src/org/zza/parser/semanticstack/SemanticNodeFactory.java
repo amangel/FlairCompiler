@@ -34,7 +34,7 @@ public class SemanticNodeFactory {
         nodeMap.put("allvariables", AllVariableDeclarationsNode.class);
         nodeMap.put("argument", ArgumentNode.class);
         nodeMap.put("argumentbegin", MarkerNode.class);
-        nodeMap.put("compare", CompareNode.class);
+        nodeMap.put("compare", CompareOperatorNode.class);
         nodeMap.put("comparison", ComparisonNode.class);
         nodeMap.put("while", WhileExpressionNode.class);
         nodeMap.put("negative", NegativeExpressionNode.class);

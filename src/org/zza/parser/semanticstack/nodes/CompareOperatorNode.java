@@ -3,7 +3,7 @@ package org.zza.parser.semanticstack.nodes;
 import org.zza.parser.semanticstack.SemanticStack;
 import org.zza.visitor.NodeVisitor;
 
-public class CompareNode extends SemanticNode {
+public class CompareOperatorNode extends SemanticNode {
     
     private String value;
     
