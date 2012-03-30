@@ -18,7 +18,7 @@ function no(y : real) : real
    unavailable: real
 
   begin
-    unavailable := 0.1 :
+    unavailable := 0.1 
 	{Took out the return so it no longer returns anything}
   end;
 
