@@ -35,7 +35,7 @@ begin
   if x <= 3 then print(5.0e1) else print(negin);
   if x < 3.0 then print(negin) else print(3);      
   if x = 40 then print(x) else print(y);
-  negin := no(1)
+  negin := no(1.0e1)
 
 end.
   

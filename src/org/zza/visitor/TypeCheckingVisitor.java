@@ -73,9 +73,14 @@ public class TypeCheckingVisitor extends NodeVisitor {
                 }
                 returnFound = true;
             } else if (returnFound) {
+                StackPrintingVisitor spv = new StackPrintingVisitor();
+//                System.out.println((sNode.getClass().cast(spv.visit(sNode)))); 
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unreachable code found. Return statement not at the end of function call."));
             }
             sNode.accept(this);
+        }
+        if (!returnFound && !scope.substring(0,7).equals("program")) {
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function found with no return statement."));
         }
         return null;
     }
@@ -198,8 +203,8 @@ public class TypeCheckingVisitor extends NodeVisitor {
         if (functionType.equals(parameters)) {
             return functionType;
         } else {
-            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function "+id
-                    +" requires parameters "+functionType +". Got: "+ parameters));
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '"+id
+                    +"' requires parameters '"+functionType +"'. Got: '"+ parameters+"'"));
             return null;
         }
     }
@@ -262,17 +267,17 @@ public class TypeCheckingVisitor extends NodeVisitor {
                     //TODO: CONVERT LEFT HAND TO REAL?
                     return "real";
                 } else {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("comparing, else statement: "+leftHandSide + " " + rightHandSide));
+                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));
                 }
             } else if (leftHandSide.equals("real")) {
                 if (rightHandSide.equals("integer") || rightHandSide.equals("real")) {
                     //TODO: CONVERT RIGHT HAND TO REAL IF INT?
                     return "real";
                 } else  {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("comparing, else statement: "+leftHandSide + " " + rightHandSide));                
+                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));                
                 }
             } else {
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("comparing, else statement: "+leftHandSide + " " + rightHandSide));
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + leftHandSide + "'. Undeclared variable."));
             }
         }
         return null;

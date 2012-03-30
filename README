@@ -69,4 +69,17 @@ SEMANTIC CHECKER
 	attempt to provide as much information as is readily available in the current
 	design to be able to find the problem.
 	
-	
+	In running the typechecker, any semantic warnings will be collected and 
+	displayed at the end of a session. 
+	Semantic warnings include:
+		return statement that is not at the end of a function - unreachable code
+		return statement in the main program
+		every function contains a return statement
+		using a variable before it has been declared
+		calling a function with in appropriate parameters of the appropriate types
+		
+	Other issues that were suggested that are taken care of in previous sections
+	of the compiler include:
+		user defined print function - this is caught by the parser section
+		using the print function in an assignment statement - caught by parser
+		

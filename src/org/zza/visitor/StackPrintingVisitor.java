@@ -8,6 +8,10 @@ public class StackPrintingVisitor extends NodeVisitor {
     
     private int depth;
     
+    public StackPrintingVisitor() {
+        depth = 0;
+    }
+    
     private String getTabs(final int count) {
         String toReturn = "";
         for (int i = 0; i <= count; i++) {
@@ -18,7 +22,6 @@ public class StackPrintingVisitor extends NodeVisitor {
     
     @Override
     public String visit(final ProgramNode node) {
-        depth = 0;
         final String tabs = getTabs(depth);
         final String header = node.getHeader().accept(this);
         final String declarations = node.getDeclarations().accept(this);

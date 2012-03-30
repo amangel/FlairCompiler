@@ -8,7 +8,7 @@ import org.zza.parser.semanticstack.nodes.*;
 
 public class SemanticNodeFactory {
     
-    private HashMap<String, Class<?>> nodeMap;
+    private HashMap<String, Class<? extends SemanticNode>> nodeMap;
     private final RecentTokensStack recentTokens;
     
     public SemanticNodeFactory(final RecentTokensStack recentTokens) {
@@ -17,7 +17,7 @@ public class SemanticNodeFactory {
     }
     
     private void buildNodeMap() {
-        nodeMap = new HashMap<String, Class<?>>();
+        nodeMap = new HashMap<String, Class<? extends SemanticNode>>();
         nodeMap.put("identifier", IdentifierNode.class);
         nodeMap.put("plus", PlusExpressionNode.class);
         nodeMap.put("minus", MinusExpressionNode.class);
@@ -55,7 +55,7 @@ public class SemanticNodeFactory {
     public SemanticNode getNewNode(final String nodeType) throws ParsingException {
         try {
             if (nodeMap.containsKey(nodeType)) {
-                final SemanticNode node = (SemanticNode) nodeMap.get(nodeType).newInstance();
+                final SemanticNode node = nodeMap.get(nodeType).newInstance();
                 node.setToken(recentTokens.getMostRecent());
                 return node;
             } else {

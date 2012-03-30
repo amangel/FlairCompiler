@@ -7,8 +7,8 @@ var
   {Took out declaration of fp}
   in : integer;
 
-{Defined print from user}
-function print() : int
+{Defined print from user, already caught by the parser}
+function printer() : integer
   begin
     return 1
   end;
@@ -23,7 +23,7 @@ function no(y : real) : real
 
 function yes() : integer
   begin
-    return print(1)  {print in a place that requires a value}
+    return printer(1)  {print in a place that requires a value, already caught by parser}
   end;
 
 begin

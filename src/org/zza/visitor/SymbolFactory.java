@@ -10,10 +10,10 @@ import org.zza.semanticchecker.VariableSymbol;
 public class SymbolFactory {
     
     private static SymbolFactory _instance;
-    private HashMap<String, Class<?>> table;
+    private HashMap<String, Class<? extends Symbol>> table;
     
     private SymbolFactory() {
-        table = new HashMap<String, Class<?>>();
+        table = new HashMap<String, Class<? extends Symbol>>();
         table.put("variable", VariableSymbol.class);
         table.put("function", FunctionSymbol.class);
     }
@@ -28,7 +28,7 @@ public class SymbolFactory {
     public Symbol getSymbol(String name, String nodeType, String symbolType) {
         Symbol newSymbol = null;
         try {
-            newSymbol = (Symbol) table.get(nodeType).newInstance();
+            newSymbol = table.get(nodeType).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
