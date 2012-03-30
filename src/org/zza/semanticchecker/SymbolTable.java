@@ -26,14 +26,21 @@ public class SymbolTable {
     }
     
     public Symbol getSymbol(String symbolName) {
+        String[] nameSplit = symbolName.split("_");
         if(table.containsKey(symbolName)) {
             return table.get(symbolName);
+        } else if(table.containsKey("program_"+nameSplit[nameSplit.length-1])){
+            return table.get("program_"+nameSplit[nameSplit.length-1]);
         } else {
             SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Use before declaration: couldn't find symbol: "+symbolName + " in the table."));
             return null;
         }
     }
 
+    public boolean contains(String symbolName) {
+        return table.containsKey(symbolName);
+    }
+    
     public void printTable() {
         System.out.println("\n\nSymbolTable: ");
         for (String s : table.keySet()) {

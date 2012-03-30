@@ -1,4 +1,4 @@
-program LeadingMinusSigns();
+program LeadingMinusSigns(n : integer);
   begin
     print( 1 - n * (1 - 2) )
   end.

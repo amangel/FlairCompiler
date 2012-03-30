@@ -48,23 +48,17 @@ public class TypeCheckingVisitor extends NodeVisitor {
         String oldScope = scope;
         String leftHand = node.getLeftHand().accept(this);
         String rightHand = node.getRightHand().accept(this);
-        try {
         if (leftHand.equals(rightHand)) {
-//            System.out.println("match");
             toReturn = leftHand;
         } else {
-//            System.out.println("no match");
             if (leftHand.equals("real")) {
                 toReturn = "real";                
             } else if (leftHand.equals("integer")) {
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Attempt to save a real into an integer: " 
-                            + ((IdentifierNode)node.getLeftHand()).getValue()));
-            }
-            
+                        + ((IdentifierNode)node.getLeftHand()).getValue()));
+            }            
         }
-        } catch (NullPointerException e) {
-            SemanticWarningList.getInstance().printWarnings();
-        }
+        
         scope = oldScope;
         return toReturn;
     }
@@ -94,13 +88,10 @@ public class TypeCheckingVisitor extends NodeVisitor {
     @Override
     public String visit(IdentifierNode node) {
         String tempScope = scope + "_" + node.getValue();
-//        System.out.println(tempScope);
-        
         Symbol symbol = table.getSymbol(tempScope);
         if (symbol != null) {
             return symbol.getType();
         } else {
-//            System.out.println("returning "+node.getValue());
             return node.getValue();
         }
     }
@@ -201,13 +192,14 @@ public class TypeCheckingVisitor extends NodeVisitor {
     @Override
     public String visit(FunctionCallNode node) {
         String id = ((IdentifierNode)node.getLeftHand()).getValue();
-        String functionType = table.getSymbol("function_"+id).getType();
+        String functionType = "";
+        functionType = table.getSymbol("function_"+id).getType();
         String parameters = node.getRightHand().accept(this);
         if (functionType.equals(parameters)) {
             return functionType;
         } else {
             SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function "+id
-                       +" requires parameters "+functionType +". Got: "+ parameters));
+                    +" requires parameters "+functionType +". Got: "+ parameters));
             return null;
         }
     }
@@ -215,7 +207,6 @@ public class TypeCheckingVisitor extends NodeVisitor {
     @Override
     public String visit(FunctionHeadingNode node) {
         String s = ((IdentifierNode)node.getLefthand()).getValue();
-//        System.out.println("function heading found: "+s);
         scope = scope + "_" + s;
         return null;
     }
@@ -259,7 +250,6 @@ public class TypeCheckingVisitor extends NodeVisitor {
     private String handleTwoFieldNode(TwoFieldNode node) {
         String leftHandSide = node.getLeftHand().accept(this);
         String rightHandSide = node.getRightHand().accept(this);
-//        System.out.println("comparing two field nodes: "+leftHandSide + " " + rightHandSide);
         return compare(leftHandSide, rightHandSide);
     }
     

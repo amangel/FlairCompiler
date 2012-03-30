@@ -9,7 +9,7 @@ begin
             while index <= currentDepth do
                 begin
                     print(1);
-                    x := x + 1;
+                    index := index + 1;
                 end;
             currentDepth := currentDepth + 1;
         end;
@@ -19,7 +19,7 @@ begin
             while index < currentDepth do
                 begin
                     print(1);
-                    x := x + 1;
+                    index := index + 1;
                 end;
             currentDepth := currentDepth - 1;
         end;

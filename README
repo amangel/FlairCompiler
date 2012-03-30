@@ -9,7 +9,7 @@ Current State of Compiler
       >>scanner                   -- due Friday, February 10
       >>parser, step 1            -- due Friday, February 24
       >>parser, step 2            -- due Friday, March 9
-        semantic checker          -- due Friday, March 30
+      >>semantic checker          -- due Friday, March 30
         code generator, step 1    -- due Friday, April 13
         code generator, step 2    -- due Friday, April 27
 
@@ -18,7 +18,9 @@ Usage:
 	java driver path/to/filename    --To execute where path/to/filename is path
                                       to your Flair Program
 
-
+	Alternately, running either the runAllValidPrograms.sh or runInvalidPrograms.sh
+	will compile the program on the first run, and will execute all other specified
+	programs on each future run.
 
 SCANNER
 	The primary class for the scanner is CompilerStateScanner. It scans its input 
@@ -51,3 +53,20 @@ PARSER
 	ParsingException is thrown if the stream of tokens is different than what is
 	expected by the grammar. When the exception is thrown, the program will
 	display an error and close.
+	
+	The second portion of the parser is the creation of the Semantic stack of 
+	nodes from the parsed program. The nodes are created as the expressions
+	are identified from the parsed program. Ultimately, every program has a
+	program node at the top, with a set of declarations, followed by the body
+	of the program.
+	
+SEMANTIC CHECKER
+	The semantic checker is implemented using the Visitor pattern. It traverses
+	the node tree that was created by the final step of the parser. Initially, it
+	creates a symbol table with the variable and function definitions in the 
+	program then continuing to check the types of every statement. Warnings are
+	displayed if any of several situations are encountered. The SemanticWarnings
+	attempt to provide as much information as is readily available in the current
+	design to be able to find the problem.
+	
+	

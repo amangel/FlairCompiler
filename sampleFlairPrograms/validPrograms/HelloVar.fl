@@ -1,4 +1,4 @@
-program HelloVar();
+program HelloVar(i : integer);
 begin
   i := 1;
   print(i)

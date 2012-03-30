@@ -5,5 +5,5 @@ program IntegerDivision (x : integer, y : integer);
 		quotient := x/y;
 		remainder := x - (y * remainder);
 		print ( quotient );
-		print ( reminader )
+		print ( remainder )
 	end .

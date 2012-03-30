@@ -199,7 +199,6 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         scope += "_" + id;
         String parameters = node.getMiddle().accept(this);
         String returnType = node.getRighthand().accept(this);
-        System.out.println("symboltablebuilder found: "+parameters);
         FunctionSymbol funcSymbol = (FunctionSymbol) symbolFactory.getSymbol(id, "function", parameters);
         funcSymbol.setReturnType(returnType);
         table.addSymbol(funcSymbol, scope);
@@ -216,7 +215,7 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
 
     @Override
     public String visit(FunctionBodyNode node) {
-        // TODO Auto-generated method stub
+        node.getVariables().accept(this);
         return null;
     }
 
