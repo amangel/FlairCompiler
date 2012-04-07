@@ -8,24 +8,26 @@ import org.zza.semanticchecker.SymbolTable;
 
 public class TypeCheckingVisitor extends NodeVisitor {
     
+    
     private SymbolTable table;
     private String scope;
+    private static String EMPTY = "";
     
     public TypeCheckingVisitor() {
         table = SymbolTable.getInstance();
+        scope = "program";
     }
     
     @Override
     public String visit(ProgramNode node) {
-        scope = "program";
         node.getDeclarations().accept(this);
         node.getbody().accept(this);
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(VariableDeclarationNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
@@ -34,27 +36,28 @@ public class TypeCheckingVisitor extends NodeVisitor {
         String id = node.getHeader().accept(this);
         node.getBody().accept(this);
         scope = oldScope;
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(ParameterNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(AssignmentExpressionNode node) {
         String toReturn = "";
         String oldScope = scope;
-        String leftHand = node.getLeftHand().accept(this);
-        String rightHand = node.getRightHand().accept(this);
+        String leftHand = node.acceptVisitorLeftHand(this);
+        String rightHand = node.acceptVisitorRightHand(this);
         if (leftHand.equals(rightHand)) {
             toReturn = leftHand;
         } else {
             if (leftHand.equals("real")) {
                 toReturn = "real";                
             } else if (leftHand.equals("integer")) {
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Attempt to save a real into an integer: " 
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                        "Attempt to save a real into an integer: " 
                         + ((IdentifierNode)node.getLeftHand()).getValue()));
             }            
         }
@@ -69,22 +72,29 @@ public class TypeCheckingVisitor extends NodeVisitor {
         for (SemanticNode sNode : node.getStatements()) {
             if (sNode instanceof ReturnStatementNode) {
                 if (scope.substring(0,7).equals("program")) {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Return statement found in the main program. No."));
+                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                            "Return statement found in the main program. No."));
                 }
                 returnFound = true;
             } else if (returnFound) {
-                StackPrintingVisitor spv = new StackPrintingVisitor();
-//                System.out.println((sNode.getClass().cast(spv.visit(sNode)))); 
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unreachable code found. Return statement not at the end of function call."));
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                        "Unreachable code found. Return statement not at the end of function '"
+                        +getFunctionName(scope)+"' call."));
             }
             sNode.accept(this);
         }
         if (!returnFound && !scope.substring(0,7).equals("program")) {
-            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function found with no return statement."));
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '" 
+                        + getFunctionName(scope) + "' found with no return statement."));
         }
-        return null;
+        return EMPTY;
     }
     
+    private String getFunctionName(String string) {
+        String[] parts = string.split("_");
+        return parts[parts.length-1];
+    }
+
     @Override
     public String visit(DivisionExpressionNode node) {
         return handleTwoFieldNode(node);
@@ -128,17 +138,17 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(TypeNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(AllParametersNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(AllVariableDeclarationsNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
@@ -155,21 +165,21 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(CompareOperatorNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(ComparisonNode node) {
-        String left = node.getLefthand().accept(this);
-        String right = node.getRighthand().accept(this);
+        String left = node.acceptVisitorLeftHand(this);
+        String right = node.acceptVisitorRightHand(this);
         return compare(left, right);
     }
     
     @Override
     public String visit(WhileExpressionNode node) {
-        String comparison = node.getLeftHand().accept(this);
-        node.getRightHand().accept(this);
-        return null;
+        String comparison = node.acceptVisitorLeftHand(this);
+        node.acceptVisitorRightHand(this);
+        return EMPTY;
     }
     
     @Override
@@ -179,19 +189,19 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(ProgramHeaderNode node) {
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(DeclarationsNode node) {
         node.getFunctionDeclarations().accept(this);
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(PrintStatementNode node) {
         node.getArgument().accept(this);
-        return null;
+        return EMPTY; 
     }
     
     @Override
@@ -199,13 +209,13 @@ public class TypeCheckingVisitor extends NodeVisitor {
         String id = ((IdentifierNode)node.getLeftHand()).getValue();
         String functionType = "";
         functionType = table.getSymbol("function_"+id).getType();
-        String parameters = node.getRightHand().accept(this);
+        String parameters = node.acceptVisitorRightHand(this);
         if (functionType.equals(parameters)) {
             return functionType;
         } else {
             SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '"+id
                     +"' requires parameters '"+functionType +"'. Got: '"+ parameters+"'"));
-            return null;
+            return EMPTY;
         }
     }
     
@@ -213,7 +223,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
     public String visit(FunctionHeadingNode node) {
         String s = ((IdentifierNode)node.getLefthand()).getValue();
         scope = scope + "_" + s;
-        return null;
+        return EMPTY;
     }
     
     @Override
@@ -224,13 +234,13 @@ public class TypeCheckingVisitor extends NodeVisitor {
             fNode.accept(this);
         }
         scope = oldScope;
-        return null;
+        return EMPTY;
     }
     
     @Override
     public String visit(FunctionBodyNode node) {
         node.getBody().accept(this);
-        return null;
+        return EMPTY;
     }
     
     @Override
@@ -240,26 +250,26 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(IfStatementNode node) {
-        node.getLefthand().accept(this);
-        node.getMiddle().accept(this);
-        node.getRighthand().accept(this);
-        return null;
+        node.acceptVisitorLeftHand(this);
+        node.acceptVisitorMiddle(this);
+        node.acceptVisitorRightHand(this);
+        return EMPTY;
     }
     
     @Override
     public String visit(EmptyNode node) {
-        // TODO Auto-generated method stub
+        // TODO Throw an error if this is encountered?
         return null;
     }
     
     private String handleTwoFieldNode(TwoFieldNode node) {
-        String leftHandSide = node.getLeftHand().accept(this);
-        String rightHandSide = node.getRightHand().accept(this);
+        String leftHandSide = node.acceptVisitorLeftHand(this);
+        String rightHandSide = node.acceptVisitorRightHand(this);
         return compare(leftHandSide, rightHandSide);
     }
     
     private String compare(String leftHandSide, String rightHandSide) {
-        if (leftHandSide != null && rightHandSide != null) {
+//        if (leftHandSide != null && rightHandSide != null) {
             if (leftHandSide.equals("integer")) {
                 if (rightHandSide.equals("integer")) {
                     return "integer";
@@ -279,7 +289,15 @@ public class TypeCheckingVisitor extends NodeVisitor {
             } else {
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + leftHandSide + "'. Undeclared variable."));
             }
-        }
-        return null;
+            //if left==right
+                //return left
+            //else if left = real
+                //return real
+            
+            
+            
+            
+//        }
+        return EMPTY;
     }
 }

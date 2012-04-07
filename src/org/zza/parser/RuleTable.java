@@ -15,6 +15,7 @@ import org.zza.parser.parsingstack.Entry;
 import org.zza.parser.parsingstack.NonterminalEntry;
 import org.zza.parser.parsingstack.SemanticEntry;
 import org.zza.parser.parsingstack.TerminalEntry;
+import org.zza.scanner.CompilerToken;
 
 public class RuleTable {
     
@@ -339,6 +340,10 @@ public class RuleTable {
                 new SemanticEntry("argument"),
                 new TerminalEntry(")"),
                 new SemanticEntry("print")}));
+    }
+    
+    public List<Entry> find(final Entry A, final CompilerToken i) throws ParsingException {
+        return find(A.toString(), i.toString());
     }
     
     public List<Entry> find(final String A, final String i) throws ParsingException {

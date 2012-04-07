@@ -4,11 +4,12 @@ import java.util.HashMap;
 
 import org.zza.parser.ParsingException;
 import org.zza.parser.RecentTokensStack;
+import org.zza.parser.parsingstack.Entry;
 import org.zza.parser.semanticstack.nodes.*;
 
 public class SemanticNodeFactory {
     
-    private HashMap<String, Class<? extends SemanticNode>> nodeMap;
+    private HashMap<String, Class<? extends SemanticNode>> nodeClassMap;
     private final RecentTokensStack recentTokens;
     
     public SemanticNodeFactory(final RecentTokensStack recentTokens) {
@@ -17,45 +18,49 @@ public class SemanticNodeFactory {
     }
     
     private void buildNodeMap() {
-        nodeMap = new HashMap<String, Class<? extends SemanticNode>>();
-        nodeMap.put("identifier", IdentifierNode.class);
-        nodeMap.put("plus", PlusExpressionNode.class);
-        nodeMap.put("minus", MinusExpressionNode.class);
-        nodeMap.put("division", DivisionExpressionNode.class);
-        nodeMap.put("multiplication", MultiplicationExpressionNode.class);
-        nodeMap.put("assignment", AssignmentExpressionNode.class);
-        nodeMap.put("type", TypeNode.class);
-        nodeMap.put("function", FunctionNode.class);
-        nodeMap.put("integer", IntegerNode.class);
-        nodeMap.put("real", RealNode.class);
-        nodeMap.put("ParameterNode", ParameterNode.class);
-        nodeMap.put("AllParameters", AllParametersNode.class);
-        nodeMap.put("variabledeclaration", VariableDeclarationNode.class);
-        nodeMap.put("allvariables", AllVariableDeclarationsNode.class);
-        nodeMap.put("argument", ArgumentNode.class);
-        nodeMap.put("argumentbegin", MarkerNode.class);
-        nodeMap.put("compare", CompareOperatorNode.class);
-        nodeMap.put("comparison", ComparisonNode.class);
-        nodeMap.put("while", WhileExpressionNode.class);
-        nodeMap.put("negative", NegativeExpressionNode.class);
-        nodeMap.put("compoundbegin", MarkerNode.class);
-        nodeMap.put("compound", CompoundStatementNode.class);
-        nodeMap.put("ProgramHeader", ProgramHeaderNode.class);
-        nodeMap.put("Program", ProgramNode.class);
-        nodeMap.put("declarations", DeclarationsNode.class);
-        nodeMap.put("print", PrintStatementNode.class);
-        nodeMap.put("functioncall", FunctionCallNode.class);
-        nodeMap.put("functionheading", FunctionHeadingNode.class);
-        nodeMap.put("allfunctions", AllFunctionDeclarationsNode.class);
-        nodeMap.put("functionbody", FunctionBodyNode.class);
-        nodeMap.put("return", ReturnStatementNode.class);
-        nodeMap.put("if", IfStatementNode.class);
+        nodeClassMap = new HashMap<String, Class<? extends SemanticNode>>();
+        nodeClassMap.put("identifier", IdentifierNode.class);
+        nodeClassMap.put("plus", PlusExpressionNode.class);
+        nodeClassMap.put("minus", MinusExpressionNode.class);
+        nodeClassMap.put("division", DivisionExpressionNode.class);
+        nodeClassMap.put("multiplication", MultiplicationExpressionNode.class);
+        nodeClassMap.put("assignment", AssignmentExpressionNode.class);
+        nodeClassMap.put("type", TypeNode.class);
+        nodeClassMap.put("function", FunctionNode.class);
+        nodeClassMap.put("integer", IntegerNode.class);
+        nodeClassMap.put("real", RealNode.class);
+        nodeClassMap.put("ParameterNode", ParameterNode.class);
+        nodeClassMap.put("AllParameters", AllParametersNode.class);
+        nodeClassMap.put("variabledeclaration", VariableDeclarationNode.class);
+        nodeClassMap.put("allvariables", AllVariableDeclarationsNode.class);
+        nodeClassMap.put("argument", ArgumentNode.class);
+        nodeClassMap.put("argumentbegin", MarkerNode.class);
+        nodeClassMap.put("compare", CompareOperatorNode.class);
+        nodeClassMap.put("comparison", ComparisonNode.class);
+        nodeClassMap.put("while", WhileExpressionNode.class);
+        nodeClassMap.put("negative", NegativeExpressionNode.class);
+        nodeClassMap.put("compoundbegin", MarkerNode.class);
+        nodeClassMap.put("compound", CompoundStatementNode.class);
+        nodeClassMap.put("ProgramHeader", ProgramHeaderNode.class);
+        nodeClassMap.put("Program", ProgramNode.class);
+        nodeClassMap.put("declarations", DeclarationsNode.class);
+        nodeClassMap.put("print", PrintStatementNode.class);
+        nodeClassMap.put("functioncall", FunctionCallNode.class);
+        nodeClassMap.put("functionheading", FunctionHeadingNode.class);
+        nodeClassMap.put("allfunctions", AllFunctionDeclarationsNode.class);
+        nodeClassMap.put("functionbody", FunctionBodyNode.class);
+        nodeClassMap.put("return", ReturnStatementNode.class);
+        nodeClassMap.put("if", IfStatementNode.class);
+    }
+    
+    public SemanticNode getNewNode(final Entry node) throws ParsingException {
+        return getNewNode(node.toString());
     }
     
     public SemanticNode getNewNode(final String nodeType) throws ParsingException {
         try {
-            if (nodeMap.containsKey(nodeType)) {
-                final SemanticNode node = nodeMap.get(nodeType).newInstance();
+            if (nodeClassMap.containsKey(nodeType)) {
+                final SemanticNode node = nodeClassMap.get(nodeType).newInstance();
                 node.setToken(recentTokens.getMostRecent());
                 return node;
             } else {

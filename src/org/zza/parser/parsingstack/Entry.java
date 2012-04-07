@@ -24,5 +24,13 @@ public abstract class Entry {
     public abstract boolean isSemanticEntry();
     
     public abstract boolean isTerminal();
+
+    public boolean isEof() {
+        return entry.equals("EOF");
+    }
+    
+    public boolean matches(Object object) {
+        return entry.equalsIgnoreCase(object.toString());
+    }
     
 }

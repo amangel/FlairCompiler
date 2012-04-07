@@ -20,6 +20,10 @@ public class CompilerToken {
     
     @Override
     public String toString() {
-        return "Token: " + stringType;
+        return stringType;
+    }
+
+    public boolean isComment() {
+        return stringType.equals("COMMENT");
     }
 }

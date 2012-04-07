@@ -1,0 +1,28 @@
+program test();
+	var test : integer;
+	function factor(n : integer) : integer
+		var current : integer;
+		begin
+			current := 2;
+			while current <= n do
+				if n = current then
+					begin
+						print(current);
+						return n
+					end
+				else
+					if divides(current, n) = 0 then
+						begin
+							print(current);
+							n := n/current
+						end
+					else
+						current := current + 1
+		end;
+	function divides(x : integer, y : integer) : integer
+		begin
+			return x/y
+		end;
+	begin
+		test := factor(17)
+	end.

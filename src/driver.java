@@ -36,6 +36,6 @@ public class driver {
     public static void endTime() {
         final long end = System.currentTimeMillis();
         final long time = end - start;
-        System.out.println("runtime in ms: "+time);
+        System.out.println(time);
     }
 }

@@ -1,6 +1,7 @@
 package org.zza.parser.semanticstack.nodes;
 
 import org.zza.parser.semanticstack.SemanticStack;
+import org.zza.visitor.NodeVisitor;
 
 public abstract class TwoFieldNode extends SemanticNode {
     
@@ -19,6 +20,11 @@ public abstract class TwoFieldNode extends SemanticNode {
         stack.push(this);
     }
     
+    public void convertLeftHandTo(ConversionNode node) {
+        node.convert(leftHandSide);
+        leftHandSide = node;
+    }
+    
     public SemanticNode getLeftHand() {
         return leftHandSide;
     }
@@ -30,5 +36,13 @@ public abstract class TwoFieldNode extends SemanticNode {
     @Override
     public String getStringRepresentation() {
         return "\n" + getName() + " {" + leftHandSide.getStringRepresentation() + " : " + rightHandSide.getStringRepresentation() + "} \n";
+    }
+    
+    public String acceptVisitorLeftHand(NodeVisitor visitor) {
+        return leftHandSide.accept(visitor);
+    }
+    
+    public String acceptVisitorRightHand(NodeVisitor visitor) {
+        return rightHandSide.accept(visitor);
     }
 }

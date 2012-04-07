@@ -22,6 +22,7 @@ public class SymbolTable {
     }
     
     public void addSymbol(Symbol symbol, String symbolName) {
+//        System.out.println("adding to table: "+symbolName );
         table.put(symbolName, symbol);
     }
     
@@ -32,11 +33,17 @@ public class SymbolTable {
         } else if(table.containsKey("program_"+nameSplit[nameSplit.length-1])){
             return table.get("program_"+nameSplit[nameSplit.length-1]);
         } else {
+//            System.out.println("Couldn't find symbol: "+symbolName);
             SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Use before declaration: couldn't find symbol: "+symbolName + " in the table."));
             return null;
         }
     }
 
+    //TODO: OPTIMIZATION: check for unused symbols 
+    //perhaps when each symbol is gotten, flag it as checked
+    //make a function that will check all variables at once at the end.
+    //generate warning if there are unused and provide the name
+    
     public boolean contains(String symbolName) {
         return table.containsKey(symbolName);
     }

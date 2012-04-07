@@ -1,0 +1,24 @@
+program euclid(m : integer, n : integer);
+
+var
+  remainder : integer;
+
+function mod( m : integer, n : integer ) : integer
+  begin
+    while m >= n do
+      m := m - n;
+    return m
+  end;
+
+begin
+  remainder := 0;
+
+  while remainder = 0 do
+    begin
+      remainder := mod(m, 3.14159);
+      m := n;
+      n := print(remainder)
+    end;
+
+  print( m )
+end.

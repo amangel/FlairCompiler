@@ -6,7 +6,7 @@ import org.zza.semanticchecker.Symbol;
 import org.zza.semanticchecker.SymbolTable;
 
 
-public class SymbolTableBuilderVisitor extends NodeVisitor {
+public class SymbolTableBuilderVisitor extends NodeVisitorAdapter {
     
     private String scope;
     
@@ -14,6 +14,8 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
     private SymbolFactory symbolFactory;
     
     private Symbol symbol;
+    
+    private static String EMPTY = "";
     
     public SymbolTableBuilderVisitor() {
         symbol = null;
@@ -29,16 +31,16 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         node.getDeclarations().accept(this);
 //        node.getbody().accept(this);
 //        return "header: " + header + "\ndeclarations: " + declarations + "\nbody: "+body;
-        return null;
+        return EMPTY;
     }
 
     @Override
     public String visit(VariableDeclarationNode node) {
-        String id = node.getLeftHand().accept(this);
-        String type = node.getRightHand().accept(this);
+        String id = node.acceptVisitorLeftHand(this);
+        String type = node.acceptVisitorRightHand(this);
         symbol = symbolFactory.getSymbol(id, "variable", type);
         table.addSymbol(symbol, scope+"_"+id);
-        return null;
+        return EMPTY;
     }
 
     @Override
@@ -48,69 +50,21 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         node.getHeader().accept(this);
         node.getBody().accept(this);
         scope = oldScope;
-        return null;
+        return EMPTY;
     }
 
     @Override
     public String visit(ParameterNode node) {
-        String identifier = node.getLeftHand().accept(this);
-        String type = node.getRightHand().accept(this);
+        String identifier = node.acceptVisitorLeftHand(this);
+        String type = node.acceptVisitorRightHand(this);
         symbol = symbolFactory.getSymbol(identifier, "variable", type);
         table.addSymbol(symbol, scope+"_"+identifier);
         return type;
     }
 
     @Override
-    public String visit(AssignmentExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(CompoundStatementNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(DivisionExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public String visit(IdentifierNode node) {
         return node.getValue();
-    }
-
-    @Override
-    public String visit(IntegerNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(MinusExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(MultiplicationExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(PlusExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(RealNode node) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -135,74 +89,32 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         for (SemanticNode vNode : node.getArray()) {
             vNode.accept(this);
         }
-        return null;
-    }
-
-    @Override
-    public String visit(ArgumentNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(CompareOperatorNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(ComparisonNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(WhileExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(NegativeExpressionNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return EMPTY;
     }
 
     @Override
     public String visit(ProgramHeaderNode node) {
         node.getParameters().accept(this);
-        return null;
+        return EMPTY;
     }
 
     @Override
     public String visit(DeclarationsNode node) {
         node.getVariableDeclarations().accept(this);
         node.getFunctionDeclarations().accept(this);
-        return null;
-    }
-
-    @Override
-    public String visit(PrintStatementNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(FunctionCallNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return EMPTY;
     }
 
     @Override
     public String visit(FunctionHeadingNode node) {
-        String id = node.getLefthand().accept(this);
+        String id = node.acceptVisitorLeftHand(this);
         scope += "_" + id;
-        String parameters = node.getMiddle().accept(this);
-        String returnType = node.getRighthand().accept(this);
+        String parameters = node.acceptVisitorMiddle(this);
+        String returnType = node.acceptVisitorRightHand(this);
         FunctionSymbol funcSymbol = (FunctionSymbol) symbolFactory.getSymbol(id, "function", parameters);
         funcSymbol.setReturnType(returnType);
         table.addSymbol(funcSymbol, scope);
-        return null;
+        return EMPTY;
     }
 
     @Override
@@ -210,31 +122,7 @@ public class SymbolTableBuilderVisitor extends NodeVisitor {
         for(SemanticNode fNode : node.getArray() ) {
             fNode.accept(this);
         }
-        return null;
-    }
-
-    @Override
-    public String visit(FunctionBodyNode node) {
-        node.getVariables().accept(this);
-        return null;
-    }
-
-    @Override
-    public String visit(ReturnStatementNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(IfStatementNode node) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String visit(EmptyNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return EMPTY;
     }
     
 }

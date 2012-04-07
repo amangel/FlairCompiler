@@ -13,7 +13,6 @@ import org.zza.scanner.CompilerTokenStream;
 
 public class CompilerParser {
     
-    private final String COMMENT = "COMMENT";
     private final String EOF = "EOF";
     private final String startSymbol = "<PROGRAM>";
     private final String startToken = "program";
@@ -49,33 +48,32 @@ public class CompilerParser {
         addToParseStack(ruleTable.find(startSymbol, startToken));
         A = parseStack.peek();
         getNextToken();
-        while ((A != null) && !A.getType().equals(EOF)) {
+        while ((A != null) && !A.isEof()) {
             A = parseStack.peek();
             if (A.isTerminal()) {
-                if (A.getType().equalsIgnoreCase(i.getStringType())) {
+                if (A.matches(i)) {
                     parseStack.pop();
                     if (parseStack.notEmpty()) {
                         A = parseStack.peek();
                         getNextToken();
                     }
                 } else {
-                    throw new ParsingException("Terminal mismatch. Expected: " + A.getType() + " Found: " + i.getStringType() + "");
+                    throw new ParsingException("Terminal mismatch. Expected: " + A + " Found: " + i + "");
                 }
             } else if (A.isSemanticEntry()) {
-                final SemanticNode node = nodeFactory.getNewNode(A.getType());
+                final SemanticNode node = nodeFactory.getNewNode(A);
                 node.runOnSemanticStack(semanticStack);
                 parseStack.pop();
             } else {
                 if (isRuleContained(A, i)) {
                     parseStack.pop();
-                    addToParseStack(ruleTable.find(A.getType(), i.getStringType()));
+                    addToParseStack(ruleTable.find(A, i));
                     A = parseStack.peek();
                 } else {
-                    throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A.getType() + " , " + i.getStringType());
+                    throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A + " , " + i);
                 }
             }
         }
-        // semanticStack.printOutSemanticStack();
         
         if (!stream.isEmpty()) {
             throw new ParsingException("Parser found the end of file marker but the token stream was not empty.");
@@ -86,18 +84,17 @@ public class CompilerParser {
     private void getNextToken() {
         recentTokens.push(i);
         i = stream.getNext();
-        if (i.getStringType().equals(COMMENT)) {
+        if (i.isComment()) {
             getNextToken();
         }
     }
     
     private boolean isRuleContained(final Entry A, final CompilerToken i) throws ParsingException {
-        // System.out.println(A + " " + i);
         List<Entry> returnValue = null;
         try {
-            returnValue = ruleTable.find(A.getType(), i.getStringType());
+            returnValue = ruleTable.find(A, i);
         } catch (final NullPointerException e) {
-            throw new ParsingException("Program contains a grammatical error: Looking for: " + A.getType() + ", found: " + i.getStringType());
+            throw new ParsingException("Program contains a grammatical error: Looking for: " + A + ", found: " + i);
         }
         return returnValue != null;
     }
@@ -113,8 +110,8 @@ public class CompilerParser {
     public static void parsingErrorEncountered(final Exception e) {
         System.out.println("An error was encountered while parsing the program. Code before the error is:\n");
         System.out.println(recentTokens.getStackDump());
-        e.printStackTrace();
         System.out.println(e.getMessage());
+        e.printStackTrace();
         System.exit(-1);
     }
 }

@@ -25,8 +25,8 @@ public class SemanticStack {
     }
     
     private int getLastIndex() throws ArrayIndexOutOfBoundsException {
-        if (stack.size() > 0) {
-            return stack.size() - 1;
+        if (getSize() > 0) {
+            return getSize() - 1;
         } else {
             throw new ArrayIndexOutOfBoundsException("Stack was empty");
         }
@@ -41,7 +41,7 @@ public class SemanticStack {
         return stack.size() > 0;
     }
     
-    public int getSize() {
+    private int getSize() {
         return stack.size();
     }
     

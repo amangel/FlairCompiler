@@ -1,0 +1,33 @@
+program printFactors (n : integer);
+	function getRemainder(x : integer, y : integer) : integer
+		var max : integer;
+			min : integer;
+		begin
+			if x < y then
+				begin
+					max := y;
+					min := x
+				end
+			else
+				begin
+					min := x;
+					max := y;
+				end;
+			return max - (max / min * min);
+		end;
+	function factor(n : integer) : integer
+		var current : integer;
+			remainder : integer
+		begin
+			current := 0;
+			while current < n do
+				getRemainder(n, current);
+				begin
+					if remainder = 0 then
+						print(n);
+						factor(n/current);
+						current := n
+					else
+						current := current + 1
+				end
+		end.
