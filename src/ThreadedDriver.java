@@ -1,12 +1,12 @@
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.zza.codegenerator.CodeGeneratingVisitor;
 import org.zza.parser.CompilerParser;
 import org.zza.parser.semanticstack.nodes.SemanticNode;
 import org.zza.scanner.CompilerStateScanner;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
 import org.zza.semanticchecker.SemanticWarningList;
-import org.zza.semanticchecker.SymbolTable;
 import org.zza.visitor.SymbolTableBuilderVisitor;
 import org.zza.visitor.TypeCheckingVisitor;
 
@@ -40,7 +40,9 @@ public class ThreadedDriver {
 //                SymbolTable.getInstance().printTable();
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);
-                driver.endTime();
+                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
+                System.out.println(code.visit(program));
+//                driver.endTime();
                 if(warningList.isEmpty()) {
                     
                 } else {
