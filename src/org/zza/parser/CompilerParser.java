@@ -45,7 +45,7 @@ public class CompilerParser {
     
     public void run() throws ParsingException {
         parseStack.push(new TerminalEntry(EOF));
-        addToParseStack(ruleTable.find(startSymbol, startToken));
+        parseStack.addToParseStack(ruleTable.find(startSymbol, startToken));
         A = parseStack.peek();
         getNextToken();
         while ((A != null) && !A.isEof()) {
@@ -67,7 +67,7 @@ public class CompilerParser {
             } else {
                 if (isRuleContained(A, i)) {
                     parseStack.pop();
-                    addToParseStack(ruleTable.find(A, i));
+                    parseStack.addToParseStack(ruleTable.find(A, i));
                     A = parseStack.peek();
                 } else {
                     throw new ParsingException("Non-terminal mismatch. No entry in the table for: " + A + " , " + i);
@@ -97,14 +97,6 @@ public class CompilerParser {
             throw new ParsingException("Program contains a grammatical error: Looking for: " + A + ", found: " + i);
         }
         return returnValue != null;
-    }
-    
-    private void addToParseStack(final List<Entry> tableEntry) {
-        for (int i = tableEntry.size() - 1; i >= 0; i--) {
-            if (!tableEntry.get(i).isEpsilon()) {
-                parseStack.push(tableEntry.get(i));
-            }
-        }
     }
     
     public static void parsingErrorEncountered(final Exception e) {

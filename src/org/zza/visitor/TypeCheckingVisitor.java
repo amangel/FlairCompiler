@@ -66,12 +66,16 @@ public class TypeCheckingVisitor extends NodeVisitor {
         return toReturn;
     }
     
+    private boolean isWithinProgramScope() {
+        return scope.substring(0,7).equals("program");
+    }
+    
     @Override
     public String visit(CompoundStatementNode node) {
         boolean returnFound = false;
         for (SemanticNode sNode : node.getStatements()) {
             if (sNode instanceof ReturnStatementNode) {
-                if (scope.substring(0,7).equals("program")) {
+                if (isWithinProgramScope()) {
                     SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
                             "Return statement found in the main program. No."));
                 }
@@ -83,7 +87,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
             }
             sNode.accept(this);
         }
-        if (!returnFound && !scope.substring(0,7).equals("program")) {
+        if (!returnFound && !isWithinProgramScope()) {
             SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '" 
                         + getFunctionName(scope) + "' found with no return statement."));
         }

@@ -6,7 +6,7 @@ import org.zza.semanticchecker.Symbol;
 import org.zza.semanticchecker.SymbolTable;
 
 
-public class SymbolTableBuilderVisitor extends NodeVisitorAdapter {
+public class SymbolTableBuilderVisitor extends NodeVisitorStringAdapter {
     
     private String scope;
     
@@ -15,7 +15,7 @@ public class SymbolTableBuilderVisitor extends NodeVisitorAdapter {
     
     private Symbol symbol;
     
-    private static String EMPTY = "";
+    private final String EMPTY = "";
     
     public SymbolTableBuilderVisitor() {
         symbol = null;

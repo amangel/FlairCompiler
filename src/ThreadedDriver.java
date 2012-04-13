@@ -42,7 +42,7 @@ public class ThreadedDriver {
                 typeChecker.visit(program);
                 final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
                 System.out.println(code.visit(program));
-//                driver.endTime();
+                driver.endTime();
                 if(warningList.isEmpty()) {
                     
                 } else {

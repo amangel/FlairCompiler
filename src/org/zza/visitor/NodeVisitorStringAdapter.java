@@ -3,7 +3,7 @@ package org.zza.visitor;
 import org.zza.parser.semanticstack.nodes.*;
 
 
-public class NodeVisitorAdapter extends NodeVisitor {
+public class NodeVisitorStringAdapter extends NodeVisitor {
 
     private static String EMPTY = "";
     

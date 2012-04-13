@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class CompilerStateScanner {
     
+    private static final String START = "start";
+    private static final String EOF = "EOF";
     private ArrayList<String> reservedStrings;
     private Map<String, String> states;
     // private ArrayList<CompilerToken> tokens;
@@ -33,7 +35,7 @@ public class CompilerStateScanner {
     
     private void generateTokens(final StringReader input) {
         currentToken = "";
-        String state = "start";
+        String state = START;
         
         int n;
         try {
@@ -45,12 +47,12 @@ public class CompilerStateScanner {
                 } catch (final LexicalException e) {
                     e.printStackTrace();
                     currentToken = "";
-                    state = "start";
+                    state = START;
                 }
             }
             handleStateTransition("", state);
-            currentToken = "EOF";
-            handleStateTransition("EOF", "EOF");
+            currentToken = EOF;
+            handleStateTransition(EOF, EOF);
             stream.finishedStream();
             
         } catch (final LexicalException e) {
@@ -70,12 +72,12 @@ public class CompilerStateScanner {
                 // tokens.add(makeToken(currentToken.trim(), state));
                 addTokenToStream(makeToken(currentToken.trim(), state));
             }
-            if (states.containsKey("start" + next)) {
+            if (states.containsKey(START + next)) {
                 currentToken = next;
-                return states.get("start" + next);
+                return states.get(START + next);
             } else {
                 currentToken = "";
-                return "start";
+                return START;
             }
         }
     }
@@ -172,7 +174,7 @@ public class CompilerStateScanner {
     private void createScannerMaps() {
         states = new HashMap<String, String>(400);
         for (final char s : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
-            states.put("start" + s, "identifier");
+            states.put(START + s, "identifier");
             states.put("identifier" + s, "identifier");
             states.put("comment" + s, "comment");
         }
@@ -180,7 +182,7 @@ public class CompilerStateScanner {
         for (final char s : "123456789".toCharArray()) {
             states.put("comment" + s, "comment");
             states.put("minus" + s, "integer");
-            states.put("start" + s, "integer");
+            states.put(START + s, "integer");
             states.put("integer" + s, "integer");
             states.put("realexponentstart" + s, "realexponent");
             states.put("realexponent" + s, "realexponent");
@@ -209,7 +211,7 @@ public class CompilerStateScanner {
             states.put("integer" + s, "realdecimal");
             states.put("zerointeger" + s, "realdecimal");
             states.put("negativezero" + s, "negativezerodecimal");
-            states.put("start" + s, "period");
+            states.put(START + s, "period");
         }
         
         for (final char s : "e".toCharArray()) {
@@ -297,7 +299,7 @@ public class CompilerStateScanner {
         tokenStateMap.put("comma", ",");
         tokenStateMap.put("semicolon", ";");
         tokenStateMap.put("endofprogram", ".");
-        tokenStateMap.put("EOF", "EOF");
+        tokenStateMap.put(EOF, EOF);
         tokenStateMap.put("closedcomment", "COMMENT");
         tokenStateMap.put("period", ".");
     }

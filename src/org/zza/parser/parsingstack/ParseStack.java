@@ -1,6 +1,7 @@
 package org.zza.parser.parsingstack;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParseStack {
     
@@ -38,5 +39,13 @@ public class ParseStack {
     
     public boolean notEmpty() {
         return stack.size() > 0;
+    }
+
+    public void addToParseStack(final List<Entry> tableEntry) {
+        for (int i = tableEntry.size() - 1; i >= 0; i--) {
+            if (!tableEntry.get(i).isEpsilon()) {
+                push(tableEntry.get(i));
+            }
+        }
     }
 }
