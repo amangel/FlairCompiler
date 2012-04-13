@@ -82,13 +82,4 @@ SEMANTIC CHECKER
 	of the compiler include:
 	   user defined print function - this is caught by the parser section
 	   using the print function in an assignment statement - caught by parser
-
-CODE GENERATION
-    Currently, the code generator only works with a program that contains Print
-    Statements, where the arguments are Integer Literals. Because an earlier
-    implementation decision makes Print Statements handled as a special case
-    as they are a function with no return value and therefore (in our 
-    implementation) they are treated differently than functions. For Code 
-    Generation, we decided to continue that for consistency. When the code 
-    generator sees a call to Print, it will simply iterate through the arguments,
-    load each value into a register, and output the value in that register.
+		
