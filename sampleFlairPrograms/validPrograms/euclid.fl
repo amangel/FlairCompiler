@@ -15,9 +15,9 @@ begin
 
   while remainder = 0 do
     begin
-      remainder := mod(m, 3.14159);
+      remainder := mod(m, 3); 
       m := n;
-      n := print(remainder)
+      print(remainder)
     end;
 
   print( m )
