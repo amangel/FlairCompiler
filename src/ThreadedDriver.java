@@ -38,16 +38,14 @@ public class ThreadedDriver {
                 warningList = SemanticWarningList.getInstance();
                 final SymbolTableBuilderVisitor printer = new SymbolTableBuilderVisitor();
                 printer.visit(program);
-//                SymbolTable.getInstance().printTable();
+                //                SymbolTable.getInstance().printTable();
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);
-//                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
+                //                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
                 ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
-                System.out.println(code.visit(program));
+                code.visit(program);
                 driver.endTime();
-                if(warningList.isEmpty()) {
-                    
-                } else {
+                if(!warningList.isEmpty()) {
                     warningList.printWarnings();
                 }
             }

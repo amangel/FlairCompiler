@@ -9,8 +9,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
 
     @Override
     public String visit(ProgramNode node) {
+        System.out.println("*begin main program");
         String body = node.getbody().accept(this);
+        System.out.println("*end main program");
         String declarations = node.getDeclarations().accept(this);
+        System.out.println("*HALT");
         return "program: \n"+declarations +"\n" +body;
     }
     
@@ -22,7 +25,10 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(FunctionNode node) {
         String header = node.getHeader().accept(this);
+        System.out.println("*Entry function: " +header);
         String body = node.getBody().accept(this); 
+        System.out.println("*finish function: "+header);
+        
         return "function : "+header + " " + body;
     }
     
@@ -34,6 +40,8 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(AssignmentExpressionNode node) {
         return handleTwoFieldNode(node, ":=");
+//        System.out.println(node.acceptVisitorLeftHand(this) + " := " +node.acceptVisitorRightHand(this));
+//        return "assignment";
     }
     
     @Override
@@ -158,13 +166,18 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(FunctionCallNode node) {
-        return handleTwoFieldNode(node, "funccall");
+//        return handleTwoFieldNode(node, "funccall");
+        String params = node.acceptVisitorRightHand(this);
+        String name = node.acceptVisitorLeftHand(this);
+        System.out.println("BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
+        return "RETURNVALUE";//"call "+name+params;
     }
     
     @Override
     public String visit(FunctionHeadingNode node) {
 //        return handleThreeFieldNode(node, "", "");
-        return "";
+        return node.acceptVisitorLeftHand(this);
+        
     }
 
     @Override

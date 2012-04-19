@@ -56,8 +56,9 @@ public class TypeCheckingVisitor extends NodeVisitor {
             if (leftHand.equals("real")) {
                 toReturn = "real";                
             } else if (leftHand.equals("integer")) {
+                
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
-                        "Attempt to save a real into an integer: " 
+                        "Attempt to save a "+rightHand+" into an "+leftHand+": " 
                         + ((IdentifierNode)node.getLeftHand()).getValue()));
             }            
         }
