@@ -1,7 +1,7 @@
 package org.zza.codegenerator;
 
 
-public class StackFrame {
+public class StackFrame extends Frame {
     
     private int startOfFrame;
     private int controlLink;
@@ -14,9 +14,10 @@ public class StackFrame {
     
     private int numberOfParameters;
     private int numberOfLocalVariables;
+    private int numberOfTempData;
     private int maxTempData;
     
-    public int getTotalFrameSize() {
+    public int getSize() {
         return 1 + 1 + 7 + numberOfParameters + numberOfLocalVariables + maxTempData;
     }
     
@@ -27,7 +28,7 @@ public class StackFrame {
         parameters = (offset=offset+4);
         localVariables = (offset=offset+parameterNumber);
         tempData = (offset=offset+localVariableNumber);
-        
+        numberOfTempData = tempDataCount;
         numberOfParameters = parameterNumber;
         numberOfLocalVariables = localVariableNumber;
         maxTempData = tempDataCount;
@@ -43,9 +44,19 @@ public class StackFrame {
 			maxTempData--;
 			return tempData++;
 		} else {
-			throw new MemoryOutOfBoundsException("Requesting two many temporary variables");
+			throw new MemoryOutOfBoundsException("Requesting too many temporary variables in a stack frame");
 		}
 	}
+
+    @Override
+    public int getLocalDataSize() {
+        return numberOfLocalVariables;
+    }
+
+    @Override
+    public int getTempDataSize() {
+        return numberOfTempData;
+    }
     
     
 }

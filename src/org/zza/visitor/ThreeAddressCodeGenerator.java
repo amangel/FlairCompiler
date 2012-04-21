@@ -1,8 +1,10 @@
 package org.zza.visitor;
 
+import org.zza.codegenerator.DataMemoryManager;
+import org.zza.codegenerator.MemoryOutOfBoundsException;
+import org.zza.codegenerator.ProgramFrame;
 import org.zza.codegenerator.threeaddresscode.Assignment3AC;
 import org.zza.codegenerator.threeaddresscode.Print3AC;
-import org.zza.codegenerator.threeaddresscode.PrintVariable3AC;
 import org.zza.parser.semanticstack.nodes.*;
 
 
@@ -11,10 +13,23 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     private int tempCount = 0;
     private int labelCount = 0;
     private int lineNumber = 0;
+    private DataMemoryManager manager;
 
+    public ThreeAddressCodeGenerator() {
+        manager = new DataMemoryManager();
+    }
+    
     @Override
     public String visit(ProgramNode node) {
+        String parameters = node.getHeader().accept(this);
+        String[] splitParam = parameters.split(",");
+        
         System.out.println("*begin main program");
+        try {
+            manager.addStackFrame(new ProgramFrame(splitParam.length, 5, 5));
+        } catch (MemoryOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         String body = node.getbody().accept(this);
         System.out.println("*end main program. Used: "+tempCount);
         String declarations = node.getDeclarations().accept(this);
@@ -38,7 +53,8 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(ParameterNode node) {
-        return handleTwoFieldNode(node, "param");
+        return node.getLeftHand().accept(this);
+//        return handleTwoFieldNode(node, "param");
     }
     
     @Override
@@ -48,7 +64,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
 //        System.out.println(toReturn);
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
-        Assignment3AC assign = new Assignment3AC(lineNumber);
+        Assignment3AC assign = new Assignment3AC(lineNumber, manager);
         assign.setParameters(right, left, "");
         lineNumber += assign.getEmittedSize();
         assign.emitCode();
@@ -108,8 +124,12 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(AllParametersNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        String toReturn = "";
+        for (SemanticNode n : node.getArray()){
+            toReturn += n.accept(this) + ",";
+        }
+        System.out.println("parameters: "+toReturn.substring(0, toReturn.length()-1));
+        return toReturn.substring(0, toReturn.length()-1);
     }
     
     @Override
@@ -162,7 +182,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(ProgramHeaderNode node) {
-        return node.getIdentifier().accept(this);
+        return node.getParameters().accept(this);
     }
     
     @Override
@@ -178,7 +198,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String[] params = parameters.substring(1,parameters.length()-1).split(",");
         Print3AC printer = null;
         for (String param : params) {
-            printer = new Print3AC(lineNumber );
+            printer = new Print3AC(lineNumber, manager);
             printer.setParameters(param, "", "");
             lineNumber += printer.getEmittedSize();
             printer.emitCode();
