@@ -1,4 +1,5 @@
 package org.zza.codegenerator.templates;
+import org.zza.codegenerator.CodeBlock;
 import org.zza.semanticchecker.SymbolTable;
 
 public class IfTemplate implements Template {
@@ -18,11 +19,13 @@ public class IfTemplate implements Template {
 	private int mySize;
 
 
-	public IfTemplate(String left, String right, String operator, String targetVar, SymbolTable table, CodeBlock thenBlock, CodeBlock elseBlock){
+	public IfTemplate(String left, String right, String operator,
+			String targetVar, SymbolTable table,
+			CodeBlock thenBlock, CodeBlock elseBlock){
 		this.left = left;
 		this.right = right;
 		this.operator = operator;
-		this.targetVar = targetVar;
+		this.targetVar = targetVar; 
 		this.table = table;
 		this.thenBlock = thenBlock;
 		this.elseBlock = elseBlock;
@@ -52,9 +55,9 @@ public class IfTemplate implements Template {
 
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JGE 0" + ", " +  (thenBlockSize + 1) + "(7)");
-			thenBlock.emit();
+			thenBlock.emitCode();
 			System.out.println(":    LD  7, "+  elseBlockSize + "(7)");
-			elseBlock.emit();
+			elseBlock.emitCode();
 		}
 		else if (operator == ">") {
 			//SUB 3, 2, 1       0 > right - left
@@ -62,9 +65,9 @@ public class IfTemplate implements Template {
 			//JLE 3, #(7)
 			System.out.println(":    SUB 0, 1, 0");
 			System.out.println(":    JLE 0" + ", " +  (thenBlockSize + 1) + "(7)");
-			thenBlock.emit();
+			thenBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emit();
+			elseBlock.emitCode();
 		}
 		else if (operator == "=") {
 			//SUB 3, 1, 2      left - right  = 0
@@ -72,9 +75,9 @@ public class IfTemplate implements Template {
 			//JNE 3, #(7)
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JNE 0" + ", " +  (thenBlockSize + 1) + "(7)");     
-			thenBlock.emit();
+			thenBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emit();
+			elseBlock.emitCode();
 		}
 		else if (operator == "<="){
 			//SUB 3, 1, 2
@@ -82,9 +85,9 @@ public class IfTemplate implements Template {
 			//JGT 3, #(7)
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JGT 0" + ", " +  (thenBlockSize + 1) + "(7)");    
-			thenBlock.emit();
+			thenBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emit();
+			elseBlock.emitCode();
 		}
 		else if (operator == ">="){
 			//SUB 3, 2, 1
@@ -92,9 +95,9 @@ public class IfTemplate implements Template {
 			//JLT 3, #(7)
 			System.out.println(":    SUB 0, 1, 0");
 			System.out.println(":    JLT 0" + ", " +  (thenBlockSize + 1) + "(7)"); 
-			thenBlock.emit();
+			thenBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emit();
+			elseBlock.emitCode();
 		}
 		else if (operator == "!="){
 			//SUB 3, 1, 2
@@ -102,9 +105,9 @@ public class IfTemplate implements Template {
 			//JEQ 3, #(7)
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JEQ 0" + ", " + (thenBlockSize + 1)+ "(7)");
-			thenBlock.emit();
+			thenBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emit(); 
+			elseBlock.emitCode(); 
 		}	
 	}
 
