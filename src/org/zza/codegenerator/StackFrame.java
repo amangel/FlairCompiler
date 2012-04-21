@@ -16,6 +16,7 @@ public class StackFrame extends Frame {
     private int numberOfLocalVariables;
     private int numberOfTempData;
     private int maxTempData;
+    private int maxLocalData;
     
     public int getSize() {
         return 1 + 1 + 7 + numberOfParameters + numberOfLocalVariables + maxTempData;
@@ -32,6 +33,7 @@ public class StackFrame extends Frame {
         numberOfParameters = parameterNumber;
         numberOfLocalVariables = localVariableNumber;
         maxTempData = tempDataCount;
+        maxLocalData = localVariableNumber;
 
     }
 
@@ -56,6 +58,16 @@ public class StackFrame extends Frame {
     @Override
     public int getTempDataSize() {
         return numberOfTempData;
+    }
+
+    @Override
+    public int getNextLocal() throws MemoryOutOfBoundsException {
+        if (maxLocalData>0){
+            maxLocalData--;
+            return localVariables++;
+        } else {
+            throw new MemoryOutOfBoundsException("Requesting too many local variables in a stack frame");
+        }
     }
     
     

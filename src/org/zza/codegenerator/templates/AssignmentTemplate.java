@@ -1,7 +1,6 @@
 package org.zza.codegenerator.templates;
 
 import org.zza.codegenerator.DataMemoryManager;
-import org.zza.semanticchecker.SymbolTable;
 
 public class AssignmentTemplate implements Template{
 	private String target;

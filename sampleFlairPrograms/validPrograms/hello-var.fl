@@ -1,6 +1,11 @@
 program HelloVar();
 var i : integer;
+    j : integer;
 begin
-  i := 1;
-  print(i)
+  i := 4;
+  print(i);
+  i := i / 4;
+  print(i);
+  print(4+5)
+
 end.

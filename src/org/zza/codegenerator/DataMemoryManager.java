@@ -32,11 +32,11 @@ public class DataMemoryManager {
         }
     }
     
-    public Frame peekTopOfStack(){
+    private Frame peekTopOfStack(){
     	return memoryStack.peek();
     }
     
-    public Frame peekBottomOfStack(){
+    private Frame peekBottomOfStack(){
     	return memoryStack.lastElement();
     }
     
@@ -46,12 +46,18 @@ public class DataMemoryManager {
     	return memoryStack.pop();
     }
     
-    public void addNewVariable(String varName) throws MemoryOutOfBoundsException{
+    public void addNewTemporaryVariable(String varName) throws MemoryOutOfBoundsException{
     	Frame frame = peekTopOfStack();
     	int address = frame.getNextTemporary();
-    	memory.put(varName, "" + (address + frame.getStartAddress()));
+    	memory.put(varName, "" + (address));
     }
-
+    
+    public void addLocalVariable(String varName) throws MemoryOutOfBoundsException {
+        Frame frame = peekTopOfStack();
+        int address = frame.getNextLocal();
+        memory.put(varName, ""+(address));
+    }
+    
     public int getAddressOfVar(String varName){
     	return Integer.parseInt(memory.get(varName));
     }
