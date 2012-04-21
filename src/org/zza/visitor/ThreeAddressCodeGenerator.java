@@ -1,5 +1,8 @@
 package org.zza.visitor;
 
+import org.zza.codegenerator.threeaddresscode.Assignment3AC;
+import org.zza.codegenerator.threeaddresscode.Print3AC;
+import org.zza.codegenerator.threeaddresscode.PrintVariable3AC;
 import org.zza.parser.semanticstack.nodes.*;
 
 
@@ -7,6 +10,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     private int tempCount = 0;
     private int labelCount = 0;
+    private int lineNumber = 0;
 
     @Override
     public String visit(ProgramNode node) {
@@ -14,7 +18,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String body = node.getbody().accept(this);
         System.out.println("*end main program. Used: "+tempCount);
         String declarations = node.getDeclarations().accept(this);
-        System.out.println("*HALT");
+        System.out.println(lineNumber + ":   HALT");
         return "program: \n"+declarations +"\n" +body;
     }
     
@@ -40,9 +44,15 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(AssignmentExpressionNode node) {
 //        return handleTwoFieldNode(node, ":=");
-        String toReturn = node.acceptVisitorLeftHand(this) + " := " +node.acceptVisitorRightHand(this);
-        System.out.println(toReturn);
-        return "assignment("+toReturn+")";
+//        String toReturn = node.acceptVisitorLeftHand(this) + " := " +node.acceptVisitorRightHand(this);
+//        System.out.println(toReturn);
+        String left = node.acceptVisitorLeftHand(this);
+        String right = node.acceptVisitorRightHand(this);
+        Assignment3AC assign = new Assignment3AC(lineNumber);
+        assign.setParameters(right, left, "");
+        lineNumber += assign.getEmittedSize();
+        assign.emitCode();
+        return "assignment";
     }
     
     @Override
@@ -163,9 +173,17 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(PrintStatementNode node) {
-        String command = "print"+node.getArgument().accept(this);
-        System.out.println(command);
-        return command;
+//        String command = "print"+node.getArgument().accept(this);
+        String parameters = node.getArgument().accept(this);
+        String[] params = parameters.substring(1,parameters.length()-1).split(",");
+        Print3AC printer = null;
+        for (String param : params) {
+            printer = new Print3AC(lineNumber );
+            printer.setParameters(param, "", "");
+            lineNumber += printer.getEmittedSize();
+            printer.emitCode();
+        }
+        return "print";
     }
     
     @Override

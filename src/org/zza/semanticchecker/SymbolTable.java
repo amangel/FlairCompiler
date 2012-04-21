@@ -55,4 +55,7 @@ public class SymbolTable {
         }
     }
     
+    public String getAddress(String var) {
+        return "0";
+    }
 }
