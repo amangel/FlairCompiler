@@ -31,12 +31,26 @@ public class IfHeader3AC extends ThreeAddressCode {
             
         }
         
-//        if(operator == "<"){
-            System.out.println(lineNumber++ + ":    SUB 0, 0, 1");
-            System.out.println(lineNumber++ + ":    JGE 0" + ", " +  (thenSize) + "(7)");
-//            thenCodeBlock.emitCode();
-//            System.out.println(":    LD  7, "+  elseSize + "(7)");
-//            elseCodeBlock.emitCode();
+        System.out.println(lineNumber++ + ":    SUB 0,0,1");
+        
+        if(thirdParam.equals("<")){
+            System.out.println(lineNumber++ + ":    JGE 0" + "," +  thenSize + "(7)");
+        }
+        else if (thirdParam.equals(">")) {
+            System.out.println(lineNumber++ + ":    JLE 0" + "," +  thenSize + "(7)");
+        }
+        else if (thirdParam.equals("=")) {
+            System.out.println(lineNumber++ + ":    JNE 0" + "," +  thenSize + "(7)");     
+        }
+        else if (thirdParam.equals("<=")){
+            System.out.println(lineNumber++ + ":    JGT 0" + "," +  thenSize + "(7)");    
+        }
+        else if (thirdParam.equals(">=")){
+            System.out.println(lineNumber++ + ":    JLT 0" + "," +  thenSize + "(7)"); 
+        }
+        else if (thirdParam.equals("!=")){
+            System.out.println(lineNumber++ + ":    JEQ 0" + "," + thenSize+ "(7)");
+        }   
     }
 
     @Override

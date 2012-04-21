@@ -19,7 +19,8 @@ public class IfRest3AC extends ThreeAddressCode {
     
     @Override
     public void emitCode() {
-        System.out.println(lineNumber++ + ":    LD  7, "+  elseSize + "(7)"); 
+        System.out.println(lineNumber++ + ":   LDC  0,"+elseSize+"(6)");
+        System.out.println(lineNumber++ + ":   ADD  7,0,7");
     }
 
     @Override

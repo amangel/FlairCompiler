@@ -4,7 +4,7 @@ var i : integer;
 begin
   i := 4;
   i := i / 4;
-  if 1 < 2 then
+  if 2 >= 3 then
 	print(1)
   else
     print(2)

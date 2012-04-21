@@ -309,23 +309,17 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String[] ifParts = ifPart.split(",");
         int oldLineNumber = lineNumber;
         lineNumber += 4;
-//        System.out.println("starting then block");
         node.acceptVisitorMiddle(this);
-//        System.out.println("size of block: "+(lineNumber - oldLineNumber -4));
         IfHeader3AC ifHeader = new IfHeader3AC(oldLineNumber, manager);
-        ifHeader.setParameters(ifParts[0], ifParts[2], ifParts[1], lineNumber - oldLineNumber - 4);
+        ifHeader.setParameters(ifParts[0], ifParts[2], ifParts[1], lineNumber - oldLineNumber - 2);
         ifHeader.emitCode();
         oldLineNumber = lineNumber;
-        lineNumber++;
+        lineNumber += 2;
         node.acceptVisitorRightHand(this);
         
         IfRest3AC ifRest = new IfRest3AC(oldLineNumber, manager);
-        ifRest.setParameters("", "", "", lineNumber - oldLineNumber - 1);
+        ifRest.setParameters("", "", "", lineNumber - oldLineNumber - 2);
         ifRest.emitCode();
-        
-//        System.out.println("if: "+ifPart);
-//        System.out.println("then: "+thenPart);
-//        System.out.println("else: " +elsePart);
         return "if";
     }
     
