@@ -1,4 +1,5 @@
 package org.zza.codegenerator.templates;
+import org.zza.codegenerator.DataMemoryManager;
 import org.zza.semanticchecker.SymbolTable;
 
 public class AdditionTemplate implements Template {
@@ -11,21 +12,21 @@ public class AdditionTemplate implements Template {
 	private String var2Address;
 	private String targetVarAddress;
 	
-	private SymbolTable table;
+	private DataMemoryManager memoryManager;
 	
 	private int mySize;
 	
-	public AdditionTemplate(String var1, String var2,String targetVar, SymbolTable table){
+	public AdditionTemplate(String var1, String var2,String targetVar, DataMemoryManager memory){
 		this.var1=var1;
 		this.var2=var2;
-		this.table = table;
+		this.memoryManager = memory;
 		this.targetVar = targetVar;
 		this.mySize = 4;
 		
 		
-		var1Address = table.getAddress(var1);
-		var2Address = table.getAddress(var2);
-		this.targetVarAddress = table.getAddress(targetVar);
+		var1Address = "" + memory.getAddressOfVar(var1);
+		var2Address = "" + memory.getAddressOfVar(var2);
+		this.targetVarAddress = "" + memory.getAddressOfVar(targetVar);
 		
 	}
 

@@ -1,5 +1,6 @@
 package org.zza.codegenerator.templates;
 
+import org.zza.codegenerator.DataMemoryManager;
 import org.zza.semanticchecker.SymbolTable;
 
 public class DivisionTemplate implements Template {
@@ -13,21 +14,21 @@ public class DivisionTemplate implements Template {
 	private String var2Address;
 	private String targetVarAddress;
 	
-	private SymbolTable table;
+	private DataMemoryManager memoryManager;
 	
 	private int mySize;
 	
 	
-	public DivisionTemplate(String var1, String var2, String targetVar, SymbolTable table){
+	public DivisionTemplate(String var1, String var2, String targetVar, DataMemoryManager memory){
 		this.var1=var1;
 		this.var2=var2;
-		this.table = table;
+		this.memoryManager = memory;
 		this.mySize = 4;
 
 		
 		
-		var1Address = table.getAddress(var1);
-		var2Address = table.getAddress(var2);
+		var1Address = "" + memory.getAddressOfVar(var1);
+		var2Address = "" + memory.getAddressOfVar(var2);
 		
 	}
 
