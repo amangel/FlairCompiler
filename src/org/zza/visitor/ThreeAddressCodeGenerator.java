@@ -6,12 +6,13 @@ import org.zza.parser.semanticstack.nodes.*;
 public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     private int tempCount = 0;
+    private int labelCount = 0;
 
     @Override
     public String visit(ProgramNode node) {
         System.out.println("*begin main program");
         String body = node.getbody().accept(this);
-        System.out.println("*end main program");
+        System.out.println("*end main program. Used: "+tempCount);
         String declarations = node.getDeclarations().accept(this);
         System.out.println("*HALT");
         return "program: \n"+declarations +"\n" +body;
@@ -27,8 +28,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String header = node.getHeader().accept(this);
         System.out.println("*Entry function: " +header);
         String body = node.getBody().accept(this); 
-        System.out.println("*finish function: "+header);
-        
+        System.out.println("*Finish function: "+header);
         return "function : "+header + " " + body;
     }
     
@@ -39,9 +39,10 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(AssignmentExpressionNode node) {
-        return handleTwoFieldNode(node, ":=");
-//        System.out.println(node.acceptVisitorLeftHand(this) + " := " +node.acceptVisitorRightHand(this));
-//        return "assignment";
+//        return handleTwoFieldNode(node, ":=");
+        String toReturn = node.acceptVisitorLeftHand(this) + " := " +node.acceptVisitorRightHand(this);
+        System.out.println(toReturn);
+        return "assignment("+toReturn+")";
     }
     
     @Override
@@ -137,11 +138,13 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     public String visit(WhileExpressionNode node) {
 //        return handleTwoFieldNode(node, "do");
         String whilePart = node.acceptVisitorLeftHand(this);
+        String label = getNextLabel();
+        System.out.println("whileLabel: "+label);
         String doPart = node.acceptVisitorRightHand(this);
-        System.out.println("while: "+whilePart + " do " +doPart);
+        System.out.println("while: "+whilePart + " goto " +label);
         return "while";
     }
-    
+
     @Override
     public String visit(NegativeExpressionNode node) {
         return "negative:"+node.getContent().accept(this);
@@ -160,8 +163,9 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(PrintStatementNode node) {
-        System.out.println("print: "+node.getArgument().accept(this));
-        return "print";
+        String command = "print"+node.getArgument().accept(this);
+        System.out.println(command);
+        return command;
     }
     
     @Override
@@ -170,7 +174,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String params = node.acceptVisitorRightHand(this);
         String name = node.acceptVisitorLeftHand(this);
         System.out.println("BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
-        return "RETURNVALUE";//"call "+name+params;
+        return "RETURNVALUE("+name+params+")";//"call "+name+params;
     }
     
     @Override
@@ -203,7 +207,15 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(IfStatementNode node) {
-        return handleThreeFieldNode(node, "then", "else");
+//        return handleThreeFieldNode(node, "then", "else");
+        
+        String ifPart = node.acceptVisitorLeftHand(this);
+        String thenPart = node.acceptVisitorMiddle(this);
+        String elsePart = node.acceptVisitorRightHand(this);
+        System.out.println("if: "+ifPart);
+        System.out.println("then: "+thenPart);
+        System.out.println("else: " +elsePart);
+        return "if";
     }
     
     @Override
@@ -223,9 +235,14 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     }
 
     private String getNextTemporary() {
-        return "t"+tempCount ++;
+        return "t"+tempCount++;
     }
 
+    
+    private String getNextLabel() {
+        return "LABEL"+labelCount++;
+    }
+    
     private String handleThreeFieldNode(ThreeFieldNode node, String op1, String op2) {
         String left = node.acceptVisitorLeftHand(this);
         String middle = node.acceptVisitorMiddle(this);

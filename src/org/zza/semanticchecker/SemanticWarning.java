@@ -18,6 +18,6 @@ public class SemanticWarning {
     }
     
     public String toString() {
-        return "Warning: "+warning;
+        return "*Warning: "+warning;
     }
 }

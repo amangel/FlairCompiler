@@ -1,4 +1,5 @@
-program HelloVar(i : integer);
+program HelloVar();
+var i : integer;
 begin
   i := 1;
   print(i)
