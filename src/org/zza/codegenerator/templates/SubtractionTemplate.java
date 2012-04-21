@@ -1,5 +1,6 @@
 package org.zza.codegenerator.templates;
 
+import org.zza.codegenerator.DataMemoryManager;
 import org.zza.semanticchecker.SymbolTable;
 
 public class SubtractionTemplate implements Template {
@@ -12,21 +13,21 @@ public class SubtractionTemplate implements Template {
 	private String var2Address;
 	private String targetVarAddress;
 
-	private SymbolTable table;
+	private DataMemoryManager memoryManager;
 	
 	private int mySize;
 
 	
-	public SubtractionTemplate(String var1, String var2, SymbolTable table, String targetVariable){
+	public SubtractionTemplate(String var1, String var2, DataMemoryManager memory, String targetVariable){
 		this.var1=var1;
 		this.var2=var2;
 		this.targetVariable = targetVariable;
-		this.table = table;
+		this.memoryManager = memory;
 		this.mySize = 4;
 		
-		var1Address = table.getAddress(var1);
-		var2Address = table.getAddress(var2);
-		this.targetVarAddress = table.getAddress(targetVariable);
+		var1Address = "" + memory.getAddressOfVar(var1);
+		var2Address = "" + memory.getAddressOfVar(var2);
+		this.targetVarAddress = "" + memory.getAddressOfVar(targetVariable);
 		
 	}
 
