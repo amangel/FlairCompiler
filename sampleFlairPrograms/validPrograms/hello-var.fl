@@ -3,9 +3,10 @@ var i : integer;
     j : integer;
 begin
   i := 4;
-  print(i);
   i := i / 4;
-  print(i);
-  print(4+5)
+  if 1 < 2 then
+	print(1)
+  else
+    print(2)
 
 end.

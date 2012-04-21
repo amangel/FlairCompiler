@@ -3,9 +3,11 @@ package org.zza.visitor;
 import org.zza.codegenerator.DataMemoryManager;
 import org.zza.codegenerator.MemoryOutOfBoundsException;
 import org.zza.codegenerator.ProgramFrame;
+import org.zza.codegenerator.templates.IfRest3AC;
 import org.zza.codegenerator.threeaddresscode.Addition3AC;
 import org.zza.codegenerator.threeaddresscode.Assignment3AC;
 import org.zza.codegenerator.threeaddresscode.Division3AC;
+import org.zza.codegenerator.threeaddresscode.IfHeader3AC;
 import org.zza.codegenerator.threeaddresscode.Multiplication3AC;
 import org.zza.codegenerator.threeaddresscode.Print3AC;
 import org.zza.codegenerator.threeaddresscode.Subtraction3AC;
@@ -218,7 +220,8 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(ComparisonNode node) {
-        return handleThreeFieldNode(node, "", "");
+        return node.acceptVisitorLeftHand(this) + "," + node.acceptVisitorMiddle(this) + "," +
+                node.acceptVisitorRightHand(this);
     }
     
     @Override
@@ -302,14 +305,27 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(IfStatementNode node) {
-//        return handleThreeFieldNode(node, "then", "else");
-        
         String ifPart = node.acceptVisitorLeftHand(this);
-        String thenPart = node.acceptVisitorMiddle(this);
-        String elsePart = node.acceptVisitorRightHand(this);
-        System.out.println("if: "+ifPart);
-        System.out.println("then: "+thenPart);
-        System.out.println("else: " +elsePart);
+        String[] ifParts = ifPart.split(",");
+        int oldLineNumber = lineNumber;
+        lineNumber += 4;
+//        System.out.println("starting then block");
+        node.acceptVisitorMiddle(this);
+//        System.out.println("size of block: "+(lineNumber - oldLineNumber -4));
+        IfHeader3AC ifHeader = new IfHeader3AC(oldLineNumber, manager);
+        ifHeader.setParameters(ifParts[0], ifParts[2], ifParts[1], lineNumber - oldLineNumber - 4);
+        ifHeader.emitCode();
+        oldLineNumber = lineNumber;
+        lineNumber++;
+        node.acceptVisitorRightHand(this);
+        
+        IfRest3AC ifRest = new IfRest3AC(oldLineNumber, manager);
+        ifRest.setParameters("", "", "", lineNumber - oldLineNumber - 1);
+        ifRest.emitCode();
+        
+//        System.out.println("if: "+ifPart);
+//        System.out.println("then: "+thenPart);
+//        System.out.println("else: " +elsePart);
         return "if";
     }
     

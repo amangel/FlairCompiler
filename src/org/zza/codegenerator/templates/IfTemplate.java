@@ -1,42 +1,42 @@
 package org.zza.codegenerator.templates;
 import org.zza.codegenerator.CodeBlock;
+import org.zza.codegenerator.DataMemoryManager;
 import org.zza.semanticchecker.SymbolTable;
 
 public class IfTemplate implements Template {
 
-	private String left;
-	private String right;
-	private String targetVar;
+	private String leftHand;
+	private String rightHand;
+	private String targetVarName;
 	private String operator;
-	private String leftAddress;
-	private String rightAddress;
-	private String targetVarAddress;
-	private CodeBlock thenBlock;
-	private CodeBlock elseBlock;
-	private SymbolTable table;
+	private int leftAddress;
+	private int rightAddress;
+	private int targetVarAddress;
+	private CodeBlock thenCodeBlock;
+	private CodeBlock elseCodeBlock;
+	private DataMemoryManager manager;
 	private int elseBlockSize;
 	private int thenBlockSize;
 	private int mySize;
 
 
 	public IfTemplate(String left, String right, String operator,
-			String targetVar, SymbolTable table,
+			String targetVar, DataMemoryManager manager,
 			CodeBlock thenBlock, CodeBlock elseBlock){
-		this.left = left;
-		this.right = right;
+		this.leftHand = left;
+		this.rightHand = right;
 		this.operator = operator;
-		this.targetVar = targetVar; 
-		this.table = table;
-		this.thenBlock = thenBlock;
-		this.elseBlock = elseBlock;
+		this.targetVarName = targetVar; 
+		this.manager = manager;
+		this.thenCodeBlock = thenBlock;
+		this.elseCodeBlock = elseBlock;
 		elseBlockSize = elseBlock.getSize();
 		thenBlockSize = thenBlock.getSize();
 		mySize = 5 + elseBlockSize + thenBlockSize;
-		leftAddress = table.getAddress(left);
-		rightAddress = table.getAddress(right);		
-		targetVarAddress = table.getAddress(targetVar);
+		leftAddress = manager.getAddressOfVar(left);
+		rightAddress = manager.getAddressOfVar(right);		
+		targetVarAddress = manager.getAddressOfVar(targetVar);
 	}
-
 
 	@Override
 	public int getSize() {
@@ -49,65 +49,46 @@ public class IfTemplate implements Template {
 		System.out.println(":    LD  0," + leftAddress + "(6)");//Register 6 holds a 0;
 		System.out.println(":    LD  1," + rightAddress + "(6)"); 
 		if(operator == "<"){
-			//SUB 3, 1, 2        left -right < 0
-			//JGE 3, ?(7)         
-			//JGE 3, #(7)
-
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JGE 0" + ", " +  (thenBlockSize + 1) + "(7)");
-			thenBlock.emitCode();
+			thenCodeBlock.emitCode();
 			System.out.println(":    LD  7, "+  elseBlockSize + "(7)");
-			elseBlock.emitCode();
+			elseCodeBlock.emitCode();
 		}
 		else if (operator == ">") {
-			//SUB 3, 2, 1       0 > right - left
-			//JLE 3, ?(7)
-			//JLE 3, #(7)
 			System.out.println(":    SUB 0, 1, 0");
 			System.out.println(":    JLE 0" + ", " +  (thenBlockSize + 1) + "(7)");
-			thenBlock.emitCode();
+			thenCodeBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emitCode();
+			elseCodeBlock.emitCode();
 		}
 		else if (operator == "=") {
-			//SUB 3, 1, 2      left - right  = 0
-			//JNE 3, ?(7)
-			//JNE 3, #(7)
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JNE 0" + ", " +  (thenBlockSize + 1) + "(7)");     
-			thenBlock.emitCode();
+			thenCodeBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emitCode();
+			elseCodeBlock.emitCode();
 		}
 		else if (operator == "<="){
-			//SUB 3, 1, 2
-			//JGT 3, ?(7)
-			//JGT 3, #(7)
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JGT 0" + ", " +  (thenBlockSize + 1) + "(7)");    
-			thenBlock.emitCode();
+			thenCodeBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emitCode();
+			elseCodeBlock.emitCode();
 		}
 		else if (operator == ">="){
-			//SUB 3, 2, 1
-			//JLT 3, ?(7)
-			//JLT 3, #(7)
 			System.out.println(":    SUB 0, 1, 0");
 			System.out.println(":    JLT 0" + ", " +  (thenBlockSize + 1) + "(7)"); 
-			thenBlock.emitCode();
+			thenCodeBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emitCode();
+			elseCodeBlock.emitCode();
 		}
 		else if (operator == "!="){
-			//SUB 3, 1, 2
-			//JEQ 3, ?(7)
-			//JEQ 3, #(7)
 			System.out.println(":    SUB 0, 0, 1");
 			System.out.println(":    JEQ 0" + ", " + (thenBlockSize + 1)+ "(7)");
-			thenBlock.emitCode();
+			thenCodeBlock.emitCode();
 			System.out.println(":    LD  7, " + elseBlockSize + "(7)");      
-			elseBlock.emitCode(); 
+			elseCodeBlock.emitCode(); 
 		}	
 	}
 
