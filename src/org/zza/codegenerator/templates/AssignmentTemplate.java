@@ -1,5 +1,6 @@
 package org.zza.codegenerator.templates;
 
+import org.zza.codegenerator.DataMemoryManager;
 import org.zza.semanticchecker.SymbolTable;
 
 public class AssignmentTemplate implements Template{
@@ -10,18 +11,18 @@ public class AssignmentTemplate implements Template{
 	private String targetAddress;
 	private String valueAddress;
 	
-	private SymbolTable table;
+	private DataMemoryManager memoryMap;
 	
 	private int mySize;
 	
-	public AssignmentTemplate(String target, String value, SymbolTable table){
+	public AssignmentTemplate(String target, String value, DataMemoryManager memory){
 		this.target=target;
 		this.value=value;
-		this.table = table;
+		this.memoryMap = memory;
 		
 		
-		targetAddress = table.getAddress(target);
-		valueAddress = table.getAddress(value);
+		targetAddress = "" + memory.getAddressOfVar(target);
+		valueAddress =  "" + memory.getAddressOfVar(value);
 		
 		mySize = 2;
 		

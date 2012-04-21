@@ -1,23 +1,24 @@
 package org.zza.codegenerator.templates;
 
+import org.zza.codegenerator.DataMemoryManager;
 import org.zza.semanticchecker.SymbolTable;
 
 public class PrintTemplate implements Template {
 
 	private String myVar;
 	private int mySize;
-	private SymbolTable table;
+	private DataMemoryManager memoryManager;
 	private String myVarAddress;
 
 	
 	
-	public PrintTemplate(String myVar, SymbolTable table){
+	public PrintTemplate(String myVar, DataMemoryManager memory){
 		this.myVar = myVar;
 		this.mySize = 2;
 		
-		this.table = table;
+		this.memoryManager = memory;
 		
-		myVarAddress = table.getAddress(myVar);
+		myVarAddress = "" + memory.getAddressOfVar(myVar);
 	}
 	
 	@Override
@@ -28,7 +29,6 @@ public class PrintTemplate implements Template {
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
 		return mySize;
 	}
 
