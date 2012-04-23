@@ -8,10 +8,7 @@ public class DataMemoryManager {
     
     private final int MAX = 1024;
     private int current;
-    private HashMap<String,String> memory; //<Variable,Address>
-    
-    private HashMap<String, HashMap<String,String>> newMemory;
-    
+    private HashMap<String,String> memory; //<Variable,Address>    
     private Stack<Frame> memoryStack;
     
     public DataMemoryManager() {
