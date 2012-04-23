@@ -17,12 +17,14 @@ public class StackFrame extends Frame {
     private int numberOfTempData;
     private int maxTempData;
     private int maxLocalData;
+    private String name;
     
     public int getSize() {
         return 1 + 1 + 7 + numberOfParameters + numberOfLocalVariables + maxTempData;
     }
     
-    public StackFrame(int offset, int parameterNumber, int localVariableNumber, int tempDataCount) {
+    public StackFrame(int offset, int parameterNumber, int localVariableNumber, int tempDataCount, String name) {
+        this.name= name;
         startOfFrame = offset;
         controlLink = (offset);
         oldRegisters = (offset=offset+1);
@@ -68,6 +70,11 @@ public class StackFrame extends Frame {
         } else {
             throw new MemoryOutOfBoundsException("Requesting too many local variables in a stack frame");
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
     
     

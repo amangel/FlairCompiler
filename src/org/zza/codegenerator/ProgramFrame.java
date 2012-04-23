@@ -10,6 +10,7 @@ public class ProgramFrame extends Frame{
     private int tempVariables;
     private int maxTempData;
     private int maxLocalData;
+    private String name;
 
     public ProgramFrame(int offset, int localVariableCount, int temporaryVariableCount) {
         this.offset = offset;
@@ -59,6 +60,11 @@ public class ProgramFrame extends Frame{
         } else {
             throw new MemoryOutOfBoundsException("Requested too many local variables in the program frame");
         }
+    }
+
+    @Override
+    public String getName() {
+        return "program";
     }
     
 }
