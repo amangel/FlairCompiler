@@ -1,270 +1,330 @@
+ if (sNode instanceof ReturnStatementNode) {
+                    returnFound = true;
+            } else if (returnFound) {
+                int indexOfReturn = node.getStatements().indexOf(ReturnStatement);
+                node.Statements = node.getStatements().removeRange((indexOfReturn+1), node.getStatements().size());
+
+            }
+
+
+
+
+
+
+
+
+
+
+
 package org.zza.visitor;
 
-import java.util.ArrayList;
-
 import org.zza.parser.semanticstack.nodes.*;
+import org.zza.semanticchecker.SemanticWarning;
+import org.zza.semanticchecker.SemanticWarningList;
+import org.zza.semanticchecker.Symbol;
+import org.zza.semanticchecker.SymbolTable;
 
-public class StackPrintingVisitor extends NodeVisitor {
+public class TypeCheckingVisitor extends NodeVisitor {
     
-    private int depth;
     
-    public StackPrintingVisitor() {
-        depth = 0;
+    private SymbolTable table;
+    private String scope;
+    private static String EMPTY = "";
+    
+    public TypeCheckingVisitor() {
+        table = SymbolTable.getInstance();
+        scope = "program";
     }
     
-    private String getTabs(final int count) {
+    @Override
+    public String visit(ProgramNode node) {
+        node.getDeclarations().accept(this);
+        node.getbody().accept(this);
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(VariableDeclarationNode node) {
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(FunctionNode node) {
+        String oldScope = scope;
+        String id = node.getHeader().accept(this);
+        node.getBody().accept(this);
+        scope = oldScope;
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(ParameterNode node) {
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(AssignmentExpressionNode node) {
         String toReturn = "";
-        for (int i = 0; i <= count; i++) {
-            toReturn += "   ";
+        String oldScope = scope;
+        String leftHand = node.acceptVisitorLeftHand(this);
+        String rightHand = node.acceptVisitorRightHand(this);
+        if (leftHand.equals(rightHand)) {
+            toReturn = leftHand;
+        } else {
+            if (leftHand.equals("real")) {
+                toReturn = "real";                
+            } else if (leftHand.equals("integer")) {
+                
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                        "Attempt to save a "+rightHand+" into an "+leftHand+": " 
+                        + ((IdentifierNode)node.getLeftHand()).getValue()));
+            }            
+        }
+        
+        scope = oldScope;
+        return toReturn;
+    }
+    
+    private boolean isWithinProgramScope() {
+        return scope.substring(0,7).equals("program");
+    }
+    
+    @Override
+    public String visit(CompoundStatementNode node) {
+        boolean returnFound = false;
+        for (SemanticNode sNode : node.getStatements()) {
+            if (sNode instanceof ReturnStatementNode) {
+                if (isWithinProgramScope()) {
+                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                            "Return statement found in the main program. No."));
+                }
+                returnFound = true;
+                //Added these in down below
+                int indexOfReturn = node.getStatements().indexOf(ReturnStatement);
+                node.Statements = node.getStatements().removeRange((indexOfReturn+1), node.getStatements().size());
+            } else if (returnFound) {
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                        "Unreachable code found. Return statement not at the end of function '"
+                        +getFunctionName(scope)+"' call."));
+            }
+            sNode.accept(this);
+        }
+        if (!returnFound && !isWithinProgramScope()) {
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '" 
+                        + getFunctionName(scope) + "' found with no return statement."));
+        }
+        return EMPTY;
+    }
+    
+    private String getFunctionName(String string) {
+        String[] parts = string.split("_");
+        return parts[parts.length-1];
+    }
+
+    @Override
+    public String visit(DivisionExpressionNode node) {
+        return handleTwoFieldNode(node);
+    }
+    
+    @Override
+    public String visit(IdentifierNode node) {
+        String tempScope = scope + "_" + node.getValue();
+        Symbol symbol = table.getSymbol(tempScope);
+        if (symbol != null) {
+            return symbol.getType();
+        } else {
+            return node.getValue();
+        }
+    }
+    
+    @Override
+    public String visit(IntegerNode node) {
+        return "integer";
+    }
+    
+    @Override
+    public String visit(MinusExpressionNode node) {
+        return handleTwoFieldNode(node);
+    }
+    
+    @Override
+    public String visit(MultiplicationExpressionNode node) {
+        return handleTwoFieldNode(node);
+    }
+    
+    @Override
+    public String visit(PlusExpressionNode node) {
+        return handleTwoFieldNode(node);
+    }
+    
+    @Override
+    public String visit(RealNode node) {
+        return "real";
+    }
+    
+    @Override
+    public String visit(TypeNode node) {
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(AllParametersNode node) {
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(AllVariableDeclarationsNode node) {
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(ArgumentNode node) {
+        String toReturn = "";
+        for (SemanticNode aNode : node.getArguments()) {
+            toReturn += aNode.accept(this) + "_";
+        }
+        if(toReturn.length() > 0) {
+            toReturn = toReturn.substring(0, toReturn.length() -1);
         }
         return toReturn;
     }
     
     @Override
-    public String visit(final ProgramNode node) {
-        final String tabs = getTabs(depth);
-        final String header = node.getHeader().accept(this);
-        final String declarations = node.getDeclarations().accept(this);
-        final String body = node.getbody().accept(this);
-        return "Program:\n" + tabs + "Header: " + header + "\n" + tabs + "Declarations: " + declarations + "\n" + tabs + "Body: " + body;
+    public String visit(CompareOperatorNode node) {
+        return EMPTY;
     }
     
     @Override
-    public String visit(final ProgramHeaderNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String identifier = node.getIdentifier().accept(this);
-        final String parameters = node.getParameters().accept(this);
-        depth--;
-        return "\n" + tabs + "ProgramHeader:\n" + identifier + "\n" + tabs + parameters;
+    public String visit(ComparisonNode node) {
+        String left = node.acceptVisitorLeftHand(this);
+        String right = node.acceptVisitorRightHand(this);
+        return compare(left, right);
     }
     
     @Override
-    public String visit(final VariableDeclarationNode node) {
-        return handleTwoFieldNode(node, "VariableDeclaration");
+    public String visit(WhileExpressionNode node) {
+        String comparison = node.acceptVisitorLeftHand(this);
+        node.acceptVisitorRightHand(this);
+        return EMPTY;
     }
     
     @Override
-    public String visit(final AllVariableDeclarationsNode node) {
-        depth++;
-        final ArrayList<SemanticNode> declarations = node.getArray();
-        final String tabs = getTabs(depth);
-        String declarationString = tabs;
-        for (final SemanticNode declaration : declarations) {
-            declarationString += declaration.accept(this);
+    public String visit(NegativeExpressionNode node) {
+        return node.getContent().accept(this);
+    }
+    
+    @Override
+    public String visit(ProgramHeaderNode node) {
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(DeclarationsNode node) {
+        node.getFunctionDeclarations().accept(this);
+        return EMPTY;
+    }
+    
+    @Override
+    public String visit(PrintStatementNode node) {
+        node.getArgument().accept(this);
+        return EMPTY; 
+    }
+    
+    @Override
+    public String visit(FunctionCallNode node) {
+        String id = ((IdentifierNode)node.getLeftHand()).getValue();
+        String functionType = "";
+        functionType = table.getSymbol("function_"+id).getType();
+        String parameters = node.acceptVisitorRightHand(this);
+        if (functionType.equals(parameters)) {
+            return functionType;
+        } else {
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '"+id
+                    +"' requires parameters '"+functionType +"'. Got: '"+ parameters+"'"));
+            return EMPTY;
         }
-        depth--;
-        return "\n" + tabs + "VariableDeclarations:\n" + declarationString;
     }
     
     @Override
-    public String visit(final DeclarationsNode node) {
-        final String variables = node.getVariableDeclarations().accept(this);
-        final String functions = node.getFunctionDeclarations().accept(this);
-        return "\n" + variables + "\n" + functions;
+    public String visit(FunctionHeadingNode node) {
+        String s = ((IdentifierNode)node.getLefthand()).getValue();
+        scope = scope + "_" + s;
+        return EMPTY;
     }
     
     @Override
-    public String visit(final FunctionNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String header = node.getHeader().accept(this);
-        final String body = node.getBody().accept(this);
-        depth--;
-        return "\n" + tabs + "Function:\n" + header + "\n" + body;
-    }
-    
-    @Override
-    public String visit(final ParameterNode node) {
-        return handleTwoFieldNode(node, "Parameter");
-    }
-    
-    @Override
-    public String visit(final AssignmentExpressionNode node) {
-        return handleTwoFieldNode(node, "Assignment");
-    }
-    
-    @Override
-    public String visit(final CompoundStatementNode node) {
-        depth++;
-        final ArrayList<SemanticNode> statements = node.getStatements();
-        final String tabs = getTabs(depth);
-        String statementString = tabs;
-        for (final SemanticNode statement : statements) {
-            statementString += statement.accept(this);
+    public String visit(AllFunctionDeclarationsNode node) {
+        String oldScope = scope;
+        scope = "function";
+        for(SemanticNode fNode : node.getArray()) {
+            fNode.accept(this);
         }
-        depth--;
-        return "\n" + tabs + "Compound: " + statementString;
+        scope = oldScope;
+        return EMPTY;
     }
     
     @Override
-    public String visit(final DivisionExpressionNode node) {
-        return handleTwoFieldNode(node, "Division");
+    public String visit(FunctionBodyNode node) {
+        node.getBody().accept(this);
+        return EMPTY;
     }
     
     @Override
-    public String visit(final IdentifierNode node) {
-        return handleTerminal(node.getValue(), "Identifier");
+    public String visit(ReturnStatementNode node) {
+        return node.getArguments().accept(this);
     }
     
     @Override
-    public String visit(final IntegerNode node) {
-        return handleTerminal(node.getValue(), "Integer");
+    public String visit(IfStatementNode node) {
+        node.acceptVisitorLeftHand(this);
+        node.acceptVisitorMiddle(this);
+        node.acceptVisitorRightHand(this);
+        return EMPTY;
     }
     
     @Override
-    public String visit(final MinusExpressionNode node) {
-        return handleTwoFieldNode(node, "Minus");
+    public String visit(EmptyNode node) {
+        // TODO Throw an error if this is encountered?
+        return null;
     }
     
-    @Override
-    public String visit(final MultiplicationExpressionNode node) {
-        return handleTwoFieldNode(node, "Multiplication");
+    private String handleTwoFieldNode(TwoFieldNode node) {
+        String leftHandSide = node.acceptVisitorLeftHand(this);
+        String rightHandSide = node.acceptVisitorRightHand(this);
+        return compare(leftHandSide, rightHandSide);
     }
     
-    @Override
-    public String visit(final PlusExpressionNode node) {
-        return handleTwoFieldNode(node, "Plus");
-    }
-    
-    @Override
-    public String visit(final RealNode node) {
-        return handleTerminal(node.getValue(), "Real");
-    }
-    
-    @Override
-    public String visit(final TypeNode node) {
-        return handleTerminal(node.getType(), "Type");
-    }
-    
-    @Override
-    public String visit(final AllParametersNode node) {
-        return handleArrayNode(node, "AllParameters");
-    }
-    
-    @Override
-    public String visit(final ArgumentNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final ArrayList<SemanticNode> arguments = node.getArguments();
-        String argumentString = "";
-        for (final SemanticNode argument : arguments) {
-            argumentString += argument.accept(this) + "\n";
-        }
-        depth--;
-        return "\n" + tabs + "Arguments:\n" + argumentString;
-    }
-    
-    @Override
-    public String visit(final CompareOperatorNode node) {
-        return handleTerminal(node.getValue(), "Compare");
-    }
-    
-    @Override
-    public String visit(final ComparisonNode node) {
-        return handleThreeFieldNode(node, "Comparison");
-    }
-    
-    @Override
-    public String visit(final WhileExpressionNode node) {
-        return handleTwoFieldNode(node, "While");
-    }
-    
-    @Override
-    public String visit(final NegativeExpressionNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String expression = node.getContent().accept(this);
-        depth--;
-        return "\n" + tabs + "Negative: " + expression;
-    }
-    
-    @Override
-    public String visit(final PrintStatementNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String arguments = node.getArgument().accept(this);
-        depth--;
-        return "\n" + tabs + "Print:" + arguments;
-    }
-    
-    @Override
-    public String visit(final FunctionCallNode node) {
-        return handleTwoFieldNode(node, "FunctionCall");
-    }
-    
-    @Override
-    public String visit(final FunctionHeadingNode node) {
-        return handleThreeFieldNode(node, "FunctionHeading");
-    }
-    
-    @Override
-    public String visit(final AllFunctionDeclarationsNode node) {
-        return handleArrayNode(node, "FunctionDeclarations");
-    }
-    
-    @Override
-    public String visit(final FunctionBodyNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String variables = node.getVariables().accept(this);
-        final String body = node.getBody().accept(this);
-        depth--;
-        return "\n" + tabs + "FunctionBody:\n" + variables + "\n" + body;
-    }
-    
-    @Override
-    public String visit(final ReturnStatementNode node) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String arguments = node.getArguments().accept(this);
-        depth--;
-        return "\n" + tabs + "Return:\n" + arguments;
-    }
-    
-    @Override
-    public String visit(final IfStatementNode node) {
-        return handleThreeFieldNode(node, "If");
-    }
-    
-    private String handleThreeFieldNode(final ThreeFieldNode node, final String nodeType) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String left = node.getLefthand().accept(this);
-        final String middle = node.getMiddle().accept(this);
-        final String right = node.getRighthand().accept(this);
-        depth--;
-        return "\n" + tabs + nodeType + ":\n" + left + "\n" + middle + "\n" + right;
-    }
-    
-    private String handleTwoFieldNode(final TwoFieldNode node, final String nodeType) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final String left = node.getLeftHand().accept(this);
-        final String right = node.getRightHand().accept(this);
-        depth--;
-        return "\n" + tabs + nodeType + ":\n" + left + "\n" + right;
-    }
-    
-    private String handleArrayNode(final ArrayNode node, final String string) {
-        depth++;
-        final String tabs = getTabs(depth);
-        final ArrayList<SemanticNode> parameters = node.getArray();
-        String parameterString = getTabs(depth);
-        for (final SemanticNode parameter : parameters) {
-            parameterString += parameter.accept(this);
-        }
-        depth--;
-        return "\n" + tabs + string + ":\n" + parameterString;
-    }
-    
-    private String handleTerminal(final String node, final String type) {
-        return getTabs(depth + 1) + type + " : " + node;
-    }
-    
-    @Override
-    public String visit(final EmptyNode node) {
-        return "empty";
+    private String compare(String leftHandSide, String rightHandSide) {
+//        if (leftHandSide != null && rightHandSide != null) {
+            if (leftHandSide.equals("integer")) {
+                if (rightHandSide.equals("integer")) {
+                    return "integer";
+                } else if (rightHandSide.equals("real")){
+                    //TODO: CONVERT LEFT HAND TO REAL?
+                    return "real";
+                } else {
+                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));
+                }
+            } else if (leftHandSide.equals("real")) {
+                if (rightHandSide.equals("integer") || rightHandSide.equals("real")) {
+                    //TODO: CONVERT RIGHT HAND TO REAL IF INT?
+                    return "real";
+                } else  {
+                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));                
+                }
+            } else {
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + leftHandSide + "'. Undeclared variable."));
+            }
+            //if left==right
+                //return left
+            //else if left = real
+                //return real
+            
+            
+            
+            
+//        }
+        return EMPTY;
     }
 }
 
