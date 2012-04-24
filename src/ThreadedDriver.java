@@ -1,6 +1,7 @@
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.zza.codegenerator.CodeGeneratingVisitor;
+import org.zza.codegenerator.threeaddresscode.TerribleImplementationToGetTempUsageVisitor;
 import org.zza.parser.CompilerParser;
 import org.zza.parser.semanticstack.nodes.SemanticNode;
 import org.zza.scanner.CompilerStateScanner;
@@ -42,8 +43,9 @@ public class ThreadedDriver {
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);
                 //                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
-                ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
-                code.visit(program);
+//                ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
+                TerribleImplementationToGetTempUsageVisitor code = new TerribleImplementationToGetTempUsageVisitor();
+                System.out.println(code.visit(program));
                 driver.endTime();
                 if(!warningList.isEmpty()) {
                     warningList.printWarnings();
