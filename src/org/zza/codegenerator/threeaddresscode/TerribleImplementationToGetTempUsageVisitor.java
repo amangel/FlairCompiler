@@ -205,6 +205,7 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
 
     @Override
     public String visit(NegativeExpressionNode node) {
+        getNextTemporary();
         return "negative:"+node.getContent().accept(this);
     }
     

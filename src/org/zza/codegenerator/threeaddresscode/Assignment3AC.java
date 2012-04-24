@@ -11,7 +11,7 @@ public class Assignment3AC extends ThreeAddressCode {
     
     @Override
     public void emitCode() {
-        if ("0123456789".contains(Character.toString(firstParam.charAt(0)))) {
+        if ("0123456789-".contains(Character.toString(firstParam.charAt(0)))) {
             System.out.println(lineNumber++ + ":   LDC  0," + firstParam  + "(6)");
         } else {
             System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(firstParam)  + "(6)");//Register 6 holds a 0;

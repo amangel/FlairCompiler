@@ -2,11 +2,12 @@ program HelloVar();
 var i : integer;
     j : integer;
 begin
-  i := 4;
-  i := i / 4;
-  if (2 - 3) >= i then
-	print(1)
-  else
-    print(2)
-
+  i := -1;
+  j := 2;
+  print(i);
+  print(j);
+  i := -i;
+  print(i);
+  j := -j;
+  print(j)
 end.

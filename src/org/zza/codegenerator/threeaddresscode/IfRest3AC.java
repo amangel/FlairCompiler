@@ -1,4 +1,4 @@
-package org.zza.codegenerator.templates;
+package org.zza.codegenerator.threeaddresscode;
 
 import org.zza.codegenerator.DataMemoryManager;
 import org.zza.codegenerator.threeaddresscode.ThreeAddressCode;
@@ -25,7 +25,6 @@ public class IfRest3AC extends ThreeAddressCode {
 
     @Override
     public void emitComments() {
-        // TODO Auto-generated method stub
         
     }
 

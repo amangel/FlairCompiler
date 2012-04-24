@@ -3,11 +3,11 @@ package org.zza.codegenerator.threeaddresscode;
 import org.zza.codegenerator.DataMemoryManager;
 
 
-public class IfHeader3AC extends ThreeAddressCode {
+public class ComparisonHeader3AC extends ThreeAddressCode {
 
     private int thenSize;
 
-    public IfHeader3AC(int lineNumber, DataMemoryManager manager) {
+    public ComparisonHeader3AC(int lineNumber, DataMemoryManager manager) {
         super(lineNumber, manager);
     }
 

@@ -46,7 +46,7 @@ public class ThreadedDriver {
                 TerribleImplementationToGetTempUsageVisitor terribleUsageVisitor = new TerribleImplementationToGetTempUsageVisitor();
                 terribleUsageVisitor.visit(program);
                 ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator(terribleUsageVisitor);
-                System.out.println(code.visit(program));
+                code.visit(program);
                 driver.endTime();
                 if(!warningList.isEmpty()) {
                     warningList.printWarnings();
