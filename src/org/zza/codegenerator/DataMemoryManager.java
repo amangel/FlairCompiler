@@ -8,8 +8,7 @@ public class DataMemoryManager {
     
     private final int MAX = 1024;
     private int current;
-    private HashMap<String,String> memory; //<Variable,Address>
-    
+    private HashMap<String,String> memory; //<Variable,Address>    
     private Stack<Frame> memoryStack;
     
     public DataMemoryManager() {
@@ -55,11 +54,18 @@ public class DataMemoryManager {
     public void addLocalVariable(String varName) throws MemoryOutOfBoundsException {
         Frame frame = peekTopOfStack();
         int address = frame.getNextLocal();
-        memory.put(varName, ""+(address));
+        memory.put(frame.getName()+varName, ""+(address));
     }
     
     public int getAddressOfVar(String varName){
-    	return Integer.parseInt(memory.get(varName));
+    	
+    	String frameName = peekTopOfStack().getName();
+    	String result = memory.get(frameName+varName);
+    	if (result==null){
+    		frameName = peekBottomOfStack().getName();
+    		result = memory.get(frameName+varName);
+    	}
+    	return Integer.parseInt(result);
     }
     
 }
