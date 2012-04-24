@@ -38,7 +38,9 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         try {
             int localCount = usageManager.getLocalsCountFrom("program");
             int tempCount = usageManager.getTempsCountFrom("program");
-            manager.addStackFrame(new ProgramFrame(1, localCount, tempCount));
+            ProgramFrame program = new ProgramFrame(1, localCount, tempCount);
+            manager.addStackFrame(program);
+            initializeRegisters(program.getSize());
             handleCommandLineArguments(splitParam);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
@@ -50,6 +52,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         return "program: \n"+declarations +"\n" +body;
     }
     
+    private void initializeRegisters(int size) {
+        System.out.println(lineNumber++ + ":   LDC   3,1(6)");
+        System.out.println(lineNumber++ + ":   LDC   4,"+(size+1)+"(6)");
+    }
+
     private void handleCommandLineArguments(String[] splitParam) throws MemoryOutOfBoundsException {
         for (int i = splitParam.length; i > 0; i--) {
             manager.addLocalVariable(splitParam[i-1]);
@@ -239,26 +246,18 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(WhileExpressionNode node) {
-//        return handleTwoFieldNode(node, "do");
         String whilePart = node.acceptVisitorLeftHand(this);
         String[] whileParts = whilePart.split(",");
         int oldLineNumber = lineNumber;
         lineNumber += 4;
-        
-        System.out.println("*starting whileBody");
         node.acceptVisitorRightHand(this);
         //build footer
         WhileFooter3AC whileFooter = new WhileFooter3AC(lineNumber, manager);
         whileFooter.setParameters("", "", "", oldLineNumber);
-        System.out.println("*starting whilefooter");
         whileFooter.emitCode();
-        
         lineNumber += whileFooter.getEmittedSize();
-        
         ComparisonHeader3AC whileHeader = new ComparisonHeader3AC(oldLineNumber, manager);
         whileHeader.setParameters(whileParts[0], whileParts[2], whileParts[1], lineNumber - oldLineNumber - 4);
-        System.out.println("*starting whileHeader");
-
         whileHeader.emitCode();
         return "while";
     }
@@ -292,7 +291,6 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(PrintStatementNode node) {
-//        String command = "print"+node.getArgument().accept(this);
         String parameters = node.getArgument().accept(this);
         String[] params = parameters.split(",");
         Print3AC printer = null;

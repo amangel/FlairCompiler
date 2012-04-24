@@ -231,6 +231,7 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
     
     @Override
     public String visit(FunctionCallNode node) {
+        getNextTemporary();
         String params = node.acceptVisitorRightHand(this);
         String name = node.acceptVisitorLeftHand(this);
 //        System.out.println("BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
