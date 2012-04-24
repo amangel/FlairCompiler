@@ -11,7 +11,7 @@ public class Negative3AC extends ThreeAddressCode {
     
     @Override
     public void emitCode() {
-        if ("0123456789-".contains(Character.toString(secondParam.charAt(0)))) {
+        if (isDigit(secondParam.charAt(0))) {
             System.out.println(lineNumber++ + ":   LDC  0," + secondParam + "(6)");//Register 6 holds a 0;
         } else {
             System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(secondParam) + "(6)");//Register 6 holds a 0;
@@ -27,7 +27,6 @@ public class Negative3AC extends ThreeAddressCode {
     
     @Override
     public int getEmittedSize() {
-        // TODO Auto-generated method stub
         return 3;
     }
     

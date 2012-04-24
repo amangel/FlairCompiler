@@ -1,6 +1,5 @@
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.zza.codegenerator.CodeGeneratingVisitor;
 import org.zza.codegenerator.threeaddresscode.TerribleImplementationToGetTempUsageVisitor;
 import org.zza.parser.CompilerParser;
 import org.zza.parser.semanticstack.nodes.SemanticNode;

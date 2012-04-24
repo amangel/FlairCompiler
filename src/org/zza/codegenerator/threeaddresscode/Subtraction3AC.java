@@ -11,13 +11,13 @@ public class Subtraction3AC extends ThreeAddressCode {
 
     @Override
     public void emitCode() {
-        if ("0123456789-".contains(Character.toString(secondParam.charAt(0)))) {
+        if (isDigit(secondParam.charAt(0))) {
             System.out.println(lineNumber++ + ":   LDC  0," + secondParam + "(6)");//Register 6 holds a 0;
         } else {
             System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(secondParam) + "(6)");//Register 6 holds a 0;
         }
         
-        if ("0123456789-".contains(Character.toString(thirdParam.charAt(0)))) {
+        if (isDigit(thirdParam.charAt(0))) {
             System.out.println(lineNumber++ + ":   LDC  1," + thirdParam + "(6)");
         } else {
             System.out.println(lineNumber++ + ":    LD  1," + manager.getAddressOfVar(thirdParam) + "(6)"); 
