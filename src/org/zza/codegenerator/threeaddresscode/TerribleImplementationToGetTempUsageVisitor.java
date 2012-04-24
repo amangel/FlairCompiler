@@ -21,8 +21,16 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         addToUsage("program");
     }
     
+    public Integer getTempsCountFrom(String function) {
+        return usage.get(function).get("temps");
+    }
+    
+    public Integer getLocalsCountFrom(String function) {
+        return usage.get(function).get("locals");
+    }
+    
     private void addToUsage(String name) {
-        System.out.println("adding "+name+" to usage");
+//        System.out.println("adding "+name+" to usage");
         Map<String, Integer> newMap = new HashMap<String, Integer>();
         newMap.put("locals", 0);
         newMap.put("temps", 0);
@@ -47,12 +55,12 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         String body = node.getbody().accept(this);
         addTempsInUsage(scope, tempCount);
         tempCount = 0;
-        System.out.println("*end main program. Used: "+tempCount );
+//        System.out.println("*end main program. Used: "+tempCount );
         String declarations = node.getDeclarations().accept(this);
-        System.out.println("*program used "+(splitParam.length + varDec));
-        System.out.println(lineNumber  + ":   HALT  0,0,0");
-        System.out.println("\n\nusage map: \n"+usage);
-        return "program: \n"+declarations +"\n" +body;
+//        System.out.println("*program used "+(splitParam.length + varDec));
+//        System.out.println(lineNumber  + ":   HALT  0,0,0");
+//        System.out.println("\n\nusage map: \n"+usage);
+        return "";
     }
 
     @Override
@@ -66,11 +74,11 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         String oldScope = scope;
         String header = node.getHeader().accept(this);
         
-        System.out.println("*Entry function: " +header + " tempcount: "+tempCount + " " +scope);
+//        System.out.println("*Entry function: " +header + " tempcount: "+tempCount + " " +scope);
         String body = node.getBody().accept(this); 
         addTempsInUsage(scope, tempCount);
         tempCount = 0;
-        System.out.println("*Finish function: "+header + " tempcount: "+tempCount);
+//        System.out.println("*Finish function: "+header + " tempcount: "+tempCount);
         scope = oldScope;
         return "function : "+header + " " + body;
     }
@@ -224,7 +232,7 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
     public String visit(FunctionCallNode node) {
         String params = node.acceptVisitorRightHand(this);
         String name = node.acceptVisitorLeftHand(this);
-        System.out.println("BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
+//        System.out.println("BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
         return "RETURNVALUE("+name+params+")";//"call "+name+params;
     }
     
@@ -260,29 +268,13 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
     
     @Override
     public String visit(ReturnStatementNode node) {
-        System.out.println("return: "+node.getArguments().accept(this));
+//        System.out.println("return: "+node.getArguments().accept(this));
         return "return";
     }
     
     @Override
     public String visit(IfStatementNode node) {
         return handleThreeFieldNode(node, "", "");
-////        String ifPart = node.acceptVisitorLeftHand(this);
-////        String[] ifParts = ifPart.split(",");
-////        int oldLineNumber = lineNumber;
-////        lineNumber += 4;
-////        node.acceptVisitorMiddle(this);
-////        IfHeader3AC ifHeader = new IfHeader3AC(oldLineNumber, manager);
-////        ifHeader.setParameters(ifParts[0], ifParts[2], ifParts[1], lineNumber - oldLineNumber - 2);
-////        ifHeader.emitCode();
-////        oldLineNumber = lineNumber;
-////        lineNumber += 2;
-////        node.acceptVisitorRightHand(this);
-////        
-////        IfRest3AC ifRest = new IfRest3AC(oldLineNumber, manager);
-////        ifRest.setParameters("", "", "", lineNumber - oldLineNumber - 2);
-////        ifRest.emitCode();
-//        return "if";
     }
     
     @Override
@@ -296,7 +288,7 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
         String nextTemp = getNextTemporary();
-        System.out.println(nextTemp + " := " + left +" "+ op +" "+ right);
+//        System.out.println(nextTemp + " := " + left +" "+ op +" "+ right);
 //        return "twofield:\n"+left + " "+op + " " + right;
         return nextTemp;
     }
@@ -305,19 +297,12 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         return "t"+tempCount++;
     }
 
-    
-    private String getNextLabel() {
-        return "LABEL"+labelCount++;
-    }
-    
     private String handleThreeFieldNode(ThreeFieldNode node, String op1, String op2) {
         String left = node.acceptVisitorLeftHand(this);
         String middle = node.acceptVisitorMiddle(this);
         String right = node.acceptVisitorRightHand(this);        
         String nextTemp = getNextTemporary();
-        System.out.println(nextTemp + " := " + left +" "+ middle +" "+ right);
-//        System.out.println(getNextTemporary() + " := " + middle + op2 + right);
-//        return "threefield: \n"+left + " " +op1 + " " +middle + " " + op2 + " " +right;
+//        System.out.println(nextTemp + " := " + left +" "+ middle +" "+ right);
         return nextTemp;
     }
 }

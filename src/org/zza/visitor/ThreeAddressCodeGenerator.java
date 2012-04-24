@@ -11,6 +11,7 @@ import org.zza.codegenerator.threeaddresscode.IfHeader3AC;
 import org.zza.codegenerator.threeaddresscode.Multiplication3AC;
 import org.zza.codegenerator.threeaddresscode.Print3AC;
 import org.zza.codegenerator.threeaddresscode.Subtraction3AC;
+import org.zza.codegenerator.threeaddresscode.TerribleImplementationToGetTempUsageVisitor;
 import org.zza.parser.semanticstack.nodes.*;
 
 
@@ -20,9 +21,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     private int labelCount = 0;
     private int lineNumber = 0;
     private DataMemoryManager manager;
+    private TerribleImplementationToGetTempUsageVisitor usageManager;
     
 
-    public ThreeAddressCodeGenerator() {
+    public ThreeAddressCodeGenerator(TerribleImplementationToGetTempUsageVisitor terribleUsageVisitor) {
+        usageManager = terribleUsageVisitor;
         manager = new DataMemoryManager();
     }
     
@@ -33,7 +36,9 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         
         System.out.println("*begin main program");
         try {
-            manager.addStackFrame(new ProgramFrame(splitParam.length, 5, 5));
+            int localCount = usageManager.getLocalsCountFrom("program");
+            int tempCount = usageManager.getTempsCountFrom("program");
+            manager.addStackFrame(new ProgramFrame(splitParam.length, localCount, tempCount));
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -55,7 +60,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         System.out.println("*Entry function: " +header);
         String body = node.getBody().accept(this); 
         System.out.println("*Finish function: "+header);
-        return "function : "+header + " " + body;
+        return "*function : "+header + " " + body;
     }
     
     @Override

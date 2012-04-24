@@ -43,8 +43,9 @@ public class ThreadedDriver {
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);
                 //                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
-//                ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
-                TerribleImplementationToGetTempUsageVisitor code = new TerribleImplementationToGetTempUsageVisitor();
+                TerribleImplementationToGetTempUsageVisitor terribleUsageVisitor = new TerribleImplementationToGetTempUsageVisitor();
+                terribleUsageVisitor.visit(program);
+                ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator(terribleUsageVisitor);
                 System.out.println(code.visit(program));
                 driver.endTime();
                 if(!warningList.isEmpty()) {

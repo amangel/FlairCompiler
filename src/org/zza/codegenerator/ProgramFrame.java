@@ -10,7 +10,6 @@ public class ProgramFrame extends Frame{
     private int tempVariables;
     private int maxTempData;
     private int maxLocalData;
-    private String name;
 
     public ProgramFrame(int offset, int localVariableCount, int temporaryVariableCount) {
         this.offset = offset;
