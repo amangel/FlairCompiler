@@ -20,9 +20,9 @@ public class Print3AC extends ThreeAddressCode {
     @Override
     public void emitCode() {
         if (isDigit(firstParam.charAt(0))) {
-            System.out.println(lineNumber++ +":   LDC  0," + firstParam + "(6)");
+            System.out.println(lineNumber++ +":   LDC  0," + firstParam + ZERO_REGISTER);
         } else {
-            System.out.println(lineNumber++ +":    LD  0," + manager.getAddressOfVar(firstParam) + "(6)");//Register 6 holds a 0;
+            System.out.println(lineNumber++ +":    LD  0," + manager.getAddressOfVar(firstParam) + OFFSET_REGISTER);//Register 6 holds a 0;
         }
         System.out.println(lineNumber + ":   OUT  0,0,0");
     }

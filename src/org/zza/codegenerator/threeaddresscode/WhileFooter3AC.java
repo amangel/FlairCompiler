@@ -18,7 +18,7 @@ public class WhileFooter3AC  extends ThreeAddressCode {
     
     @Override
     public void emitCode() {
-        System.out.println(lineNumber + ":   LDA  7,"+originalLineNumber+"(6)");
+        System.out.println(lineNumber + ":   LDA  7,"+originalLineNumber+ZERO_REGISTER);
     }
 
     @Override

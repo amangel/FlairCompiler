@@ -38,7 +38,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         try {
             int localCount = usageManager.getLocalsCountFrom("program");
             int tempCount = usageManager.getTempsCountFrom("program");
-            ProgramFrame program = new ProgramFrame(1, localCount, tempCount);
+            ProgramFrame program = new ProgramFrame(localCount, tempCount);
             manager.addStackFrame(program);
             initializeRegisters(program.getSize());
             handleCommandLineArguments(splitParam);

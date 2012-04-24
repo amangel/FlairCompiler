@@ -11,8 +11,8 @@ public class ProgramFrame extends Frame{
     private int maxTempData;
     private int maxLocalData;
 
-    public ProgramFrame(int offset, int localVariableCount, int temporaryVariableCount) {
-        this.offset = offset;
+    public ProgramFrame(int localVariableCount, int temporaryVariableCount) {
+        this.offset = 0;
         this.localVariables = offset;
         this.tempVariables = (offset = offset + localVariableCount);
         this.localVariableCount = localVariableCount;

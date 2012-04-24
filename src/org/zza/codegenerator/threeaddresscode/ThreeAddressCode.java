@@ -6,6 +6,9 @@ import org.zza.codegenerator.DataMemoryManager;
 public abstract class ThreeAddressCode {
     
     protected final static String DIGITS = "1234567890-";
+    protected final static String ZERO_REGISTER = "(6)";
+    protected final static String OFFSET_REGISTER = "(3)";
+    
     
     protected String firstParam;
     protected String secondParam;

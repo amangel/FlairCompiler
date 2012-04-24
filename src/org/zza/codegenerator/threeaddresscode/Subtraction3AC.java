@@ -12,19 +12,19 @@ public class Subtraction3AC extends ThreeAddressCode {
     @Override
     public void emitCode() {
         if (isDigit(secondParam.charAt(0))) {
-            System.out.println(lineNumber++ + ":   LDC  0," + secondParam + "(6)");//Register 6 holds a 0;
+            System.out.println(lineNumber++ + ":   LDC  0," + secondParam + ZERO_REGISTER);//Register 6 holds a 0;
         } else {
-            System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(secondParam) + "(6)");//Register 6 holds a 0;
+            System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(secondParam) + OFFSET_REGISTER);//Register 6 holds a 0;
         }
         
         if (isDigit(thirdParam.charAt(0))) {
-            System.out.println(lineNumber++ + ":   LDC  1," + thirdParam + "(6)");
+            System.out.println(lineNumber++ + ":   LDC  1," + thirdParam + ZERO_REGISTER);
         } else {
-            System.out.println(lineNumber++ + ":    LD  1," + manager.getAddressOfVar(thirdParam) + "(6)"); 
+            System.out.println(lineNumber++ + ":    LD  1," + manager.getAddressOfVar(thirdParam) + OFFSET_REGISTER); 
             
         }
         System.out.println(lineNumber++ + ":   SUB  0,0,1");
-        System.out.println(lineNumber + ":    ST  0," + manager.getAddressOfVar(firstParam) + "(6)"); 
+        System.out.println(lineNumber + ":    ST  0," + manager.getAddressOfVar(firstParam) + OFFSET_REGISTER); 
     }
 
     @Override
