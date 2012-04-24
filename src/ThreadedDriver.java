@@ -10,6 +10,7 @@ import org.zza.semanticchecker.SemanticWarningList;
 import org.zza.visitor.SymbolTableBuilderVisitor;
 import org.zza.visitor.ThreeAddressCodeGenerator;
 import org.zza.visitor.TypeCheckingVisitor;
+import org.zza.optimizer.OptimizingVisitor;
 
 public class ThreadedDriver {
     
@@ -41,6 +42,8 @@ public class ThreadedDriver {
                 //                SymbolTable.getInstance().printTable();
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);
+                final OptimizingVisitor optimizer = new OptimizingVisitor();
+                optimizer.visit(program);
                 //                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
                 ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
                 code.visit(program);

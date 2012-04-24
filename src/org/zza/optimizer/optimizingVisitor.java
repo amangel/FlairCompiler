@@ -1,37 +1,20 @@
- if (sNode instanceof ReturnStatementNode) {
-                    returnFound = true;
-            } else if (returnFound) {
-                int indexOfReturn = node.getStatements().indexOf(ReturnStatement);
-                node.Statements = node.getStatements().removeRange((indexOfReturn+1), node.getStatements().size());
-
-            }
-
-
-
-
-
-
-
-
-
-
-
-package org.zza.visitor;
+package org.zza.optimizer;
 
 import org.zza.parser.semanticstack.nodes.*;
 import org.zza.semanticchecker.SemanticWarning;
 import org.zza.semanticchecker.SemanticWarningList;
 import org.zza.semanticchecker.Symbol;
 import org.zza.semanticchecker.SymbolTable;
+import org.zza.visitor.*;
 
-public class TypeCheckingVisitor extends NodeVisitor {
+public class OptimizingVisitor extends NodeVisitor {
     
     
     private SymbolTable table;
     private String scope;
     private static String EMPTY = "";
     
-    public TypeCheckingVisitor() {
+    public OptimizingVisitor() {
         table = SymbolTable.getInstance();
         scope = "program";
     }
@@ -99,9 +82,12 @@ public class TypeCheckingVisitor extends NodeVisitor {
                             "Return statement found in the main program. No."));
                 }
                 returnFound = true;
-                //Added these in down below
+                //Added these in down below and changed one thing about CompoundStatements
                 int indexOfReturn = node.getStatements().indexOf(ReturnStatement);
-                node.Statements = node.getStatements().removeRange((indexOfReturn+1), node.getStatements().size());
+                myStatements = node.getStatements()
+                myStatments.removeRange((indexOfReturn+1), node.getStatements().size());
+                node.setStatements(myStatements);
+                System.out.println(node.getStatements());
             } else if (returnFound) {
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
                         "Unreachable code found. Return statement not at the end of function '"
