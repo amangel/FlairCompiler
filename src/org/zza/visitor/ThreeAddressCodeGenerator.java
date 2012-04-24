@@ -20,7 +20,6 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     private int labelCount = 0;
     private int lineNumber = 0;
     private DataMemoryManager manager;
-    private int globalCount = 0;
     
 
     public ThreeAddressCodeGenerator() {
