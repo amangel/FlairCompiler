@@ -20,7 +20,7 @@ public class StackFrame extends Frame {
     private String name;
     
     public int getSize() {
-        return 1 + 1 + 7 + numberOfParameters + numberOfLocalVariables + maxTempData;
+        return 3 + numberOfParameters + numberOfLocalVariables + maxTempData;
     }
     
     public StackFrame(int parameterNumber, int localVariableNumber, int tempDataCount, String name) {
@@ -29,7 +29,7 @@ public class StackFrame extends Frame {
         startOfFrame = offset;
         controlLink = (offset);
         oldRegisters = (offset=offset+1);
-        parameters = (offset=offset+4);
+        parameters = (offset=offset+2);
         localVariables = (offset=offset+parameterNumber);
         tempData = (offset=offset+localVariableNumber);
         numberOfTempData = tempDataCount;

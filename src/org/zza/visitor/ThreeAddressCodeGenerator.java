@@ -1,12 +1,15 @@
 package org.zza.visitor;
 
 import org.zza.codegenerator.DataMemoryManager;
+import org.zza.codegenerator.InstructionMemoryManager;
 import org.zza.codegenerator.MemoryOutOfBoundsException;
 import org.zza.codegenerator.ProgramFrame;
+import org.zza.codegenerator.StackFrame;
 import org.zza.codegenerator.threeaddresscode.Addition3AC;
 import org.zza.codegenerator.threeaddresscode.Assignment3AC;
 import org.zza.codegenerator.threeaddresscode.Division3AC;
 import org.zza.codegenerator.threeaddresscode.ComparisonHeader3AC;
+import org.zza.codegenerator.threeaddresscode.FunctionCall3AC;
 import org.zza.codegenerator.threeaddresscode.IfRest3AC;
 import org.zza.codegenerator.threeaddresscode.Multiplication3AC;
 import org.zza.codegenerator.threeaddresscode.Negative3AC;
@@ -22,13 +25,15 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     private int tempCount = 0;
     private int labelCount = 0;
     private int lineNumber = 1;
-    private DataMemoryManager manager;
+    private DataMemoryManager dataManager;
+    private InstructionMemoryManager instructionManager;
     private TerribleImplementationToGetTempUsageVisitor usageManager;
     
 
     public ThreeAddressCodeGenerator(TerribleImplementationToGetTempUsageVisitor terribleUsageVisitor) {
         usageManager = terribleUsageVisitor;
-        manager = new DataMemoryManager();
+        dataManager = new DataMemoryManager();
+        instructionManager = new InstructionMemoryManager();
     }
     
     @Override
@@ -42,7 +47,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
             int localCount = usageManager.getLocalsCountFrom("program");
             int tempCount = usageManager.getTempsCountFrom("program");
             ProgramFrame program = new ProgramFrame(localCount, tempCount);
-            manager.addStackFrame(program);
+            dataManager.addStackFrame(program);
             initializeRegisters(program.getSize());
             handleCommandLineArguments(splitParam);
         } catch (MemoryOutOfBoundsException e) {
@@ -62,7 +67,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
 
     private void handleCommandLineArguments(String[] splitParam) throws MemoryOutOfBoundsException {
         for (int i = splitParam.length; i > 0; i--) {
-            manager.addLocalVariable(splitParam[i-1]);
+            dataManager.addLocalVariable(splitParam[i-1]);
         }
     }
 
@@ -74,10 +79,45 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(FunctionNode node) {
         String header = node.getHeader().accept(this);
-        System.out.println("*Entry function: " +header);
+        String[] headerParts = header.split(";");
+        String functionName = headerParts[0];
+        String[] params = new String[] {};
+        if(headerParts.length > 1) {
+            params = headerParts[1].split(",");
+        }
+        int locals = usageManager.getLocalsCountFrom("function"+functionName);
+        int temps = usageManager.getTempsCountFrom("function"+functionName);
+        StackFrame frame = new StackFrame(params.length, locals, temps, functionName);
+        instructionManager.addFunction(functionName, lineNumber, frame.getSize());
+        try {
+            dataManager.addStackFrame(frame);
+            for (String param : params) {
+                dataManager.addLocalVariable(param);
+            }
+        } catch (MemoryOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        
+        
+        System.out.println("*Entry function: " +functionName);
         String body = node.getBody().accept(this); 
-        System.out.println("*Finish function: "+header);
-        return "*function : "+header + " " + body;
+        System.out.println("*Finish function: "+functionName);
+        //load old r4
+//        System.out.println(lineNumber++ + ":   OUT   6,0,0");
+//        System.out.println(lineNumber++ + ":   OUT   3,0,0");
+//        System.out.println(lineNumber++ + ":   OUT   6,0,0");
+        
+        System.out.println(lineNumber++ + ":   LD   4,1(3)");
+        //load old r3
+        System.out.println(lineNumber++ + ":   LD   3,2(3)");
+        //load control link
+        System.out.println(lineNumber++ + ":   ADD   0,3,4");
+        System.out.println(lineNumber++ + ":   LDA   7,0(0)");
+        System.out.println("*Finish reloading registers");
+        
+        
+        
+        return getNextTemporary();
     }
     
     @Override
@@ -91,12 +131,12 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
         try {
-            manager.addLocalVariable(left);
+            dataManager.addLocalVariable(left);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
-            manager.dump();
+            dataManager.dump();
         }
-        Assignment3AC assign = new Assignment3AC(lineNumber, manager);
+        Assignment3AC assign = new Assignment3AC(lineNumber, dataManager);
         assign.setParameters(right, left, "");
         lineNumber += assign.getEmittedSize();
         assign.emitCode();
@@ -116,13 +156,13 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     public String visit(DivisionExpressionNode node) {
         String temp = getNextTemporary();
         try {
-            manager.addNewTemporaryVariable(temp);
+            dataManager.addNewTemporaryVariable(temp);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
         }
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
-        Division3AC division = new Division3AC(lineNumber, manager);
+        Division3AC division = new Division3AC(lineNumber, dataManager);
         division.setParameters(temp, left, right);
         lineNumber += division.getEmittedSize();
         division.emitCode();
@@ -143,13 +183,13 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     public String visit(MinusExpressionNode node) {
         String temp = getNextTemporary();
         try {
-            manager.addNewTemporaryVariable(temp);
+            dataManager.addNewTemporaryVariable(temp);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
         }
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
-        Subtraction3AC subtraction = new Subtraction3AC(lineNumber, manager);
+        Subtraction3AC subtraction = new Subtraction3AC(lineNumber, dataManager);
         subtraction.setParameters(temp, left, right);
         lineNumber += subtraction.getEmittedSize();
         subtraction.emitCode();
@@ -161,13 +201,13 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     public String visit(MultiplicationExpressionNode node) {
         String temp = getNextTemporary();
         try {
-            manager.addNewTemporaryVariable(temp);
+            dataManager.addNewTemporaryVariable(temp);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
         }
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
-        Multiplication3AC multiplication = new Multiplication3AC(lineNumber, manager);
+        Multiplication3AC multiplication = new Multiplication3AC(lineNumber, dataManager);
         multiplication.setParameters(temp, left, right);
         lineNumber += multiplication.getEmittedSize();
         multiplication.emitCode();
@@ -178,13 +218,13 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     public String visit(PlusExpressionNode node) {
         String temp = getNextTemporary();
         try {
-            manager.addNewTemporaryVariable(temp);
+            dataManager.addNewTemporaryVariable(temp);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
         }
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
-        Addition3AC addition = new Addition3AC(lineNumber, manager);
+        Addition3AC addition = new Addition3AC(lineNumber, dataManager);
         addition.setParameters(temp, left, right);
         lineNumber += addition.getEmittedSize();
         addition.emitCode();
@@ -255,11 +295,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         lineNumber += 4;
         node.acceptVisitorRightHand(this);
         //build footer
-        WhileFooter3AC whileFooter = new WhileFooter3AC(lineNumber, manager);
+        WhileFooter3AC whileFooter = new WhileFooter3AC(lineNumber, dataManager);
         whileFooter.setParameters("", "", "", oldLineNumber);
         whileFooter.emitCode();
         lineNumber += whileFooter.getEmittedSize();
-        ComparisonHeader3AC whileHeader = new ComparisonHeader3AC(oldLineNumber, manager);
+        ComparisonHeader3AC whileHeader = new ComparisonHeader3AC(oldLineNumber, dataManager);
         whileHeader.setParameters(whileParts[0], whileParts[2], whileParts[1], lineNumber - oldLineNumber - 4);
         whileHeader.emitCode();
         return "while";
@@ -269,12 +309,12 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     public String visit(NegativeExpressionNode node) {
         String temp = getNextTemporary();
         try {
-            manager.addNewTemporaryVariable(temp);
+            dataManager.addNewTemporaryVariable(temp);
         } catch (MemoryOutOfBoundsException e) {
             e.printStackTrace();
         }
         String content = node.getContent().accept(this);
-        Negative3AC negation = new Negative3AC(lineNumber, manager);
+        Negative3AC negation = new Negative3AC(lineNumber, dataManager);
         negation.setParameters(temp, content, "");
         lineNumber += negation.getEmittedSize();
         negation.emitCode();
@@ -298,7 +338,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String[] params = parameters.split(",");
         Print3AC printer = null;
         for (String param : params) {
-            printer = new Print3AC(lineNumber, manager);
+            printer = new Print3AC(lineNumber, dataManager);
             printer.setParameters(param, "", "");
             lineNumber += printer.getEmittedSize();
             printer.emitCode();
@@ -309,17 +349,30 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(FunctionCallNode node) {
 //        return handleTwoFieldNode(node, "funccall");
+        String temp = getNextTemporary();
+        try {
+            dataManager.addNewTemporaryVariable(temp);
+        } catch (MemoryOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         String params = node.acceptVisitorRightHand(this);
         String name = node.acceptVisitorLeftHand(this);
-        System.out.println("BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
-        return "RETURNVALUE("+name+params+")";//"call "+name+params;
+         
+        FunctionCall3AC function = new FunctionCall3AC(lineNumber, name, params, dataManager, instructionManager);
+        function.emitCode();
+        
+        lineNumber += function.getEmittedSize();
+//        System.out.println("*BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
+        return temp;//"RETURNVALUE("+name+params+")";//"call "+name+params;
     }
     
     @Override
     public String visit(FunctionHeadingNode node) {
 //        return handleThreeFieldNode(node, "", "");
-        return node.acceptVisitorLeftHand(this);
-        
+        String name = node.acceptVisitorLeftHand(this);
+//        return node.acceptVisitorLeftHand(this);
+        String param = node.acceptVisitorMiddle(this);
+        return name+";" +param;
     }
 
     @Override
@@ -339,7 +392,8 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(ReturnStatementNode node) {
-        System.out.println("return: "+node.getArguments().accept(this));
+        String arguments = node.getArguments().accept(this);
+        //TODO: MAKE RETURN STATEMENT
         return "return";
     }
     
@@ -350,14 +404,14 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         int oldLineNumber = lineNumber;
         lineNumber += 4; 
         node.acceptVisitorMiddle(this);
-        ComparisonHeader3AC ifHeader = new ComparisonHeader3AC(oldLineNumber, manager);
+        ComparisonHeader3AC ifHeader = new ComparisonHeader3AC(oldLineNumber, dataManager);
         ifHeader.setParameters(ifParts[0], ifParts[2], ifParts[1], lineNumber - oldLineNumber - 2);
         ifHeader.emitCode();
         oldLineNumber = lineNumber;
         lineNumber += 2;
         node.acceptVisitorRightHand(this);
         
-        IfRest3AC ifRest = new IfRest3AC(oldLineNumber, manager);
+        IfRest3AC ifRest = new IfRest3AC(oldLineNumber, dataManager);
         ifRest.setParameters("", "", "", lineNumber - oldLineNumber - 2);
         ifRest.emitCode();
         return "if";

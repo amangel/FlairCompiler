@@ -6,6 +6,7 @@ function mod() : integer
   end;
 begin
 	i := 4 + 4;
-	print(i)
-
+	print(i);
+    i := mod();
+	print(1)
 end.
