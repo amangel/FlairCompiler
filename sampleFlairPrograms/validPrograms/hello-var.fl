@@ -3,12 +3,11 @@ var i : integer;
 function mod(j : integer) : integer
   begin
     print(j);
+	return(4)
   end;
 begin
 	i := 4 + 4;
 	print(i);
-    i := mod(17);
-	print(1);
-	i:= mod(14);
-	print(2)
+    print(mod(17))
+
 end.

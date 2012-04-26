@@ -12,13 +12,15 @@ public class FunctionCall3AC extends ThreeAddressCode {
     private InstructionMemoryManager instructionManager;
     private DataMemoryManager dataManager;
     private String name;
+    private String target;
     
-    public FunctionCall3AC(int lineNumber, String name, String params, DataMemoryManager dataManager, InstructionMemoryManager instructionManager) {
+    public FunctionCall3AC(int lineNumber, String name, String params, String target, DataMemoryManager dataManager, InstructionMemoryManager instructionManager) {
         super(lineNumber, dataManager);
         this.dataManager = dataManager;
         this.instructionManager = instructionManager;
         this.parameters = params.split(",");
         this.name = name;
+        this.target = target;
     }
     
     @Override
@@ -54,6 +56,8 @@ public class FunctionCall3AC extends ThreeAddressCode {
         System.out.println("*storing control link");
         System.out.println(lineNumber++ + ":    ST   0,0(3)");
         System.out.println(lineNumber++ + ":   LDA  7,"+info.getLine()+ZERO_REGISTER);
+        address = dataManager.getAddressOfVar(target);
+        System.out.println(lineNumber++ + ":    ST  5,"+address.getOffset() + address.getRegisterValue());
         /*
          * ADD 0,3,4
          * ST  3,1(0)
@@ -87,7 +91,7 @@ public class FunctionCall3AC extends ThreeAddressCode {
     
     @Override
     public int getEmittedSize() {
-        return 9 + (2 * getValidParameterNumber());
+        return 10 + (2 * getValidParameterNumber());
     }
     
 }

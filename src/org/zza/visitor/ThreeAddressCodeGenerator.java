@@ -14,6 +14,7 @@ import org.zza.codegenerator.threeaddresscode.IfRest3AC;
 import org.zza.codegenerator.threeaddresscode.Multiplication3AC;
 import org.zza.codegenerator.threeaddresscode.Negative3AC;
 import org.zza.codegenerator.threeaddresscode.Print3AC;
+import org.zza.codegenerator.threeaddresscode.Return3AC;
 import org.zza.codegenerator.threeaddresscode.Subtraction3AC;
 import org.zza.codegenerator.threeaddresscode.TerribleImplementationToGetTempUsageVisitor;
 import org.zza.codegenerator.threeaddresscode.WhileFooter3AC;
@@ -63,6 +64,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         System.out.println(lineNumber++ + ":   LDC   2,1(6)");
         System.out.println(lineNumber++ + ":   LDC   3,1(6)");
         System.out.println(lineNumber++ + ":   LDC   4,"+(size+1)+"(6)");
+        System.out.println(lineNumber++ + ":   LDC   5,0(6)");
     }
 
     private void handleCommandLineArguments(String[] splitParam) throws MemoryOutOfBoundsException {
@@ -346,7 +348,6 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(FunctionCallNode node) {
-//        return handleTwoFieldNode(node, "funccall");
         String temp = getNextTemporary();
         try {
             dataManager.addNewTemporaryVariable(temp);
@@ -356,12 +357,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String params = node.acceptVisitorRightHand(this);
         String name = node.acceptVisitorLeftHand(this);
          
-        FunctionCall3AC function = new FunctionCall3AC(lineNumber, name, params, dataManager, instructionManager);
+        FunctionCall3AC function = new FunctionCall3AC(lineNumber, name, params, temp, dataManager, instructionManager);
         function.emitCode();
         
         lineNumber += function.getEmittedSize();
-//        System.out.println("*BEGIN_CALL: \nPARAMS "+params + "\nCALL "+name);
-        return temp;//"RETURNVALUE("+name+params+")";//"call "+name+params;
+        return temp;
     }
     
     @Override
@@ -391,7 +391,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(ReturnStatementNode node) {
         String arguments = node.getArguments().accept(this);
-        //TODO: MAKE RETURN STATEMENT
+
+        Return3AC returnStatement = new Return3AC(lineNumber, dataManager);
+        returnStatement.setParameters(arguments, "", "");
+        returnStatement.emitCode();
+        lineNumber += returnStatement.getEmittedSize();
         return "return";
     }
     
