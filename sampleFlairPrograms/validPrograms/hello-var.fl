@@ -1,7 +1,11 @@
-program HelloVar(i : integer);
+program HelloVar();
+var i : integer;
+function mod() : integer
+  begin
+    print(17);
+  end;
 begin
-	i := 1 + 1;
-	i := -i;
+	i := 4 + 4;
 	print(i)
 
 end.

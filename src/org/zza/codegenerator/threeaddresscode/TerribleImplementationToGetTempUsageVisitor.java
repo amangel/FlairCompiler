@@ -290,8 +290,6 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         String left = node.acceptVisitorLeftHand(this);
         String right = node.acceptVisitorRightHand(this);
         String nextTemp = getNextTemporary();
-//        System.out.println(nextTemp + " := " + left +" "+ op +" "+ right);
-//        return "twofield:\n"+left + " "+op + " " + right;
         return nextTemp;
     }
 
@@ -304,7 +302,6 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         String middle = node.acceptVisitorMiddle(this);
         String right = node.acceptVisitorRightHand(this);        
         String nextTemp = getNextTemporary();
-//        System.out.println(nextTemp + " := " + left +" "+ middle +" "+ right);
         return nextTemp;
     }
 }

@@ -67,13 +67,18 @@ public class DataMemoryManager {
     }
     
     
-    public int getAddressOfVar(String varName){
+    public Address getAddressOfVar(String varName){
+        Address address = new Address();
         String r = getAddress(varName, peekTopOfStack());
-        
+
         if (r==null){
             r = getAddress(varName,peekBottomOfStack());
+            address.setRegister(Address.PROGRAM_FRAME);
+        } else {
+            address.setRegister(Address.STACK_FRAME);
         }
-        return Integer.parseInt(r);
+        address.setOffset(Integer.parseInt(r));
+        return address;
     }
     
     private String getAddress(String varName, Frame frame) {

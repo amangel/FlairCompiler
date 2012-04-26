@@ -21,7 +21,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     private int tempCount = 0;
     private int labelCount = 0;
-    private int lineNumber = 0;
+    private int lineNumber = 1;
     private DataMemoryManager manager;
     private TerribleImplementationToGetTempUsageVisitor usageManager;
     
@@ -33,8 +33,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(ProgramNode node) {
+        
+        String declarations = node.getDeclarations().accept(this);
         String parameters = node.getHeader().accept(this);
         String[] splitParam = parameters.split(",");
+        System.out.println("0:   LDA   7,"+lineNumber+"(6)");
         try {
             int localCount = usageManager.getLocalsCountFrom("program");
             int tempCount = usageManager.getTempsCountFrom("program");
@@ -47,12 +50,12 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         }
 
         String body = node.getbody().accept(this);
-        String declarations = node.getDeclarations().accept(this);
         System.out.println(lineNumber + ":   HALT  0,0,0");
         return "program: \n"+declarations +"\n" +body;
     }
     
     private void initializeRegisters(int size) {
+        System.out.println(lineNumber++ + ":   LDC   2,1(6)");
         System.out.println(lineNumber++ + ":   LDC   3,1(6)");
         System.out.println(lineNumber++ + ":   LDC   4,"+(size+1)+"(6)");
     }
