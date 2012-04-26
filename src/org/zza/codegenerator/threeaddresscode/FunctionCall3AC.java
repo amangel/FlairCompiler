@@ -31,16 +31,19 @@ public class FunctionCall3AC extends ThreeAddressCode {
         System.out.println(lineNumber++ + ":    ST  3,1(0)");//store 3
         System.out.println(lineNumber++ + ":    ST  4,2(0)");//store 4
         System.out.println("*copying parameters");
+        int count = 0;
         for (String parameter : parameters) { //copy each param into the new stack frame4
             if(parameter.length() > 0) {
                 if(isDigit(parameter.charAt(0))) {
                     System.out.println(lineNumber++ + ":   LDC  1,"+parameter+ZERO_REGISTER);
                 } else {
+//                    System.out.println("parameter is: "+parameter);
                     address = dataManager.getAddressOfVar(parameter);
                     System.out.println(lineNumber++ + ":    LD   1," + address.getOffset() + address.getRegisterValue());
                 }
-                System.out.println(lineNumber ++ + ":    ST   1," + (address.getOffset()+3)+"(3)");
+                System.out.println(lineNumber ++ + ":    ST   1,"+(count+4)+"(0)");
             }
+            count++;
         }
         System.out.println("*updating control registers");
         System.out.println(lineNumber++ + ":   LDA   3,0(0)");      //update register 3 to the new stack fram ebeginning

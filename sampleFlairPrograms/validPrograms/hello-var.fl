@@ -1,14 +1,14 @@
 program HelloVar();
 var i : integer;
-function mod() : integer
+function mod(j : integer) : integer
   begin
-    print(17);
+    print(j);
   end;
 begin
 	i := 4 + 4;
 	print(i);
-    i := mod();
+    i := mod(17);
 	print(1);
-	i:= mod();
+	i:= mod(14);
 	print(2)
 end.
