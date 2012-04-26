@@ -8,5 +8,7 @@ begin
 	i := 4 + 4;
 	print(i);
     i := mod();
-	print(1)
+	print(1);
+	i:= mod();
+	print(2)
 end.

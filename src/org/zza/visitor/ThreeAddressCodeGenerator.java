@@ -103,16 +103,14 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String body = node.getBody().accept(this); 
         System.out.println("*Finish function: "+functionName);
         //load old r4
-//        System.out.println(lineNumber++ + ":   OUT   6,0,0");
-//        System.out.println(lineNumber++ + ":   OUT   3,0,0");
-//        System.out.println(lineNumber++ + ":   OUT   6,0,0");
-        
         System.out.println(lineNumber++ + ":   LD   4,1(3)");
         //load old r3
         System.out.println(lineNumber++ + ":   LD   3,2(3)");
         //load control link
         System.out.println(lineNumber++ + ":   ADD   0,3,4");
-        System.out.println(lineNumber++ + ":   LDA   7,0(0)");
+//        System.out.println(lineNumber++ + ":   LD    1,0(0)");
+//        System.out.println(lineNumber++ + ":   OUT   1,0,0");
+        System.out.println(lineNumber++ + ":   LD   7,0(0)");
         System.out.println("*Finish reloading registers");
         
         
