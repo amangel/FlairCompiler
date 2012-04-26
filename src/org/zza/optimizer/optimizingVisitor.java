@@ -6,6 +6,8 @@ import org.zza.semanticchecker.SemanticWarningList;
 import org.zza.semanticchecker.Symbol;
 import org.zza.semanticchecker.SymbolTable;
 import org.zza.visitor.*;
+import java.util.ArrayList;
+
 
 public class OptimizingVisitor extends NodeVisitor {
     
@@ -75,29 +77,28 @@ public class OptimizingVisitor extends NodeVisitor {
     @Override
     public String visit(CompoundStatementNode node) {
         boolean returnFound = false;
+        int indexOfReturn = -1;
+        int i = 0;
+        //Find index and see if return is in the compound statement
         for (SemanticNode sNode : node.getStatements()) {
             if (sNode instanceof ReturnStatementNode) {
-                if (isWithinProgramScope()) {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
-                            "Return statement found in the main program. No."));
-                }
-                returnFound = true;
-                //Added these in down below and changed one thing about CompoundStatements
-                int indexOfReturn = node.getStatements().indexOf(ReturnStatement);
-                myStatements = node.getStatements()
-                myStatments.removeRange((indexOfReturn+1), node.getStatements().size());
-                node.setStatements(myStatements);
-                System.out.println(node.getStatements());
-            } else if (returnFound) {
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
-                        "Unreachable code found. Return statement not at the end of function '"
-                        +getFunctionName(scope)+"' call."));
+                  returnFound = true;
+                  indexOfReturn = i;
+                  System.out.println("Index of return is : " + indexOfReturn);
+                  break;
             }
+            i++;
             sNode.accept(this);
         }
-        if (!returnFound && !isWithinProgramScope()) {
-            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '" 
-                        + getFunctionName(scope) + "' found with no return statement."));
+
+        if(returnFound){
+
+          ArrayList<SemanticNode> myStatements = new ArrayList<SemanticNode>();
+          myStatements = node.getStatements();
+          int stateSize = node.getStatements().size();
+          myStatements.subList(0,(indexOfReturn+1));
+          node.setStatements(myStatements);
+          System.out.println(node.getStatements());
         }
         return EMPTY;
     }

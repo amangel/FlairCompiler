@@ -45,8 +45,8 @@ public class ThreadedDriver {
                 final OptimizingVisitor optimizer = new OptimizingVisitor();
                 optimizer.visit(program);
                 //                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
-                ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
-                code.visit(program);
+                //ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
+                //code.visit(program);
                 driver.endTime();
                 if(!warningList.isEmpty()) {
                     warningList.printWarnings();
