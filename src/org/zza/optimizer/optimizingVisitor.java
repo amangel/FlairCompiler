@@ -81,11 +81,10 @@ public class OptimizingVisitor extends NodeVisitor {
         int i = 0;
         //Find index and see if return is in the compound statement
         for (SemanticNode sNode : node.getStatements()) {
-            if (sNode instanceof ReturnStatementNode) {
+        	if (sNode instanceof ReturnStatementNode) {
                   returnFound = true;
                   indexOfReturn = i;
                   System.out.println("Index of return is : " + indexOfReturn);
-                  break;
             }
             i++;
             sNode.accept(this);
@@ -96,9 +95,17 @@ public class OptimizingVisitor extends NodeVisitor {
           ArrayList<SemanticNode> myStatements = new ArrayList<SemanticNode>();
           myStatements = node.getStatements();
           int stateSize = node.getStatements().size();
-          myStatements.subList(0,(indexOfReturn+1));
+          
+          System.out.println("This is old: " + myStatements);
+          System.out.println("The size of it is" + myStatements.size());
+          int indexOfStartDelete = indexOfReturn+1;
+          
+          for(int x = 0; x < stateSize-indexOfStartDelete; x++){
+        	  System.out.println(myStatements.remove(indexOfStartDelete));
+          }
+
           node.setStatements(myStatements);
-          System.out.println(node.getStatements());
+          System.out.println("This is new: " + node.getStatements());
         }
         return EMPTY;
     }

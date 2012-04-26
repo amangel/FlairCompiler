@@ -1,10 +1,11 @@
-program IntegerDivision (x : integer, y : integer);
-	var quotient : integer;
-		remainder : integer;
-	begin
-		quotient := x/y;
-		remainder := x - (y * remainder);
-    return remainder;
-		print ( quotient );
-		print ( remainder )
-	end .
+program functiontest (third : integer, fourth : real);
+function func1 (first : integer, second : integer) : integer
+  begin 
+    first := 3;
+    return first;
+    first := 2;
+  end;
+
+begin
+  print( func1(10, 1) )
+end.
