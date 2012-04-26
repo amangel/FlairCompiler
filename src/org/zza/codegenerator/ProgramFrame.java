@@ -10,10 +10,9 @@ public class ProgramFrame extends Frame{
     private int tempVariables;
     private int maxTempData;
     private int maxLocalData;
-    private String name;
 
-    public ProgramFrame(int offset, int localVariableCount, int temporaryVariableCount) {
-        this.offset = offset;
+    public ProgramFrame(int localVariableCount, int temporaryVariableCount) {
+        this.offset = 0;
         this.localVariables = offset;
         this.tempVariables = (offset = offset + localVariableCount);
         this.localVariableCount = localVariableCount;
@@ -48,7 +47,7 @@ public class ProgramFrame extends Frame{
             maxTempData--;
             return tempVariables++;
         } else {
-            throw new MemoryOutOfBoundsException("Requested too many temporary variables in the program frame");
+            throw new MemoryOutOfBoundsException("Requested too many temporary variables in the program frame. Max: "+temporaryVariableCount);
         }
     }
 
@@ -58,7 +57,7 @@ public class ProgramFrame extends Frame{
             maxLocalData--;
             return localVariables++;
         } else {
-            throw new MemoryOutOfBoundsException("Requested too many local variables in the program frame");
+            throw new MemoryOutOfBoundsException("Requested too many local variables in the program frame. Max: "+localVariableCount);
         }
     }
 

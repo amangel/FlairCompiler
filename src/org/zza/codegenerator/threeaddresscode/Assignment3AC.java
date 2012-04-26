@@ -1,5 +1,6 @@
 package org.zza.codegenerator.threeaddresscode;
 
+import org.zza.codegenerator.Address;
 import org.zza.codegenerator.DataMemoryManager;
 
 
@@ -11,12 +12,15 @@ public class Assignment3AC extends ThreeAddressCode {
     
     @Override
     public void emitCode() {
-        if ("0123456789".contains(Character.toString(firstParam.charAt(0)))) {
-            System.out.println(lineNumber++ + ":   LDC  0," + firstParam  + "(6)");
+        Address address = null;
+        if (isDigit(firstParam.charAt(0))) {
+            System.out.println(lineNumber++ + ":   LDC  0," + firstParam  + ZERO_REGISTER);
         } else {
-            System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(firstParam)  + "(6)");//Register 6 holds a 0;
+            address = manager.getAddressOfVar(firstParam);
+            System.out.println(lineNumber++ + ":    LD  0," + address.getOffset() + address.getRegisterValue());//Register 6 holds a 0;
         }
-        System.out.println(lineNumber + ":    ST  0," + manager.getAddressOfVar(secondParam) + "(6)");
+        address = manager.getAddressOfVar(secondParam);
+        System.out.println(lineNumber + ":    ST  0," + address.getOffset() + address.getRegisterValue());
     }
     
     @Override

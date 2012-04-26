@@ -4,12 +4,12 @@ import org.zza.codegenerator.Address;
 import org.zza.codegenerator.DataMemoryManager;
 
 
-public class Subtraction3AC extends ThreeAddressCode {
-
-    public Subtraction3AC(int lineNumber, DataMemoryManager manager) {
+public class Negative3AC extends ThreeAddressCode {
+    
+    public Negative3AC(int lineNumber, DataMemoryManager manager) {
         super(lineNumber, manager);
     }
-
+    
     @Override
     public void emitCode() {
         Address address = null;
@@ -19,25 +19,19 @@ public class Subtraction3AC extends ThreeAddressCode {
             address = manager.getAddressOfVar(secondParam);
             System.out.println(lineNumber++ + ":    LD  0," + address.getOffset() + address.getRegisterValue());//Register 6 holds a 0;
         }
-        
-        if (isDigit(thirdParam.charAt(0))) {
-            System.out.println(lineNumber++ + ":   LDC  1," + thirdParam + ZERO_REGISTER);
-        } else {
-            address = manager.getAddressOfVar(thirdParam);
-            System.out.println(lineNumber++ + ":    LD  1," + address.getOffset() + address.getRegisterValue()); 
-            
-        }
-        System.out.println(lineNumber++ + ":   SUB  0,0,1");
+        System.out.println(lineNumber++ + ":   SUB 0,6,0");
         address = manager.getAddressOfVar(firstParam);
-        System.out.println(lineNumber + ":    ST  0," + address.getOffset() + address.getRegisterValue()); 
+        System.out.println(lineNumber + ":    ST  0,"+address.getOffset() + address.getRegisterValue());
     }
-
+    
     @Override
     public void emitComments() {
+        
     }
-
+    
     @Override
     public int getEmittedSize() {
-        return 4;
+        return 3;
     }
+    
 }

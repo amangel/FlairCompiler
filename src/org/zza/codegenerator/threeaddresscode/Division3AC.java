@@ -1,5 +1,6 @@
 package org.zza.codegenerator.threeaddresscode;
 
+import org.zza.codegenerator.Address;
 import org.zza.codegenerator.DataMemoryManager;
 
 
@@ -11,18 +12,22 @@ public class Division3AC extends ThreeAddressCode {
 
     @Override
     public void emitCode() {
-        if ("0123456789".contains(Character.toString(secondParam.charAt(0)))) {
-            System.out.println(lineNumber++ + ":   LDC  0," + secondParam + "(6)");//Register 6 holds a 0;
+        Address address = null;
+        if (isDigit(secondParam.charAt(0))) {
+            System.out.println(lineNumber++ + ":   LDC  0," + secondParam + ZERO_REGISTER);//Register 6 holds a 0;
         } else {
-            System.out.println(lineNumber++ + ":    LD  0," + manager.getAddressOfVar(secondParam) + "(6)");//Register 6 holds a 0;
+            address = manager.getAddressOfVar(secondParam);
+            System.out.println(lineNumber++ + ":    LD  0," + address.getOffset() + address.getRegisterValue());//Register 6 holds a 0;
         }
-        if ("0123456789".contains(Character.toString(thirdParam.charAt(0)))) {
-            System.out.println(lineNumber++ + ":   LDC  1," + thirdParam + "(6)"); 
+        if (isDigit(thirdParam.charAt(0))) {
+            System.out.println(lineNumber++ + ":   LDC  1," + thirdParam + ZERO_REGISTER); 
         } else {
-            System.out.println(lineNumber++ + ":    LD  1," + manager.getAddressOfVar(thirdParam) + "(6)"); 
+            address = manager.getAddressOfVar(thirdParam);
+            System.out.println(lineNumber++ + ":    LD  1," + address.getOffset() + address.getRegisterValue()); 
         }
         System.out.println(lineNumber++ + ":   DIV  0,0,1");
-        System.out.println(lineNumber + ":    ST  0," + manager.getAddressOfVar(firstParam) + "(6)");        
+        address = manager.getAddressOfVar(firstParam);
+        System.out.println(lineNumber + ":    ST  0," + address.getOffset() + address.getRegisterValue());        
     }
 
     @Override

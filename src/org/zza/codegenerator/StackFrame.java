@@ -23,8 +23,9 @@ public class StackFrame extends Frame {
         return 1 + 1 + 7 + numberOfParameters + numberOfLocalVariables + maxTempData;
     }
     
-    public StackFrame(int offset, int parameterNumber, int localVariableNumber, int tempDataCount, String name) {
-        this.name= name;
+    public StackFrame(int parameterNumber, int localVariableNumber, int tempDataCount, String name) {
+        int offset = 0;
+    	this.name= name;
         startOfFrame = offset;
         controlLink = (offset);
         oldRegisters = (offset=offset+1);

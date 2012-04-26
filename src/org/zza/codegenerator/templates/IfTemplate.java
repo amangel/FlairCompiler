@@ -33,9 +33,9 @@ public class IfTemplate implements Template {
 		elseBlockSize = elseBlock.getSize();
 		thenBlockSize = thenBlock.getSize();
 		mySize = 5 + elseBlockSize + thenBlockSize;
-		leftAddress = manager.getAddressOfVar(left);
-		rightAddress = manager.getAddressOfVar(right);		
-		targetVarAddress = manager.getAddressOfVar(targetVar);
+//		leftAddress = manager.getAddressOfVar(left);
+//		rightAddress = manager.getAddressOfVar(right);		
+//		targetVarAddress = manager.getAddressOfVar(targetVar);
 	}
 
 	@Override
