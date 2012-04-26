@@ -35,7 +35,7 @@ public class ComparisonHeader3AC extends ThreeAddressCode {
             
         }
         
-        System.out.println(lineNumber++ + ":    SUB 0,0,1");
+        System.out.println(lineNumber++ + ":    SUB 0,0,1   get compared values relative to 0");
         
         if(thirdParam.equals("<")){
             System.out.println(lineNumber++ + ":    JGE 0" + "," +  thenSize + "(7)");

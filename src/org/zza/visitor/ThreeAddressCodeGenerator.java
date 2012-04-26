@@ -1,5 +1,8 @@
 package org.zza.visitor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.zza.codegenerator.DataMemoryManager;
 import org.zza.codegenerator.InstructionMemoryManager;
 import org.zza.codegenerator.MemoryOutOfBoundsException;
@@ -24,7 +27,6 @@ import org.zza.parser.semanticstack.nodes.*;
 public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     private int tempCount = 0;
-    private int labelCount = 0;
     private int lineNumber = 1;
     private DataMemoryManager dataManager;
     private InstructionMemoryManager instructionManager;
@@ -43,7 +45,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String declarations = node.getDeclarations().accept(this);
         String parameters = node.getHeader().accept(this);
         String[] splitParam = parameters.split(",");
-        System.out.println("0:   LDA   7,"+lineNumber+"(6)");
+        System.out.println("0:   LDA  7,"+lineNumber+"(6)   jump to the start of the program");
         try {
             int localCount = usageManager.getLocalsCountFrom("program");
             int tempCount = usageManager.getTempsCountFrom("program");
@@ -61,10 +63,10 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     }
     
     private void initializeRegisters(int size) {
-        System.out.println(lineNumber++ + ":   LDC   2,1(6)");
-        System.out.println(lineNumber++ + ":   LDC   3,1(6)");
-        System.out.println(lineNumber++ + ":   LDC   4,"+(size+1)+"(6)");
-        System.out.println(lineNumber++ + ":   LDC   5,0(6)");
+        System.out.println(lineNumber++ + ":   LDC  2,1(6)");
+        System.out.println(lineNumber++ + ":   LDC  3,1(6)");
+        System.out.println(lineNumber++ + ":   LDC  4,"+(size+1)+"(6)");
+        System.out.println(lineNumber++ + ":   LDC  5,0(6)");
     }
 
     private void handleCommandLineArguments(String[] splitParam) throws MemoryOutOfBoundsException {
@@ -101,19 +103,17 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         }
         
         
-        System.out.println("*Entry function: " +functionName);
-        String body = node.getBody().accept(this); 
-        System.out.println("*Finish function: "+functionName);
+        System.out.println("*Entering function: " +functionName);
+        node.getBody().accept(this); 
+        System.out.println("*Finished function: "+functionName);
         //load old r4
-        System.out.println(lineNumber++ + ":   LD   4,1(3)");
+        System.out.println(lineNumber++ + ":    LD  4,1(3)");
         //load old r3
-        System.out.println(lineNumber++ + ":   LD   3,2(3)");
+        System.out.println(lineNumber++ + ":    LD  3,2(3)");
         //load control link
-        System.out.println(lineNumber++ + ":   ADD   0,3,4");
-//        System.out.println(lineNumber++ + ":   LD    1,0(0)");
-//        System.out.println(lineNumber++ + ":   OUT   1,0,0");
-        System.out.println(lineNumber++ + ":   LD   7,0(0)");
-        System.out.println("*Finish reloading registers");
+        System.out.println(lineNumber++ + ":   ADD  0,3,4");
+        System.out.println(lineNumber++ + ":   LDA  7,0(0)");
+        System.out.println("*Finished reloading registers");
         
         
         
@@ -376,7 +376,9 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(AllFunctionDeclarationsNode node) {
         String toReturn = "";
-        for (SemanticNode n : node.getArray()) {
+        ArrayList<SemanticNode> array = node.getArray();
+        Collections.reverse(array);
+        for (SemanticNode n : array) {
             toReturn += n.accept(this) + ", ";
         }
         return toReturn;
@@ -391,10 +393,11 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(ReturnStatementNode node) {
         String arguments = node.getArguments().accept(this);
-
         Return3AC returnStatement = new Return3AC(lineNumber, dataManager);
         returnStatement.setParameters(arguments, "", "");
+        System.out.println("*starting return statement");
         returnStatement.emitCode();
+        System.out.println("*finished return statement");
         lineNumber += returnStatement.getEmittedSize();
         return "return";
     }
@@ -421,8 +424,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(EmptyNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return "";
     }
     
     
@@ -437,21 +439,5 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
 
     private String getNextTemporary() {
         return "t"+tempCount++;
-    }
-
-    
-    private String getNextLabel() {
-        return "LABEL"+labelCount++;
-    }
-    
-    private String handleThreeFieldNode(ThreeFieldNode node, String op1, String op2) {
-        String left = node.acceptVisitorLeftHand(this);
-        String middle = node.acceptVisitorMiddle(this);
-        String right = node.acceptVisitorRightHand(this);        
-        String nextTemp = getNextTemporary();
-        System.out.println(nextTemp + " := " + left +" "+ middle +" "+ right);
-//        System.out.println(getNextTemporary() + " := " + middle + op2 + right);
-//        return "threefield: \n"+left + " " +op1 + " " +middle + " " + op2 + " " +right;
-        return nextTemp;
     }
 }

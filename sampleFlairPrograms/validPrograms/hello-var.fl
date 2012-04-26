@@ -1,13 +1,13 @@
 program HelloVar();
 var i : integer;
-function mod(j : integer) : integer
+function mode(h :integer) : integer
   begin
-    print(j);
-	return(4)
+    return(12)
   end;
 begin
 	i := 4 + 4;
-	print(i);
-    print(mod(17))
+	print(i, 42);
+	i := mode(7);
+    print(i,17)
 
 end.
