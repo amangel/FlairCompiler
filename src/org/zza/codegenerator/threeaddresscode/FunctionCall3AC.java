@@ -29,9 +29,9 @@ public class FunctionCall3AC extends ThreeAddressCode {
         FunctionInformation info = instructionManager.getFunctionAddress(name);
         
         System.out.println("*starting function call");
-        System.out.println(lineNumber++ + ":   ADD  0,3,4   get the start point of the new frame");//get start of new frame
-        System.out.println(lineNumber++ + ":    ST  3,1(0)  store register 3");//store 3
-        System.out.println(lineNumber++ + ":    ST  4,2(0)  store register 4");//store 4
+        System.out.println(lineNumber++ + ":   ADD  0,3,4");//get start of new frame
+        System.out.println(lineNumber++ + ":    ST  3,1(0)");//store 3
+        System.out.println(lineNumber++ + ":    ST  4,2(0)");//store 4
         System.out.println("*copying parameters");
         int count = 0;
         for (String parameter : parameters) { //copy each param into the new stack frame4
@@ -48,16 +48,16 @@ public class FunctionCall3AC extends ThreeAddressCode {
             count++;
         }
         System.out.println("*updating control registers");
-        System.out.println(lineNumber++ + ":   LDA  3,0(0)   update register 3");      //update register 3 to the new stack fram ebeginning
-        System.out.println(lineNumber++ + ":   LDC  4,"+info.getSize()+ZERO_REGISTER + "   update register 4"); //update register 4
-        System.out.println(lineNumber++ + ":   LDC  1,1(6)   load the number of instructions to jump");      //get the number of instructions to jump past
-        System.out.println(lineNumber++ + ":   ADD  0,1,7    calculate the address to load into the control link");
+        System.out.println(lineNumber++ + ":   ADD  3,0,6");      //update register 3 to the new stack fram ebeginning
+        System.out.println(lineNumber++ + ":   LDC  4,"+info.getSize()+ZERO_REGISTER); //update register 4
+        System.out.println(lineNumber++ + ":   LDC  1,2(6)");      //get the number of instructions to jump past
+        System.out.println(lineNumber++ + ":   ADD  0,1,7");
         System.out.println("*storing control link");
         System.out.println(lineNumber++ + ":    ST  0,0(3)");
-        System.out.println(lineNumber++ + ":   LDA  7,"+info.getLine()+ZERO_REGISTER + "   jump to the function");
+        System.out.println(lineNumber++ + ":   LDA  7,"+info.getLine()+ZERO_REGISTER);
         address = dataManager.getAddressOfVar(target);
         //get return value from register 5
-        System.out.println(lineNumber++ + ":    ST  5,"+address.getOffset() + address.getRegisterValue() + "   store the return value");
+        System.out.println(lineNumber++ + ":    ST  5,"+address.getOffset() + address.getRegisterValue());
     }
     
     @Override

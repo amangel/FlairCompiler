@@ -2,12 +2,22 @@ program HelloVar();
 var i : integer;
 function mode(h :integer) : integer
   begin
-    return(12)
+    return(110)
+  end;
+function mod(j : integer) : integer
+  begin
+	if j = 0 then
+	  return(99)
+	else
+	  begin
+	    print(j);
+	    return(mod(j - 1))
+	  end
   end;
 begin
 	i := 4 + 4;
-	print(i, 42);
-	i := mode(7);
-    print(i,17)
+	print(i);
+	i := mod(5);
+    print(i)
 
 end.

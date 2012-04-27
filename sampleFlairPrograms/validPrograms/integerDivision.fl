@@ -2,8 +2,13 @@ program IntegerDivision (x : integer, y : integer);
 	var quotient : integer;
 		remainder : integer;
 	begin
-		quotient := x/y;
-		remainder := x - (y * remainder);
+	    quotient := 0;
+		remainder := x;
+		while remainder > y do
+		  begin
+		    remainder := remainder - y;
+			quotient := quotient + 1
+		  end;
 		print ( quotient );
 		print ( remainder )
 	end .

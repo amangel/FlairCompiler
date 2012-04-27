@@ -77,8 +77,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
         for (SemanticNode sNode : node.getStatements()) {
             if (sNode instanceof ReturnStatementNode) {
                 if (isWithinProgramScope()) {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
-                            "Return statement found in the main program. No."));
+                    errorEncountered(new Exception("Return statement found in the main program. No."));
                 }
                 returnFound = true;
             } else if (returnFound) {
@@ -215,6 +214,9 @@ public class TypeCheckingVisitor extends NodeVisitor {
         String functionType = "";
         functionType = table.getSymbol("function_"+id).getType();
         String parameters = node.acceptVisitorRightHand(this);
+//        if (!scope.equals("program")) {
+//            errorEncountered(new Exception("Nested function calls inside function '"+id+"' are not currently supported."));
+//        }
         if (functionType.equals(parameters)) {
             return functionType;
         } else {
@@ -304,5 +306,12 @@ public class TypeCheckingVisitor extends NodeVisitor {
             
 //        }
         return EMPTY;
+    }
+    
+    public static void errorEncountered(final Exception e) {
+        System.out.println("An error was encountered while parsing the program.");
+        System.out.println(e.getMessage());
+        e.printStackTrace();
+        System.exit(-1);
     }
 }

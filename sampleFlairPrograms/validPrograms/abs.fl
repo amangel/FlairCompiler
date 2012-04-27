@@ -2,9 +2,9 @@ program absolute( x : integer );
   function abs( n : integer ) : integer
     begin
       if n < 0 then
-         return 0 - n
+         return(0-n)
       else
-         return n
+         return(n)
     end;
   begin
     print( x, abs(x) )

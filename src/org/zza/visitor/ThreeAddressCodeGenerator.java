@@ -45,7 +45,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         String declarations = node.getDeclarations().accept(this);
         String parameters = node.getHeader().accept(this);
         String[] splitParam = parameters.split(",");
-        System.out.println("0:   LDA  7,"+lineNumber+"(6)   jump to the start of the program");
+        System.out.println("0:   LDA  7,"+lineNumber+"(6)");
         try {
             int localCount = usageManager.getLocalsCountFrom("program");
             int tempCount = usageManager.getTempsCountFrom("program");
@@ -112,7 +112,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         System.out.println(lineNumber++ + ":    LD  3,2(3)");
         //load control link
         System.out.println(lineNumber++ + ":   ADD  0,3,4");
-        System.out.println(lineNumber++ + ":   LDA  7,0(0)");
+        System.out.println(lineNumber++ + ":   LD  7,0(0)");
         System.out.println("*Finished reloading registers");
         
         
