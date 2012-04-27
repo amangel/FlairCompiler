@@ -107,9 +107,9 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         node.getBody().accept(this); 
         System.out.println("*Finished function: "+functionName);
         //load old r4
-        System.out.println(lineNumber++ + ":    LD  4,1(3)");
+        System.out.println(lineNumber++ + ":    LD  4,2(3)");
         //load old r3
-        System.out.println(lineNumber++ + ":    LD  3,2(3)");
+        System.out.println(lineNumber++ + ":    LD  3,1(3)");
         //load control link
         System.out.println(lineNumber++ + ":   ADD  0,3,4");
         System.out.println(lineNumber++ + ":   LD  7,0(0)");
