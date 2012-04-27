@@ -25,7 +25,6 @@ public class Return3AC extends ThreeAddressCode {
         System.out.println(lineNumber++ + ":    LD  3,1(3)");
         //load control link
         System.out.println(lineNumber++ + ":   ADD  0,3,4");
-//        System.out.println(lineNumber++ + ":   OUT  5,0,0  JUMPING FROM RETURN VALUE");
         System.out.println(lineNumber++ + ":   LD  7,0(0)");
     }
 

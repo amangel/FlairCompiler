@@ -42,7 +42,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(ProgramNode node) {
         
-        String declarations = node.getDeclarations().accept(this);
+        node.getDeclarations().accept(this);
         String parameters = node.getHeader().accept(this);
         String[] splitParam = parameters.split(",");
         System.out.println("0:   LDA  7,"+lineNumber+"(6)");
@@ -57,9 +57,9 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
             e.printStackTrace();
         }
 
-        String body = node.getbody().accept(this);
+        node.getbody().accept(this);
         System.out.println(lineNumber + ":   HALT  0,0,0");
-        return "program: \n"+declarations +"\n" +body;
+        return "program";
     }
     
     private void initializeRegisters(int size) {
@@ -77,7 +77,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
 
     @Override
     public String visit(VariableDeclarationNode node) {
-        return handleTwoFieldNode(node, "vardec");
+        return "";//handleTwoFieldNode(node, "vardec");
     }
     
     @Override
@@ -106,11 +106,8 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         System.out.println("*Entering function: " +functionName);
         node.getBody().accept(this); 
         System.out.println("*Finished function: "+functionName);
-        //load old r4
         System.out.println(lineNumber++ + ":    LD  4,2(3)");
-        //load old r3
         System.out.println(lineNumber++ + ":    LD  3,1(3)");
-        //load control link
         System.out.println(lineNumber++ + ":   ADD  0,3,4");
         System.out.println(lineNumber++ + ":   LD  7,0(0)");
         System.out.println("*Finished reloading registers");
@@ -238,8 +235,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(TypeNode node) {
-        // TODO Auto-generated method stub
-        return null;
+        return "";
     }
     
     @Override
@@ -256,7 +252,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(AllVariableDeclarationsNode node) {
-        return null;
+        return "";
     }
     
     @Override
@@ -294,7 +290,6 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
         int oldLineNumber = lineNumber;
         lineNumber += 4;
         node.acceptVisitorRightHand(this);
-        //build footer
         WhileFooter3AC whileFooter = new WhileFooter3AC(lineNumber, dataManager);
         whileFooter.setParameters("", "", "", oldLineNumber);
         whileFooter.emitCode();
@@ -366,9 +361,7 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     
     @Override
     public String visit(FunctionHeadingNode node) {
-//        return handleThreeFieldNode(node, "", "");
         String name = node.acceptVisitorLeftHand(this);
-//        return node.acceptVisitorLeftHand(this);
         String param = node.acceptVisitorMiddle(this);
         return name+";" +param;
     }
@@ -425,16 +418,6 @@ public class ThreeAddressCodeGenerator extends NodeVisitor {
     @Override
     public String visit(EmptyNode node) {
         return "";
-    }
-    
-    
-    private String handleTwoFieldNode(TwoFieldNode node, String op) {
-        String left = node.acceptVisitorLeftHand(this);
-        String right = node.acceptVisitorRightHand(this);
-        String nextTemp = getNextTemporary();
-        System.out.println(nextTemp + " := " + left +" "+ op +" "+ right);
-//        return "twofield:\n"+left + " "+op + " " + right;
-        return nextTemp;
     }
 
     private String getNextTemporary() {
