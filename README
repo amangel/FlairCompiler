@@ -110,5 +110,7 @@ CODE GENERATION
     		6 - register is used to hold 0
     		7 - register is reserved for the program counter
     
-    
-    		
+    Testing the program involved incrementally building an increasingly complex
+    program one type of command at a time. Basic mathematical commands were 
+    implemented first, then if/while commands. The final step was in implementing 
+    function calls. 
