@@ -11,16 +11,16 @@ Current State of Compiler
       >>parser, step 2            -- due Friday, March 9
       >>semantic checker          -- due Friday, March 30
       >>code generator, step 1    -- due Friday, April 13
-        code generator, step 2    -- due Friday, April 27
+      >>code generator, step 2    -- due Friday, April 27
 
 Usage:
 	javac driver.java  	            --To compile
 	java driver path/to/filename    --To execute where path/to/filename is path
                                       to your Flair Program
 
-	Alternately, running either the runAllValidPrograms.sh or runInvalidPrograms.sh
-	will compile the program on the first run, and will execute all other specified
-	programs on each future run.
+	Alternately, running either the runAllValidPrograms.sh or 
+	runInvalidPrograms.sh will compile the program on the first run, and will
+	execute all other specified programs on each future run.
 
 SCANNER
 	The primary class for the scanner is CompilerStateScanner. It scans its input 
@@ -84,11 +84,33 @@ SEMANTIC CHECKER
 	   using the print function in an assignment statement - caught by parser
 
 CODE GENERATION
-    Currently, the code generator only works with a program that contains Print
-    Statements, where the arguments are Integer Literals. Because an earlier
-    implementation decision makes Print Statements handled as a special case
-    as they are a function with no return value and therefore (in our 
-    implementation) they are treated differently than functions. For Code 
-    Generation, we decided to continue that for consistency. When the code 
-    generator sees a call to Print, it will simply iterate through the arguments,
-    load each value into a register, and output the value in that register.
+    The code generator handles Flair in several steps.
+    An initial pass will check out the number of temporaries that need to be 
+    used in every function or in the main program. This information is used 
+    in the next phase of the code generation which actually takes the semantic 
+    node tree and creates three address code objects, emitting the appropriate 
+    code as necessary. 
+    
+    Since the actual code generation only takes one pass over the node tree, we 
+    chose to take an approach similar to what Pascal does. Specifically, if two 
+    functions are declared, function1, and function2, if function 1 is declared 
+    before function2, then function1 is not able to make a call to function2.
+    
+    Our code generator is extremely naive. It does not contain any optimizations
+    in regards to register usage.
+    
+    We've also decided to allocate the registers as follows:
+    	Register
+    		0 - first register used in all computations
+    		1 - second register used in all computations
+    		2 - register holds the start point to the program frame
+    		3 - register holds the start point of the current stack frame
+    		4 - register holds the size of the current stack frame
+    		5 - register is used for returning values from a function call
+    		6 - register is used to hold 0
+    		7 - register is reserved for the program counter
+    
+    Testing the program involved incrementally building an increasingly complex
+    program one type of command at a time. Basic mathematical commands were 
+    implemented first, then if/while commands. The final step was in implementing 
+    function calls. 

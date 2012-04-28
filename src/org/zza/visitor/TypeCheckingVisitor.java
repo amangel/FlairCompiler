@@ -33,7 +33,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
     @Override
     public String visit(FunctionNode node) {
         String oldScope = scope;
-        String id = node.getHeader().accept(this);
+        node.getHeader().accept(this);
         node.getBody().accept(this);
         scope = oldScope;
         return EMPTY;
@@ -56,10 +56,9 @@ public class TypeCheckingVisitor extends NodeVisitor {
             if (leftHand.equals("real")) {
                 toReturn = "real";                
             } else if (leftHand.equals("integer")) {
-                
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
                         "Attempt to save a "+rightHand+" into an "+leftHand+": " 
-                        + ((IdentifierNode)node.getLeftHand()).getValue()));
+                                + ((IdentifierNode)node.getLeftHand()).getValue()));
             }            
         }
         
@@ -77,20 +76,19 @@ public class TypeCheckingVisitor extends NodeVisitor {
         for (SemanticNode sNode : node.getStatements()) {
             if (sNode instanceof ReturnStatementNode) {
                 if (isWithinProgramScope()) {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
-                            "Return statement found in the main program. No."));
+                    errorEncountered(new Exception("Return statement found in the main program. No."));
                 }
                 returnFound = true;
             } else if (returnFound) {
                 SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
                         "Unreachable code found. Return statement not at the end of function '"
-                        +getFunctionName(scope)+"' call."));
+                                +getFunctionName(scope)+"' call."));
             }
             sNode.accept(this);
         }
         if (!returnFound && !isWithinProgramScope()) {
             SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '" 
-                        + getFunctionName(scope) + "' found with no return statement."));
+                    + getFunctionName(scope) + "' found with no return statement."));
         }
         return EMPTY;
     }
@@ -99,7 +97,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
         String[] parts = string.split("_");
         return parts[parts.length-1];
     }
-
+    
     @Override
     public String visit(DivisionExpressionNode node) {
         return handleTwoFieldNode(node);
@@ -138,6 +136,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(RealNode node) {
+        errorEncountered(new Exception("This Flair compiler does not support the use of real numbers.\n\n"));
         return "real";
     }
     
@@ -182,7 +181,7 @@ public class TypeCheckingVisitor extends NodeVisitor {
     
     @Override
     public String visit(WhileExpressionNode node) {
-        String comparison = node.acceptVisitorLeftHand(this);
+        node.acceptVisitorLeftHand(this);
         node.acceptVisitorRightHand(this);
         return EMPTY;
     }
@@ -274,35 +273,32 @@ public class TypeCheckingVisitor extends NodeVisitor {
     }
     
     private String compare(String leftHandSide, String rightHandSide) {
-//        if (leftHandSide != null && rightHandSide != null) {
-            if (leftHandSide.equals("integer")) {
-                if (rightHandSide.equals("integer")) {
-                    return "integer";
-                } else if (rightHandSide.equals("real")){
-                    //TODO: CONVERT LEFT HAND TO REAL?
-                    return "real";
-                } else {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));
-                }
-            } else if (leftHandSide.equals("real")) {
-                if (rightHandSide.equals("integer") || rightHandSide.equals("real")) {
-                    //TODO: CONVERT RIGHT HAND TO REAL IF INT?
-                    return "real";
-                } else  {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));                
-                }
+        if (leftHandSide.equals("integer")) {
+            if (rightHandSide.equals("integer")) {
+                return "integer";
+            } else if (rightHandSide.equals("real")){
+                return "real";
             } else {
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + leftHandSide + "'. Undeclared variable."));
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                        "Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));
             }
-            //if left==right
-                //return left
-            //else if left = real
-                //return real
-            
-            
-            
-            
-//        }
+        } else if (leftHandSide.equals("real")) {
+            if (rightHandSide.equals("integer") || rightHandSide.equals("real")) {
+                return "real";
+            } else  {
+                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                        "Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));                
+            }
+        } else {
+            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
+                    "Unknown type for variable '" + leftHandSide + "'. Undeclared variable."));
+        }
         return EMPTY;
+    }
+    
+    public static void errorEncountered(final Exception e) {
+        System.out.println("An error was encountered while parsing the program.");
+        System.out.println(e.getMessage());
+        System.exit(-1);
     }
 }

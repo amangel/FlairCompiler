@@ -265,11 +265,13 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
         addLocalsInUsage(scope, varDec);
         
         String functionBody = node.getBody().accept(this);
+        scope = oldScope;
         return functionBody;
     }
     
     @Override
     public String visit(ReturnStatementNode node) {
+        getNextTemporary();
 //        System.out.println("return: "+node.getArguments().accept(this));
         return "return";
     }
