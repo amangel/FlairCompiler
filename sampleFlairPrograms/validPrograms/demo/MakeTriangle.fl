@@ -18,7 +18,8 @@ program MakeTriangle (height : integer);
     
     function bottomHalf (n : integer) : integer
     begin
-        while n > 0 do
+        ones := (ones - 1) / 10;
+        while n > 2 do
         begin
             ones := (ones - 1) / 10;
             print(ones);
