@@ -65,7 +65,7 @@ public class StackFrame extends Frame {
 
     @Override
     public int getNextLocal() throws MemoryOutOfBoundsException {
-        if (maxLocalData>0){
+        if (maxLocalData>0) {
             maxLocalData--;
             return localVariables++;
         } else {

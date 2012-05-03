@@ -40,7 +40,7 @@ public class DataMemoryManager {
     }
     
     private Frame peekBottomOfStack(){
-        return memoryStack.lastElement();
+        return memoryStack.firstElement();
     }
     
     
