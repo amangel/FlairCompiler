@@ -3,7 +3,8 @@ function func1 (first : integer, second : integer) : integer
   begin 
     first := 3;
     return first;
-    first := 2;
+    first := 2 + 3;
+    print(first)
   end;
 
 begin

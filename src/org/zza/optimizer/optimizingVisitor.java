@@ -35,10 +35,8 @@ public class OptimizingVisitor extends NodeVisitor {
     
     @Override
     public String visit(FunctionNode node) {
-        String oldScope = scope;
-        String id = node.getHeader().accept(this);
+        node.getHeader().accept(this);
         node.getBody().accept(this);
-        scope = oldScope;
         return EMPTY;
     }
     
@@ -50,29 +48,17 @@ public class OptimizingVisitor extends NodeVisitor {
     @Override
     public String visit(AssignmentExpressionNode node) {
         String toReturn = "";
-        String oldScope = scope;
         String leftHand = node.acceptVisitorLeftHand(this);
         String rightHand = node.acceptVisitorRightHand(this);
         if (leftHand.equals(rightHand)) {
             toReturn = leftHand;
         } else {
-            if (leftHand.equals("real")) {
-                toReturn = "real";                
-            } else if (leftHand.equals("integer")) {
-                
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning(
-                        "Attempt to save a "+rightHand+" into an "+leftHand+": " 
-                        + ((IdentifierNode)node.getLeftHand()).getValue()));
-            }            
+            if (leftHand.equals("real")) 
+                toReturn = "real";                           
         }
-        
-        scope = oldScope;
-        return toReturn;
+         return toReturn;
     }
     
-    private boolean isWithinProgramScope() {
-        return scope.substring(0,7).equals("program");
-    }
     
     @Override
     public String visit(CompoundStatementNode node) {
@@ -84,7 +70,7 @@ public class OptimizingVisitor extends NodeVisitor {
         	if (sNode instanceof ReturnStatementNode) {
                   returnFound = true;
                   indexOfReturn = i;
-                  System.out.println("Index of return is : " + indexOfReturn);
+                  //System.out.println("Index of return is : " + indexOfReturn);
             }
             i++;
             sNode.accept(this);
@@ -96,23 +82,18 @@ public class OptimizingVisitor extends NodeVisitor {
           myStatements = node.getStatements();
           int stateSize = node.getStatements().size();
           
-          System.out.println("This is old: " + myStatements);
-          System.out.println("The size of it is" + myStatements.size());
+          //System.out.println("This is old: " + myStatements);
+          //System.out.println("The size of it is" + myStatements.size());
           int indexOfStartDelete = indexOfReturn+1;
           
           for(int x = 0; x < stateSize-indexOfStartDelete; x++){
-        	  System.out.println(myStatements.remove(indexOfStartDelete));
+        	  myStatements.remove(indexOfStartDelete);
           }
 
           node.setStatements(myStatements);
-          System.out.println("This is new: " + node.getStatements());
+          //System.out.println("This is new: " + node.getStatements());
         }
         return EMPTY;
-    }
-    
-    private String getFunctionName(String string) {
-        String[] parts = string.split("_");
-        return parts[parts.length-1];
     }
 
     @Override
@@ -197,7 +178,7 @@ public class OptimizingVisitor extends NodeVisitor {
     
     @Override
     public String visit(WhileExpressionNode node) {
-        String comparison = node.acceptVisitorLeftHand(this);
+        node.acceptVisitorLeftHand(this);
         node.acceptVisitorRightHand(this);
         return EMPTY;
     }
@@ -233,8 +214,6 @@ public class OptimizingVisitor extends NodeVisitor {
         if (functionType.equals(parameters)) {
             return functionType;
         } else {
-            SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Function '"+id
-                    +"' requires parameters '"+functionType +"'. Got: '"+ parameters+"'"));
             return EMPTY;
         }
     }
@@ -289,35 +268,19 @@ public class OptimizingVisitor extends NodeVisitor {
     }
     
     private String compare(String leftHandSide, String rightHandSide) {
-//        if (leftHandSide != null && rightHandSide != null) {
             if (leftHandSide.equals("integer")) {
                 if (rightHandSide.equals("integer")) {
                     return "integer";
                 } else if (rightHandSide.equals("real")){
-                    //TODO: CONVERT LEFT HAND TO REAL?
                     return "real";
                 } else {
                     SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));
                 }
             } else if (leftHandSide.equals("real")) {
                 if (rightHandSide.equals("integer") || rightHandSide.equals("real")) {
-                    //TODO: CONVERT RIGHT HAND TO REAL IF INT?
                     return "real";
-                } else  {
-                    SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + rightHandSide + "'. Undeclared variable."));                
-                }
-            } else {
-                SemanticWarningList.addWarning(SemanticWarning.makeNewWarning("Unknown type for variable '" + leftHandSide + "'. Undeclared variable."));
-            }
-            //if left==right
-                //return left
-            //else if left = real
-                //return real
-            
-            
-            
-            
-//        }
+                } 
+            } 
         return EMPTY;
     }
 }

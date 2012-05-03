@@ -42,16 +42,13 @@ public class ThreadedDriver {
                 //                SymbolTable.getInstance().printTable();
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);
-                final OptimizingVisitor optimizer = new OptimizingVisitor();
-                optimizer.visit(program);
-                //                final CodeGeneratingVisitor code = new CodeGeneratingVisitor();
+                //final OptimizingVisitor optimizer = new OptimizingVisitor();
+                //optimizer.visit(program);
                 
-                //ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator();
-                //code.visit(program);
-                //TerribleImplementationToGetTempUsageVisitor terribleUsageVisitor = new TerribleImplementationToGetTempUsageVisitor();
-                //terribleUsageVisitor.visit(program);
-                //ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator(terribleUsageVisitor);
-                //code.visit(program);
+                TerribleImplementationToGetTempUsageVisitor terribleUsageVisitor = new TerribleImplementationToGetTempUsageVisitor();
+                terribleUsageVisitor.visit(program);
+                ThreeAddressCodeGenerator code = new ThreeAddressCodeGenerator(terribleUsageVisitor);
+                code.visit(program);
                 driver.endTime();
                 if(!warningList.isEmpty()) {
                     warningList.printWarnings();
