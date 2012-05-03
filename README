@@ -1,7 +1,7 @@
 README File for Flair Compiler
 
 Written by Aaron Mangel
-              Zach Abbott
+           Zach Abbott
            Zan Preston
 
 Current State of Compiler
@@ -18,9 +18,9 @@ Usage:
     java driver path/to/filename    --To execute where path/to/filename is path
                                       to your Flair Program
 
-    Alternately, running either the runAllValidPrograms.sh or runInvalidPrograms.sh
-    will compile the program on the first run, and will execute all other specified
-    programs on each future run.
+	Alternately, running either the runAllValidPrograms.sh or 
+	runInvalidPrograms.sh will compile the program on the first run, and will
+	execute all other specified programs on each future run.
 
 SCANNER
     The primary class for the scanner is CompilerStateScanner. It scans its input 

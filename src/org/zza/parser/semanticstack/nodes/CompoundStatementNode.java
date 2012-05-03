@@ -33,6 +33,10 @@ public class CompoundStatementNode extends SemanticNode {
         return statements;
     }
     
+    public void setStatements(ArrayList<SemanticNode> arList) {
+        statements = arList;
+    }
+
     private String getDeclarations() {
         String toReturn = "";
         for (final SemanticNode statement : statements) {
