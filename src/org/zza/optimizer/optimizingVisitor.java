@@ -19,6 +19,7 @@ public class OptimizingVisitor extends NodeVisitor {
     public OptimizingVisitor() {
         table = SymbolTable.getInstance();
         scope = "program";
+        
     }
     
     @Override
