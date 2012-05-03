@@ -92,9 +92,10 @@ public class TerribleImplementationToGetTempUsageVisitor extends NodeVisitor {
     
     @Override
     public String visit(AssignmentExpressionNode node) {
-        String left = node.acceptVisitorLeftHand(this);
-        String right = node.acceptVisitorRightHand(this);
-        return "assignment";
+//        String left = node.acceptVisitorLeftHand(this);
+//        String right = node.acceptVisitorRightHand(this);
+        
+        return handleTwoFieldNode(node, ":=");
     }
     
     @Override

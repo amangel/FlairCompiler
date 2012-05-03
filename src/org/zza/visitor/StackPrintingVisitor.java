@@ -18,6 +18,7 @@ public class StackPrintingVisitor extends NodeVisitor {
             toReturn += "   ";
         }
         return toReturn;
+        
     }
     
     @Override
@@ -36,7 +37,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         final String identifier = node.getIdentifier().accept(this);
         final String parameters = node.getParameters().accept(this);
         depth--;
-        return "\n" + tabs + "ProgramHeader:\n" + identifier + "\n" + tabs + parameters;
+        return "\n" + tabs + "ProgramHeader:\n" + identifier + parameters;
     }
     
     @Override
@@ -71,7 +72,7 @@ public class StackPrintingVisitor extends NodeVisitor {
         final String header = node.getHeader().accept(this);
         final String body = node.getBody().accept(this);
         depth--;
-        return "\n" + tabs + "Function:\n" + header + "\n" + body;
+        return "\n" + tabs + "Function:" + header + "\n" + body;
     }
     
     @Override
@@ -255,7 +256,7 @@ public class StackPrintingVisitor extends NodeVisitor {
             parameterString += parameter.accept(this);
         }
         depth--;
-        return "\n" + tabs + string + ":\n" + parameterString;
+        return "\n" + tabs + string + ":" + parameterString;
     }
     
     private String handleTerminal(final String node, final String type) {

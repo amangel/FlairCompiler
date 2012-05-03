@@ -89,12 +89,12 @@ public class CompilerParser {
         }
     }
     
-    private boolean isRuleContained(final Entry A, final CompilerToken i) throws ParsingException {
+    private boolean isRuleContained(final Entry entry, final CompilerToken token) throws ParsingException {
         List<Entry> returnValue = null;
         try {
-            returnValue = ruleTable.find(A, i);
+            returnValue = ruleTable.find(entry, token);
         } catch (final NullPointerException e) {
-            throw new ParsingException("Program contains a grammatical error: Looking for: " + A + ", found: " + i);
+            throw new ParsingException("Program contains a grammatical error: Looking for: " + entry + ", found: " + token);
         }
         return returnValue != null;
     }

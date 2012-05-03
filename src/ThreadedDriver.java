@@ -7,6 +7,7 @@ import org.zza.scanner.CompilerStateScanner;
 import org.zza.scanner.CompilerToken;
 import org.zza.scanner.CompilerTokenStream;
 import org.zza.semanticchecker.SemanticWarningList;
+import org.zza.visitor.StackPrintingVisitor;
 import org.zza.visitor.SymbolTableBuilderVisitor;
 import org.zza.visitor.ThreeAddressCodeGenerator;
 import org.zza.visitor.TypeCheckingVisitor;
@@ -26,7 +27,7 @@ public class ThreadedDriver {
             
             @Override
             public void run() {
-                final CompilerStateScanner scanner = new CompilerStateScanner(buffer, stream);
+                new CompilerStateScanner(buffer, stream);
             }
             
         }).start();
@@ -37,8 +38,10 @@ public class ThreadedDriver {
                 final CompilerParser parser = new CompilerParser(stream);
                 program = parser.parseProgram();
                 warningList = SemanticWarningList.getInstance();
-                final SymbolTableBuilderVisitor printer = new SymbolTableBuilderVisitor();
-                printer.visit(program);
+//                final StackPrintingVisitor printer = new StackPrintingVisitor();
+//                System.out.println(printer.visit(program));
+                final SymbolTableBuilderVisitor symbolBuilder = new SymbolTableBuilderVisitor();
+                symbolBuilder.visit(program);
                 //                SymbolTable.getInstance().printTable();
                 final TypeCheckingVisitor typeChecker = new TypeCheckingVisitor();
                 typeChecker.visit(program);

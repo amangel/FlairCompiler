@@ -26,7 +26,7 @@ public class driver {
             System.exit(-1);
         } catch (final IOException e) {
         }
-        final ThreadedDriver threaded = new ThreadedDriver(sb);
+        new ThreadedDriver(sb);
     }
     
     public static void startTime() {
