@@ -1,12 +1,18 @@
 program functiontest (third : integer, fourth : real);
-function func1 (first : integer, second : integer) : integer
+function func1 (first : integer) : integer
   begin 
     first := 3;
     return first;
     first := 2 + 3;
-    print(first)
+    print(first);
+    while first > 10 do
+    begin 
+      print (first);
+      first := first + 2;
+      first := first - 3
+    end;
   end;
 
 begin
-  print( func1(10, 1) )
+  print( func1(10) )
 end.
